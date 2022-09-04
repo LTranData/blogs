@@ -23,6 +23,11 @@ const config = {
     discussionCategoryId: "DIC_kwDOGyTIZM4CQR6B",
   },
 
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en'],
+  },
+  
   presets: [
     [
       "classic",
@@ -56,6 +61,7 @@ const config = {
       require.resolve("@cmfcmf/docusaurus-search-local"),
       {
         indexBlog: true,
+        indexDocs: false
       },
     ],
     [
