@@ -18,9 +18,9 @@ const config = {
   organizationName: "lam1051999",
   projectName: "blogs",
   customFields: {
-    projectId: "R_kgDOGyTIZA",
+    projectId: "R_kgDOH7zL7A",
     discussionCategory: "Blog Posts",
-    discussionCategoryId: "DIC_kwDOGyTIZM4CQR6B",
+    discussionCategoryId: "DIC_kwDOH7zL7M4CROdO",
   },
 
   i18n: {

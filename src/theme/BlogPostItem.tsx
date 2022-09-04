@@ -30,7 +30,7 @@ function BlogPostItem(props: Props) {
           categoryId={siteConfig.customFields.discussionCategoryId as string}
           mapping="specific"
           term="Welcome to @giscus/react component!"
-          reactionsEnabled="0"
+          reactionsEnabled="1"
           emitMetadata="0"
           inputPosition="top"
           theme={colorMode}
