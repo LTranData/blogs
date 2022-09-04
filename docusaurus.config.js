@@ -19,7 +19,7 @@ const config = {
   projectName: "blogs",
   customFields: {
     projectId: "R_kgDOH7zL7A",
-    discussionCategory: "Blog Posts",
+    discussionCategory: "General",
     discussionCategoryId: "DIC_kwDOH7zL7M4CROdO",
   },
 
