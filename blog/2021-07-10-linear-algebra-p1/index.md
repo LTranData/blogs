@@ -3,6 +3,7 @@ slug: linear-algebra-part-1
 title: Đại số tuyến tính cơ bản - Phần 1
 authors: tranlam
 tags: [Math, Linear Algebra]
+image: ./images/linear-algebra.JPEG
 ---
 
 ![Linear Algebra](./images/linear-algebra.JPEG)

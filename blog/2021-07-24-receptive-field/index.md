@@ -3,6 +3,7 @@ slug: receptive-field
 title: Receptive field trong thị giác máy tính
 authors: tranlam
 tags: [Computer Vision, Receptive Field, Artificial Intelligence, AI]
+image: ./images/convolution.PNG
 ---
 
 ![Convolution](./images/convolution.PNG)

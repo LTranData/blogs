@@ -3,6 +3,7 @@ slug: ai-interview-questions
 title: Một số câu hỏi phỏng vấn AI/ML
 authors: tranlam
 tags: [AI, ML, Machine Learning, Artificial Intelligence]
+image: ./images/intro.JPEG
 ---
 
 ![Intro](./images/intro.JPEG)

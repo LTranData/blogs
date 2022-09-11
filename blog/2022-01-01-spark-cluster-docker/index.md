@@ -3,6 +3,7 @@ slug: spark-cluster-docker
 title: Tạo 1 Standalone Spark Cluster với Docker
 authors: tranlam
 tags: [Bigdata, Spark, Apache, Docker]
+image: ./images/cluster-overview.PNG
 ---
 
 ![Cluster Overview](./images/cluster-overview.PNG)

@@ -3,6 +3,7 @@ slug: sorting-algorithms
 title: Các thuật toán sắp xếp cơ bản
 authors: tranlam
 tags: [algorithms, sorting]
+image: ./images/intro.JPEG
 ---
 
 ![Intro](./images/intro.JPEG)

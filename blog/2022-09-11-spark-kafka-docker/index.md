@@ -3,6 +3,7 @@ slug: spark-kafka-docker
 title: Tạo luồng streaming dữ liệu với Spark Streaming, Kafka, Docker
 authors: tranlam
 tags: [Bigdata, Spark, Apache, Kafka, Docker]
+image: ./images/architecture.PNG
 ---
 
 ![Architecture](./images/architecture.PNG)

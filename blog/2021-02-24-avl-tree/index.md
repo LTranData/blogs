@@ -3,6 +3,7 @@ slug: avl-tree
 title: Cây AVL, thuật toán sắp xếp AVL
 authors: tranlam
 tags: [tree, avl, binary tree, algorithms]
+image: ./images/intuition.PNG
 ---
 
 ![Intuition](./images/intuition.PNG)

@@ -3,6 +3,7 @@ slug: binarysearch-tree
 title: Cây tìm kiếm nhị phân
 authors: tranlam
 tags: [tree, binary tree, algorithms, search]
+image: ./images/intro.PNG
 ---
 
 ![Intro](./images/intro.PNG)

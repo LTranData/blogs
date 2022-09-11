@@ -3,6 +3,7 @@ slug: peak-finding
 title: Thuật toán tìm đỉnh Peak Finding
 authors: tranlam
 tags: [peak, peak finding, algorithms]
+image: ./images/intro.PNG
 ---
 
 ![Intro](./images/intro.PNG)

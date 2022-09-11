@@ -3,6 +3,7 @@ slug: probability
 title: Xác suất thống kê cơ bản
 authors: tranlam
 tags: [Probability, Math]
+image: ./images/probability.JPEG
 ---
 
 ![Probability](./images/probability.JPEG)
