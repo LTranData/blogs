@@ -385,4 +385,5 @@ Vào Postgres query bảng ```personinformation``` ta thấy có dữ liệu nh�
 ![Postgres](./images/postgres.PNG)
 
 Trên đây là tất cả nội dung để dựng một luồng streaming cơ bản từ Kafka. Còn một điều lưu ý nữa là thay vì bạn commit offset của các lần tiêu thụ lên 1 topic của Kafka như trong code Spark, bạn có thể commit nó một cách thủ công vào một đường dẫn ở Zookeeper để chủ động hơn trong việc kiểm soát.
+
 Code của cả bài viết bạn đọc có thể tìm thấy ở đây: **[https://github.com/lam1051999/spark_kafka_docker](https://github.com/lam1051999/spark_kafka_docker)**
