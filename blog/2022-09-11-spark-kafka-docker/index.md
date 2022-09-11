@@ -7,7 +7,7 @@ tags: [Bigdata, Spark, Apache, Kafka, Docker]
 
 ![Architecture](./images/architecture.PNG)
 
-Chào các bạn, mình đã trở lại sau một thời gian khá lâu chưa viết gì. Quãng thời gian vừa qua thực sự là quãng thời gian mình học hỏi được rất nhiều từ khi làm tại công ty mới. Mình được động vào rất nhiều phần công việc khác nhau, như là code Spark, Spark Streaming, xây dựng datamart cho nghiệp vụ, hay là code API cung cấp dữ liệu sau tổng hợp cho các phòng ban,... Hôm nay, mình muốn chia sẻ về cách tạo 1 luồng Spark Streaming tiêu thụ dữ liệu từ Kafka, tất cả mọi thứ được dựng trên Docker.
+Chào các bạn, mình đã trở lại sau một thời gian khá lâu chưa viết gì. Hôm nay, mình muốn chia sẻ về cách tạo 1 luồng Spark Streaming tiêu thụ dữ liệu từ Kafka, tất cả mọi thứ được dựng trên Docker.
 
 <!--truncate-->
 
