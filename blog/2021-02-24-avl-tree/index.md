@@ -5,14 +5,14 @@ authors: tranlam
 tags: [tree, avl, binary tree, algorithms]
 ---
 
+![Intuition](./images/intuition.PNG)
+
 Ở bài viết trước, mình đã nói về cây tìm kiếm nhị phân, nếu bạn đọc chưa xem qua, có thể tìm thấy **[tại đây](/blog/2021-02-22-binarysearch-tree/index.md)**. Với sự hiệu quả trong các hoạt động tìm kiếm, chèn, xóa,... cây tìm kiếm nhị phân có thể thực hiện được trong logrithmic time (${\Theta(logn)}$) ở average case. Bài viết này, mình sẽ nói về cây AVL, là 1 loại của cây tìm kiếm nhị phân, đảm bảo rằng trong tất cả các case, time complexity của các hoạt động trên đều là ${\Theta(logn)}$.
 
 <!--truncate-->
 
 ### 1. Cây AVL
 Cây AVL là một cây tìm kiếm nhị phân cân bằng, trong đó chiều cao của cây con trái và cây con phải hơn kém nhau nhiều nhất 1 ${(1)}$. Trong qua trình thực hiện các hoạt động trên cây khiến cây không cân bằng, ta cần thực hiện cân bằng lại cây để đảm bảo tính chất ${(1)}$.
-
-![Intuition](./images/intuition.PNG)
 
 ### 2. Đánh giá chiều cao của cây
 Chiều cao của cây

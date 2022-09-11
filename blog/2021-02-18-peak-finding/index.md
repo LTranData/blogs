@@ -5,6 +5,8 @@ authors: tranlam
 tags: [peak, peak finding, algorithms]
 ---
 
+![Intro](./images/intro.PNG)
+
 Hôm nay mình sẽ nói về môt thuật toán cực kì cơ bản mà mình và hầu như các bạn bắt đầu học về lập trình thuật toán đều đã làm. Đó chính là thuật toán tìm đỉnh Peak Finding.
 
 <!--truncate-->

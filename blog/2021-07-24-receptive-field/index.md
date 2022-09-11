@@ -5,16 +5,14 @@ authors: tranlam
 tags: [Computer Vision, Receptive Field, Artificial Intelligence, AI]
 ---
 
+![Convolution](./images/convolution.PNG)
+
 Trong bài viết này, mình muốn nói về receptive field, một khái niệm rất quan trọng trong các bài toán thị giác máy tính mà bạn nào học cũng cần phải biết để giải thích tại sao người ta lại muốn xây mạng sâu hơn. Cùng đi vào bài viết thôi.
 
 <!--truncate-->
 
 ### 1. Thế nào là receptive field?
 Receptive field là kích thước của một vùng của đầu vào mà có ảnh hưởng lên một neuron tại một layer nào đó. Nó có thể được miêu tả bằng điểm trung tâm và kích thước. Tuy vậy thì không phải pixel nào trong receptive field đều có độ quan trọng như nhau đối với neuron mà nó ảnh hưởng tới. Các pixel gần trung tâm của receptive field sẽ đóng góp nhiều vai trò trong việc tính toán neuron tham chiều tới hơn là các pixel ở rìa receptive field.
-
-Hình dưới đây minh họa đơn giản về khái niệm trên
-
-![Convolution](./images/convolution.PNG)
 
 ### 2. Cách tính toán receptive field
 Giả sử, ta có ảnh đầu vào có kích thước chiều dài, chiều rộng là ${n = W = H}$.

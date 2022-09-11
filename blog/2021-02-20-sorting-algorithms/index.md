@@ -5,6 +5,8 @@ authors: tranlam
 tags: [algorithms, sorting]
 ---
 
+![Intro](./images/intro.JPEG)
+
 Trở lại thôi. Những blogs đầu tiên này mình sẽ chỉ viết về những thuật toán cơ bản nhất khi mới chập chững vào học lập trình thôi. Thứ nhất, để mình học lại các thứ cơ bản (vì mình cực kì hay quên). Thứ hai, để các bạn mới học lập trình có thể tham khảo ha. Bài viết này sẽ nói về các thuật toán sắp xếp cơ bản mình được học ở trường lớp, và cũng tự học nữa.
 
 <!--truncate-->

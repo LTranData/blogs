@@ -5,6 +5,8 @@ authors: tranlam
 tags: [Math, Linear Algebra]
 ---
 
+![Linear Algebra](./images/linear-algebra.JPEG)
+
 Tiếp đây sẽ là loạt bài viết về đại số tuyến tính mình đã học lại khi đọc quyển **[Mathematics for Machine Learning](https://mml-book.github.io/book/mml-book.pdf)** trong thời gian học về Machine Learning và AI. Đây là phần thứ nhất trong loạt bài này.
 
 <!--truncate-->

@@ -5,15 +5,13 @@ authors: tranlam
 tags: [Bigdata, Spark, Apache, Docker]
 ---
 
-Ngày đầu tiên của năm 2022, chắc hẳn các bạn rất muốn đi du lịch đâu đó để nghỉ ngơi sau 1 năm làm việc vất vả, còn mình thì lại ngồi hì hục viết thêm bài bởi vì đã quá lâu rồi chưa động bút. Tóm gọn lại công việc trong năm qua của mình, chủ yếu là làm ETL trên các data platform đã có sẵn, điều đó làm mình rất mong muốn có thể được tiếp cận các khía cạnh khác của Data Engineer. Vì thế, mình đã dành nhiều thời gian tự học về cách xây dựng các cluster Hadoop, Spark, tích hợp Hive và một số thứ nữa. Bài viết này sẽ viết về cách bạn có thể xây dựng một Spark cluster cho việc xử lý dữ liệu bằng Docker, bao gồm 1 master node và 2 worker node, loại cluster là standalone cluster (có thể các bài viết sắp tới mình sẽ làm về Hadoop cluster và tích hợp resource manager là Yarn). Cùng đi vào bài viết nào.
+![Cluster Overview](./images/cluster-overview.PNG)
 
-<!--truncate-->
+Ngày đầu tiên của năm 2022, chắc hẳn các bạn rất muốn đi du lịch đâu đó để nghỉ ngơi sau 1 năm làm việc vất vả, còn mình thì lại ngồi hì hục viết thêm bài bởi vì đã quá lâu rồi chưa động bút. Tóm gọn lại công việc trong năm qua của mình, chủ yếu là làm ETL trên các data platform đã có sẵn, điều đó làm mình rất mong muốn có thể được tiếp cận các khía cạnh khác của Data Engineer. <!--truncate-->Vì thế, mình đã dành nhiều thời gian tự học về cách xây dựng các cluster Hadoop, Spark, tích hợp Hive và một số thứ nữa. Bài viết này sẽ viết về cách bạn có thể xây dựng một Spark cluster cho việc xử lý dữ liệu bằng Docker, bao gồm 1 master node và 2 worker node, loại cluster là standalone cluster (có thể các bài viết sắp tới mình sẽ làm về Hadoop cluster và tích hợp resource manager là Yarn). Cùng đi vào bài viết nào.
 
 ### 1. Tổng quan về cấu trúc và cách hoạt động của một Spark cluster
 
 Spark là công cụ xử lý dữ liệu nhanh, mạnh mẽ cho phép bạn xử lý dữ giải quyết vấn đề dữ liệu lớn đối với cả dữ liệu có cấu trúc, bán cấu trúc và không có cấu trúc. Nó cung cấp tính linh hoạt và khả năng mở rộng, được tạo ra để cải thiện hiệu năng của MapReduce nhưng ở một tốc độ cao hơn nhiều: 100 lần nhanh hơn Hadoop khi dữ liệu được lưu trong bộ nhớ và 10 lần khi truy cập ổ đĩa. Nó được thiết kế cho các hiệu suất nhanh và sử dụng RAM để caching và xử lý dữ liệu. Spark không có một file system riêng, nhưng nó có thể tương tác với nhiều loại hệ thống lưu trữ, có thể sử dụng tích hợp với Hadoop. Dưới đây là tổng quan cấu trúc của một ứng dụng Spark.
-
-![Cluster Overview](./images/cluster-overview.PNG)
 
 Các ứng dụng Spark sinh ra một chương trình driver ở master node, và tạo ra 1 SparkContext. Để chạy trên 1 cluster, SparkContext cần kết nối đến một trong nhiều loại cluster managers (standalone cluster, Mesos hoặc YARN). Một khi được kết nối, Spark có được kết nối tới các worker nodes ở cluster. Những node đó thực hiện tiến trình làm các công việc tính toán và lưu trữ dữ liệu cho ứng dụng. Sau đó, nó gửi các code đến các executor. Cuối cùng, SparkContext sẽ gửi các tasks cho các executors để chạy.
 

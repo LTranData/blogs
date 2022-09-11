@@ -2,8 +2,10 @@
 slug: probability
 title: Xác suất thống kê cơ bản
 authors: tranlam
-tags: [probability, Math]
+tags: [Probability, Math]
 ---
+
+![Probability](./images/probability.JPEG)
 
 Bài viết này nhằm ôn lại một số khái niệm trong toán xác suất cơ bản, sẽ không có những phần toán rất phức tạp và dồn dập như trong lúc học trên trường lớp. Thay vào đó, nội dung sẽ tập trung vào các kiến thức xác suất phụ trợ cho trí tuệ nhận tạo hay là thống kê dữ liệu. Bài viết này tham chiếu rất nhiều đến một bài trong blog của anh Phạm Đình Khánh, cảm ơn anh Khánh với một series xác suất rất chi tiết.
 

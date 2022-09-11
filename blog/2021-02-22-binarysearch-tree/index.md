@@ -5,6 +5,8 @@ authors: tranlam
 tags: [tree, binary tree, algorithms, search]
 ---
 
+![Intro](./images/intro.PNG)
+
 Trong quá trình học lập trình, bạn sẽ bắt gặp rất nhiều loại cấu trúc dữ liệu như: mảng, danh sách liên kết, từ điển (dictionary),... Mỗi loại cấu trúc dữ liệu có ưu điểm và nhược điểm riêng. Hôm nay, mình sẽ nói về loại cấu trúc dữ liệu khá thú vị là cây tìm kiếm nhị phân, một cấu trúc dữ liệu rất thuận lợi cho bài toán tìm kiếm.
 
 <!--truncate-->
