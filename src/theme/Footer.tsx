@@ -18,9 +18,8 @@ function Footer(props) {
             <img
               src="/blogs/img/avatar.jpg"
               style={{
-                borderRadius: "50%",
-                height: 100,
-                width: 100,
+                height: 154,
+                width: 139
               }}
             />
             <p style={{fontSize: "0.8em", marginTop: "1em"}}>Data Engineer <br/>@ Giaohangtietkiem</p>
