@@ -11,10 +11,10 @@ function Footer(props) {
             justifyContent: "center",
           }}
         >
-          <div style={{ flexGrow: 1, maxWidth: 650 }}>
+          <div style={{ maxWidth: 650 }}>
             I believe each of us was designed to do certain things, that we have certain duties. Most significantly, since nature intended us to be social creatures, we have duties to our fellow men.
           </div>
-          <div style={{marginLeft: "2em"}}>
+          <div style={{marginLeft: 30, minWidth: 169}}>
             <img
               src="/blogs/img/avatar.jpg"
               style={{
