@@ -1,6 +1,7 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
+require("dotenv").config();
 const lightCodeTheme = require("prism-react-renderer/themes/github");
 const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 const math = require('remark-math');
@@ -8,19 +9,19 @@ const katex = require('rehype-katex');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "Tran Lam's Blog",
-  tagline: "Tran Lam's Blog",
-  url: "https://lam1051999.github.io/",
-  baseUrl: "/blogs/",
+  title: process.env.SITE_TITLE,
+  tagline: process.env.SITE_TITLE,
+  url: process.env.BLOG_URL,
+  baseUrl: `/${process.env.PROJECT_NAME}/`,
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
-  favicon: "/blogs/img/de.svg",
-  organizationName: "lam1051999",
-  projectName: "blogs",
+  favicon: `/${process.env.PROJECT_NAME}/img/de.svg`,
+  organizationName: process.env.ORGANIZATION_NAME,
+  projectName: `${process.env.PROJECT_NAME}`,
   customFields: {
-    projectId: "R_kgDOH7zL7A",
-    discussionCategory: "General",
-    discussionCategoryId: "DIC_kwDOH7zL7M4CROdO",
+    projectId: process.env.PROJECTID,
+    discussionCategory: process.env.DISCUSSION_CATEGORY,
+    discussionCategoryId: process.env.DISCUSSION_CATEGORY_ID,
   },
 
   i18n: {
@@ -54,13 +55,6 @@ const config = {
   
   plugins: [
     [
-      require.resolve("@cmfcmf/docusaurus-search-local"),
-      {
-        indexBlog: true,
-        indexDocs: false
-      },
-    ],
-    [
       "./plugins/blog-plugin",
       {
         id: "blog",
@@ -71,12 +65,11 @@ const config = {
         blogSidebarTitle: 'All posts',
         blogSidebarCount: 'ALL',
         editUrl: ({ blogDirPath, blogPath }) => {
-          return `https://github.com/kgajera/blog/edit/main/${blogDirPath}/${blogPath}`;
+          return `${process.env.GITHUB_EDIT}/${blogDirPath}/${blogPath}`;
         },
       },
     ],
   ],
-
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
@@ -85,7 +78,7 @@ const config = {
       },
       navbar: {
         hideOnScroll: true,
-        title: "Tran Lam",
+        title: process.env.SITE_TITLE,
         logo: {
           alt: "TL Logo",
           src: "/blogs/img/de.svg",
@@ -116,19 +109,19 @@ const config = {
             items: [
               {
                 label: 'Mail',
-                href: 'mailto:lam1051999@gmail.com',
+                href: `mailto:${process.env.INFO_GMAIL}`,
               },
               {
                 label: 'Linkedin',
-                href: 'https://www.linkedin.com/in/lamtt1005/',
+                href: `${process.env.INFO_LINKEDIN}`,
               },
               {
                 label: 'Phone',
-                href: 'tel:+84962007024',
+                href: `tel:+${process.env.INFO_TEL}`,
               },
               {
                 label: 'Github',
-                href: 'https://github.com/lam1051999',
+                href: `${process.env.INFO_GITHUB}`,
               }
             ],
           }
@@ -141,6 +134,12 @@ const config = {
       },
       sidebar: {
         hideable: false,
+      },
+      algolia: {
+        appId: process.env.ALGOLIA_APP_ID,
+        apiKey: process.env.ALGOLIA_API_KEY,
+        indexName: process.env.ALGOLIA_INDEX_NAME,
+        placeholder: "Search...",
       },
     }),
 };
