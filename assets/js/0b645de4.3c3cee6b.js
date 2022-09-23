@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkkgajera_blog=self.webpackChunkkgajera_blog||[]).push([[4315],{9916:a=>{a.exports=JSON.parse('{"label":"Linear Algebra","permalink":"/blogs/blog/tags/linear-algebra","allTagsPath":"/blogs/blog/tags","count":1}')}}]);
