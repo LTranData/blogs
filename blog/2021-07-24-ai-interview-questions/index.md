@@ -8,7 +8,7 @@ image: ./images/intro.JPEG
 
 ![Intro](./images/intro.JPEG)
 
-Gần đây, AI/ML là một cái trend, người người AI, nhà nhà AI. Sinh viên đổ xô đi học AI hết, các trường đại học cũng dần mở các môn về học máy, trí tuệ nhân tạo, rồi thị giác máy tính để "bắt kịp". <!--truncate-->Thực ra, theo AI cũng hay, nhưng thị trường việc làm AI hiện nay rất khắc nghiệt, và để có một cái job đủ ngon, yêu cầu bạn phải có kiến thức tốt và có nhiều kinh nghiệm làm thực tế, đó là một điều mà các sinh viên mới ra trường khó mà có, nên thời gian đầu các bạn sẽ phải làm với mức lương không như mong muốn, trái ngược hoàn toàn với độ hot hão huyền của cái trend này. Dưới đây, mình sẽ trình bày về các câu hỏi phỏng vấn cơ bản, dành cho các bạn muốn tìm các vị trí thực tập trong lĩnh vực này.
+Gần đây, AI/ML là một cái trend, người người AI, nhà nhà AI. Sinh viên đổ xô đi học AI hết, các trường đại học cũng dần mở các môn về học máy, trí tuệ nhân tạo, rồi thị giác máy tính để "bắt kịp". <!--truncate-->Dưới đây, mình sẽ trình bày về các câu hỏi phỏng vấn cơ bản, dành cho các bạn muốn tìm các vị trí thực tập trong lĩnh vực này.
 
 ### 1. Bias, variance
 **Các câu hỏi mục này sẽ xung quanh các thông số trên là gì, nó cao nó thấp thì ảnh hưởng như nào, xử lý thế nào?**
