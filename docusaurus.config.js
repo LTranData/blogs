@@ -18,7 +18,7 @@ const config = {
   favicon: `/${process.env.PROJECT_NAME}/img/de.svg`,
   organizationName: process.env.ORGANIZATION_NAME,
   projectName: `${process.env.PROJECT_NAME}`,
-  
+
   customFields: {
     projectId: process.env.PROJECTID,
     discussionCategory: process.env.DISCUSSION_CATEGORY,
@@ -71,6 +71,7 @@ const config = {
       },
     ],
   ],
+  
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
