@@ -19,7 +19,7 @@ Tầng cao nhất là tầng Clients, layer này thường không chỉ có ở 
 
 Tầng thứ hai là tầng chứa các code phục vụ việc phân tích các truy vấn, tối ưu và chứa các hàm built in tương tác với database như dates, times, math, encryption,… tất cả các tính năng tương thích với nhiều storage engines như stored procedures, triggers, views,…
 
-Tầng thứ ba là storage engines, có nhiệm vụ lưu trữ và lấy các dữ liệu lưu trữ trong MySQL. Mỗi storage engines có các mặt tốt và các mặt không tốt của riêng chúng. MySQL server tương tác với chúng bởi các storage engine API, chứa nhiều hàm low-level, các hoạt động như bắt đầu một transaction, tìm bản ghi với primary key tương ứng. Storage engines chỉ phản hồi lại các request từ server, còn phân tích các câu truy vấn được thực hiện ở tầng thứ hai.
+Tầng thứ ba là storage engines, có nhiệm vụ lưu trữ và lấy các dữ liệu trong MySQL. Mỗi storage engines có các mặt tốt và các mặt không tốt của riêng chúng. MySQL server tương tác với chúng bởi các storage engine API, chứa nhiều hàm low-level, các hoạt động như bắt đầu một transaction, tìm bản ghi với primary key tương ứng. Storage engines chỉ phản hồi lại các request từ server, còn phân tích các câu truy vấn được thực hiện ở tầng thứ hai.
 
 ### 2. Quản lý kết nối và bảo mật
 Với cấu hình mặc định, mỗi kết nối từ client sẽ chiếm một thread, và các truy vấn sẽ chạy trong thread đó. Server sẽ có một cache các thread sẵn sàng có thể sử dụng, nên chúng sẽ không cần tạo ra và huỷ đi mỗi khi có một kết nối mới từ client.
