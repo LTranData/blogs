@@ -6,7 +6,7 @@ tags: [Bigdata, MySQL, Database, Data Engineering]
 image: ./images/architecture.PNG
 ---
 
-Chào các bạn, gần đây mình có học về MySQL vì mình nghĩ làm data thì nên nắm vững một cơ sở dữ liệu quan hệ nào đó. Khi đã chắc một RMDBS thì các RMDBS khác cũng sẽ có nhiều nét tương đồng. Thời gian tới mình sẽ có một series về MySQL, đây là bài viết đầu tiên.
+Chào các bạn, gần đây mình có tìm hiểu sâu hơn về MySQL vì mình nghĩ làm data thì nên nắm vững một cơ sở dữ liệu quan hệ nào đó. Khi đã chắc một RMDBS thì các RMDBS khác cũng sẽ có nhiều nét tương đồng. Thời gian tới mình sẽ có một series về MySQL, đây là bài viết đầu tiên.
 
 <!--truncate-->
 
