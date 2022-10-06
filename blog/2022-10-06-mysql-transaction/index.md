@@ -88,3 +88,5 @@ Ta có thể cài đặt isolation level cho MySQL bằng việc chạy câu l�
 SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
 ```
 Ta không nên xử lý các bảng có khác storage engine trong cùng một transaction, vì có một số storage engine sẽ không hỗ trợ việc rollback dữ liệu (MyISAM storage engine), nếu có một số lỗi xảy ra trong quá trình thực hiện transaction, sẽ chỉ có một số bảng được rollback lại khiến làm mất đi tính Consistency.
+
+Bài viết kết thúc tại đây, hẹn gặp các bạn trong các blog tiếp theo.
