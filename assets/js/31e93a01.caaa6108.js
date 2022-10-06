@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkkgajera_blog=self.webpackChunkkgajera_blog||[]).push([[2021],{9172:e=>{e.exports=JSON.parse('{"permalink":"/blogs/blog/page/2","page":2,"postsPerPage":10,"totalPages":2,"totalCount":12,"previousPage":"/blogs/blog","blogDescription":"Blog","blogTitle":"Blog"}')}}]);
