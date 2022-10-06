@@ -3,9 +3,10 @@ slug: mysql-series-mysql-transaction
 title: MySQL series - Transaction trong MySQL
 authors: tranlam
 tags: [Bigdata, MySQL, Database, Data Engineering, Transaction]
-image: ./images/acid.PNG
+image: ./images/transaction.JPEG
 ---
 
+![Poster](./images/transaction.JPEG)
 Bài viết tiếp theo trong series MySQL về transaction. Một hoạt động rất phổ biến trong MySQL nói riêng và các cơ sở dữ liệu quan hệ nói chung. Cùng đi vào bài viết nào.
 
 <!--truncate-->
