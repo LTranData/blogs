@@ -22,6 +22,6 @@ InnoDB sẽ gán một transaction id cho một transaction mỗi khi nó bắt 
 
 Tất cả undo log được ghi đều được chép lại vào redo log bởi vì chúng phục vụ cho quá trình phục hồi dữ liệu khi hệ thống lỗi. Kích thước của undo log và redo log cũng ảnh hướng tới khả năng thực hiện đọc ghi trong môi trường có độ đọc ghi đồng thời cao.
 
-Tuy lợi ích là ta không bao giờ bị lock khi đọc những storage engine cần phải lưu trữ thêm nhiều dữ liệu hơn với mỗi bản ghi, làm nhiều công việc kiểm soát, và thực hiện nhiều hoạt động hơn.
+Tuy lợi ích là ta không bao giờ bị lock khi đọc nhưng storage engine cần phải lưu trữ thêm nhiều dữ liệu hơn với mỗi bản ghi, làm nhiều công việc kiểm soát, và thực hiện nhiều hoạt động hơn.
 
 MVCC chỉ khả dụng với các chế độ REPEATABLE READ và READ COMMITTED. MVCC không tương thích với READ UNCOMMITTED vì các truy vấn sẽ không đọc các bản ghi mà phiên bản của nó không trùng với phiên bản của transaction. MVCC không tương thích với SERIALIZABLE bởi vì việc khoá khi đọc của chế độ này (Các chế độ isolation level các bạn có thể tìm thấy **[tại đây](/blog/2022-10-06-mysql-transaction/index.md#3-4-isolation-level-trong-môi-trường-có-nhiều-đọc-ghi-đồng-thời)**)
