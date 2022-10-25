@@ -15,7 +15,7 @@ Thường những storage engine đều không sử dụng cơ chế row lock đ
 ### 1. Giới thiệu về MVCC
 MVCC được sử dụng trong rất nhiều loại cơ sở dữ liệu quan hệ, nó giúp chúng ta lock ít dữ liệu nhất có thể khi thực hiện nhiều transaction một lúc, nó có thể cho phép chúng ta không bị lock khi đọc dữ liệu và chỉ lock những row cần thiết khi ghi dữ liệu.
 
-### 2. MVCC hoạt động như thế nào?
+### 2. MVCC trong InnoDB
 MVCC hoạt động bằng cách snapshot lại dữ liệu tại một thời điểm nào đó, nên một transaction có thể nhìn thấy dữ liệu như nhau cho dù chúng chạy nhanh hay rất lâu. Tuy nhiên, nó cũng gây ra các transaction khác nhau có thể nhìn thấy các view dữ liệu khác nhau của cùng một bảng trong cùng một thời điểm.
 
 ![MVCC Detail Example](./images/detail.PNG)
