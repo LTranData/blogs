@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkkgajera_blog=self.webpackChunkkgajera_blog||[]).push([[9900],{4526:a=>{a.exports=JSON.parse('{"label":"MySQL","permalink":"/blogs/blog/tags/my-sql","allTagsPath":"/blogs/blog/tags","count":3}')}}]);
