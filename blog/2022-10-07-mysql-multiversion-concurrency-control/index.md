@@ -12,8 +12,10 @@ Thường những storage engine đều không sử dụng cơ chế row lock đ
 
 <!--truncate-->
 
+### 1. Giới thiệu về MVCC
 MVCC được sử dụng trong rất nhiều loại cơ sở dữ liệu quan hệ, nó giúp chúng ta lock ít dữ liệu nhất có thể khi thực hiện nhiều transaction một lúc, nó có thể cho phép chúng ta không bị lock khi đọc dữ liệu và chỉ lock những row cần thiết khi ghi dữ liệu.
 
+### 2. MVCC hoạt động như thế nào?
 MVCC hoạt động bằng cách snapshot lại dữ liệu tại một thời điểm nào đó, nên một transaction có thể nhìn thấy dữ liệu như nhau cho dù chúng chạy nhanh hay rất lâu. Tuy nhiên, nó cũng gây ra các transaction khác nhau có thể nhìn thấy các view dữ liệu khác nhau của cùng một bảng trong cùng một thời điểm.
 
 ![MVCC Detail Example](./images/detail.PNG)
@@ -24,4 +26,5 @@ Tất cả undo log được ghi đều được chép lại vào redo log bởi
 
 Tuy lợi ích là ta không bao giờ bị lock khi đọc nhưng storage engine cần phải lưu trữ thêm nhiều dữ liệu hơn với mỗi bản ghi, làm nhiều công việc kiểm soát, và thực hiện nhiều hoạt động hơn.
 
+### 3. Isolation level với MVCC
 MVCC chỉ khả dụng với các chế độ REPEATABLE READ và READ COMMITTED. MVCC không tương thích với READ UNCOMMITTED vì các truy vấn sẽ không đọc các bản ghi mà phiên bản của nó không trùng với phiên bản của transaction. MVCC không tương thích với SERIALIZABLE bởi vì việc khoá khi đọc của chế độ này (Các chế độ isolation level các bạn có thể tìm thấy **[tại đây](/blog/2022-10-06-mysql-transaction/index.md#3-4-isolation-level-trong-môi-trường-có-nhiều-đọc-ghi-đồng-thời)**)
