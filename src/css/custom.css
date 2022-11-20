@@ -90,6 +90,29 @@ textarea {
 }
 
 input:focus,
-textarea:focus {
+.read:focus {
   border-color: var(--ifm-color-emphasis-900);
+}
+
+.read-more-button {
+  background-color: #002244;
+  border: 2px solid #002244;
+  color: white;
+  padding: 16px 60px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+.read-more-button:hover {
+  background-color: white;
+  color: #002244;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
