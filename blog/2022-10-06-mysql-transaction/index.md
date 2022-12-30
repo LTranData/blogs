@@ -15,7 +15,7 @@ Bài viết tiếp theo trong series MySQL về transaction. Một hoạt độn
 ### 1. Transaction là gì?
 Transaction là một tập các câu lệnh SQL kết hợp với nhau như là một đơn vị công việc. Nếu như database chạy thành công toàn bộ lệnh SQL trong nhóm đó, nó được coi là thành công. Nếu như một trong số lệnh SQL gặp lỗi, tất cả các lệnh SQL đã chạy hoặc chưa chạy sẽ không ảnh hưởng gì tới database. Ví dụ các một tập câu lệnh SQL gói trong một transaction sau
 
-```mysql
+```sql
     1  START  TRANSACTION;
     2  SELECT balance FROM checking WHERE customer_id = 10233276;
     3  UPDATE checking SET balance = balance - 200.00 WHERE customer_id = 10233276;
@@ -62,7 +62,7 @@ Chế độ này giải quyết vấn đề đọc một khoảng giá trị bê
 
 ### 4. Deadlock trong transaction
 Deadlock xảy ra khi hai hoặc nhiều các transactions khoá cũng các tài nguyên, tạo ra một vòng tròn phụ thuộc
-```mysql
+```sql
 -- Transaction 1 
     START TRANSACTION;
     UPDATE StockPrice SET close = 45.50 WHERE stock_id = 4 and date = ‘2020-05-01’;
@@ -86,7 +86,7 @@ Transaction logging khiến việc thực hiện transaction thêm hiệu quả 
 ### 6. Autocommit
 Mặc định các câu lệnh INSERT, UPDATE, DELETE được gói trong các transaction tạm và được commit ngay khi nó chạy, đây là chế độ AUTOCOMMIT. Để bật chế độ này chạy câu SET AUTOCOMMIT = 1; ngược lại thì SET AUTOCOMMIT = 0. Một số câu lệnh đặc biệt có thể làm transaction commit khi nằm trong một transaction đang mở, ví dụ như các câu lệnh DDL.
 Ta có thể cài đặt isolation level cho MySQL bằng việc chạy câu lệnh SET TRANSACTION ISOLATION LEVEL, sau khi chạy thì isolation level này sẽ có hiệu dụng trong các transaction tiếp theo. Ta có thể cài đặt trong file cấu hình cho cả server, hoặc là chỉ set trong phiên làm việc của ta 
-```mysql
+```sql
 SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
 ```
 Ta không nên xử lý các bảng có khác storage engine trong cùng một transaction, vì có một số storage engine sẽ không hỗ trợ việc rollback dữ liệu (MyISAM storage engine), nếu có một số lỗi xảy ra trong quá trình thực hiện transaction, sẽ chỉ có một số bảng được rollback lại khiến làm mất đi tính Consistency.

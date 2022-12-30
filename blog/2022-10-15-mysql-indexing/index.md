@@ -31,7 +31,7 @@ Khi các giá trị index được truy cập với tần số cao, InnoDB sẽ 
 ##### 1.1.2. Các loại truy vấn có thể dùng B-tree index
 B-tree index hoạt động hiệu quả với các loại truy vấn chính xác giá trị, một khoảng giá trị, hay một tiền tố giá trị. Các truy vấn này là tốt nhất khi chúng ta dùng chúng trên cột trái nhất trong tập cột được đánh index.
 
-```mysql
+```sql
 CREATE TABLE People (
      last_name varchar(50) not null,
      first_name varchar(50) not null,
@@ -56,7 +56,7 @@ Như vậy, thứ tự của các cột trong index thực sự rất quan trọ
 #### 1.2. Full-text index
 Full-text index tìm kiếm các từ khoá trong chuỗi chữ thay vì so sánh trực tiếp cả giá trị của trường đó. Nó hỗ trợ cho việc tìm kiếm hơn là việc suy xét dữ liệu khớp với kiểu nào. Khi một cột được đánh full-text index, ta vẫn có thể đánh B-tree index trên cột đó được.
 
-```mysql
+```sql
 CREATE TABLE tutorial (
     id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY, 
     title VARCHAR(200), 
@@ -74,6 +74,97 @@ Full-text index được dùng bằng cú pháp ```MATCH() AGAINST()``` với th
 Mình sẽ không đi vào chi tiết từng loại, vì mình cũng ít khi dùng full-text index.
 
 ### 2. Lợi ích việc đánh index
-
+Một số lợi ích của việc đánh index
+- Index giúp server tiết kiệm thời gian để duyệt và truy vấn.
+- Index giúp server tránh được các hoạt động như sắp xếp dữ liệu hay tạo các bảng tạm.
+- Index biến việc truy cập ổ đĩa một cách ngẫu nhiên thành truy cập tuần tự, cải thiện tốc độ đọc
+Một số tiêu chí đánh giá index
+- Index cần phải xếp được các hàng liên quan tới nhau, gần nhau hơn.
+- Các hàng được sắp xếp cần đúng với nhu cầu các truy vẫn ứng dụng của bạn cần.
+- Index cần phải chứa tất cả các cột mà truy vấn ứng dụng của bạn lọc.
 
 ### 3. Chiến thuật đánh index
+Việc tạo đúng các index sẽ cải thiện tốc độ truy vấn của bạn rất nhiều, từ đó giúp cho ứng dụng của bạn phản hồi nhanh hơn tới người dùng.
+
+#### 3.1. Index tiền tố các trường text dài
+Gọi index selectivity là chỉ số giữa số giá trị khác nhau của cột / tổng bản ghi của bảng. Với các cột có index selectivity cao, thì việc đánh index trên các trường này rất hiệu quả bởi vì MySQL sẽ loại bỏ được nhiều bản ghi hơn khi lọc trên các cột ấy.
+Với các trường text dài, ta không thể đánh index trên cả độ dài cột vì MySQL sẽ không cho phép điều đó, do vậy ta cần tìm một lượng prefix đủ tốt của trường đó để đánh index và nó sẽ cho ta một performance đủ tốt.
+
+Thử với dữ liệu về sản phẩm dưới đây, ta liệt kê mười nhà bán có xuất hiện nhiều nhất
+```sql
+select productVendor, count(1) c from `classicmodels`.`products_index`
+group by productVendor
+order by c desc
+LIMIT 10;
+
++--------------------------------------------------+----+
+| productVendor                                    | c  |
++--------------------------------------------------+----+
+| Pressure and Safety Relief Valve                 | 10 |
+| NEC United Solutions                             |  9 |
+| SunGard Data Systems                             |  8 |
+| Zhengzhou Esunny Information Technology Co.,Ltd. |  8 |
+| Spring Support                                   |  8 |
+| Ball and Plug Valve                              |  7 |
+| LSAW Pipe                                        |  7 |
+| Wood Mackenzie Ltd                               |  7 |
+| Heat Recovery Steam Generator                    |  7 |
+| Carbon Steel Flange                              |  7 |
++--------------------------------------------------+----+
+```
+
+Thử tính toán tần số xuất hiện của prefix với độ dài là 3 của trường ```productVendor```
+```sql
+select LEFT(productVendor, 3), count(1) c from `classicmodels`.`products_index`
+group by LEFT(productVendor, 3)
+order by c desc
+LIMIT 10;
+
++------------------------+----+
+| LEFT(productVendor, 3) | c  |
++------------------------+----+
+| Sha                    | 44 |
+| Car                    | 16 |
+| Sun                    | 15 |
+| Zhe                    | 13 |
+| Gas                    | 12 |
+| Sto                    | 11 |
+| Pre                    | 11 |
+| Col                    | 11 |
+| She                    |  9 |
+| Hea                    |  9 |
++------------------------+----+
+```
+
+Ta thấy rằng tần số xuất hiện của các giá trị prefix độ dài 3 nhiều hiện với cả giá trị cột nhiều, tương đương với việc ít giá trị khác nhau hơn, tương đương với index selectivity sẽ bé hơn nhiều. Do vậy prefix 3 không phải là lựa chọn tốt
+
+Ta cùng tính toán index selectivity với nhiều loại độ dài prefix
+```sql
+select COUNT(DISTINCT LEFT(productVendor, 3))/COUNT(1) AS selectivity_3,
+COUNT(DISTINCT LEFT(productVendor, 4))/COUNT(1) AS selectivity_4,
+COUNT(DISTINCT LEFT(productVendor, 5))/COUNT(1) AS selectivity_5,
+COUNT(DISTINCT LEFT(productVendor, 6))/COUNT(1) AS selectivity_6,
+COUNT(DISTINCT LEFT(productVendor, 7))/COUNT(1) AS selectivity_7,
+COUNT(DISTINCT LEFT(productVendor, 8))/COUNT(1) AS selectivity_8,
+COUNT(DISTINCT LEFT(productVendor, 9))/COUNT(1) AS selectivity_9,
+COUNT(DISTINCT LEFT(productVendor, 10))/COUNT(1) AS selectivity_10,
+COUNT(DISTINCT LEFT(productVendor, 11))/COUNT(1) AS selectivity_11,
+COUNT(DISTINCT productVendor)/COUNT(1) AS selectivity
+from `classicmodels`.`products_index`;
+
++---------------+---------------+---------------+---------------+---------------+---------------+---------------+----------------+----------------+-------------+
+| selectivity_3 | selectivity_4 | selectivity_5 | selectivity_6 | selectivity_7 | selectivity_8 | selectivity_9 | selectivity_10 | selectivity_11 | selectivity |
++---------------+---------------+---------------+---------------+---------------+---------------+---------------+----------------+----------------+-------------+
+|        0.1982 |        0.2164 |        0.2218 |        0.2236 |        0.2236 |        0.2273 |        0.2309 |         0.2491 |         0.2509 |      0.2600 |
++---------------+---------------+---------------+---------------+---------------+---------------+---------------+----------------+----------------+-------------+
+```
+
+Ta thấy rằng selectivity prefix 11 rất gần với giá trị selectivity cả cột, và cũng khá phù hợp với trường text dài như cột này, nên chọn prefix 11 sẽ cân bằng được về độ lớn của index cũng như độ nhanh khi truy vấn.
+
+```sql
+ALTER TABLE `classicmodels`.`products_index` ADD KEY (productVendor(11));
+```
+
+#### 3.1. Index nhiều column
+
+#### 3.2. Chọn đúng thứ tự cột để index
