@@ -136,7 +136,7 @@ LIMIT 10;
 +------------------------+----+
 ```
 
-Ta thấy rằng tần số xuất hiện của các giá trị prefix độ dài 3 nhiều hiện với cả giá trị cột nhiều, tương đương với việc ít giá trị khác nhau hơn, tương đương với index selectivity sẽ bé hơn nhiều. Do vậy prefix 3 không phải là lựa chọn tốt
+Ta thấy rằng tần số xuất hiện của các giá trị prefix độ dài 3 nhiều hơn với cả giá trị cột nhiều, tương đương với việc ít giá trị khác nhau hơn, tương đương với index selectivity sẽ bé hơn nhiều. Do vậy prefix 3 không phải là lựa chọn tốt
 
 Ta cùng tính toán index selectivity với nhiều loại độ dài prefix
 ```sql
@@ -165,6 +165,65 @@ Ta thấy rằng selectivity prefix 11 rất gần với giá trị selectivity 
 ALTER TABLE `classicmodels`.`products_index` ADD KEY (productVendor(11));
 ```
 
-#### 3.1. Index nhiều column
+#### 3.2. Index trên nhiều column
+Một số sai lầm khi đánh index đó là đánh index từng cột một cách riêng rẽ, và tạo index cho tất cả các cột ở trong câu lệnh WHERE.
+```sql
+CREATE TABLE t (
+     c1 INT,
+     c2 INT,
+     c3 INT,
+     KEY(c1),
+     KEY(c2),
+     KEY(c3)
+);
+```
+Các index riêng rẽ như trên thường sẽ không tối ưu hiệu năng nhiều lắm trong hầu hết các hoàn cảnh, bởi vì khi này MySQL có thể sử dụng một chiến thuật gọi là index merge. Index merge sẽ sử dụng tất cả index trong câu truy vấn, quét các index một cách đồng thời, sau đó sẽ merge kết quả lại
+- union index sẽ dùng cho điều kiện OR
+- intersection index sẽ dùng cho điều kiện AND
+- union of intersection index cho sự kết hợp của cả 2
 
-#### 3.2. Chọn đúng thứ tự cột để index
+Dưới đây là ví dụ query trên 2 trường index nhưng MySQL sử dụng index merge
+```sql
+mysql> explain select * from `classicmodels`.`products_index` where productVendor = 'Infor Global Solutions' OR productScale = '1:10'\G
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: products_index
+   partitions: NULL
+         type: index_merge
+possible_keys: productVendor,productScale
+          key: productVendor,productScale
+      key_len: 14,12
+          ref: NULL
+         rows: 33
+     filtered: 100.00
+        Extra: Using sort_union(productVendor,productScale); Using where
+```
+Một số cân nhắc khi query gặp index merge
+- Nếu server intersect index (điều kiện AND trên các index), điều đó có nghĩa là bạn có thể tạo 1 index chứa tất cả các cột liên quan tới nhau, không phải từng index cho từng cột.
+- Nếu server union index (điều kiện OR trên các index), kiểm tra xem các cột ấy có index selectivity có cao không, nếu index selectivity trong một số cột thấp, nghĩa là cột ấy ít giá trị khác nhau, nghĩa là phần scan index trả về nhiều bản ghi hơn cho các hoạt động merge tiếp sau nó, tiêu tốn nhiều CPU và bộ nhớ hơn. Đôi khi, viết lại truy vấn với lệnh UNION còn cho kết quả khả quan hơn là khi server union các index trong index merge.
+
+Khi ta nhìn thấy index merge trong câu lệnh EXPLAIN, hãy xem lại query và cấu trúc bảng để kiểm tra xem hiện tại thiết kế đã là tối ưu nhất hay chưa.
+
+#### 3.3. Chọn đúng thứ tự cột để index
+Khi một index của ta chưa nhiều cột, thứ tự các cột trong index đó rất quan trọng, vì trong B-tree index, index sẽ được sắp xếp từ cột trái nhất đến các cột tiếp theo đó (một số nhược điểm của B-tree index **[ tại đây](#113-một-số-nhược-điểm-của-b-tree-index)**). Do vậy, ta thường chọn các cột có index selectivity cao làm cột trái nhất, thứ tự các cột theo độ giảm dần của index selectivity, để tổng thể index của ta có selectivity cao.
+
+```sql
+select count(distinct productVendor)/count(1),
+	count(distinct productScale)/count(1)
+from `classicmodels`.`products_index`;
+
++----------------------------------------+---------------------------------------+
+| count(distinct productVendor)/count(1) | count(distinct productScale)/count(1) |
++----------------------------------------+---------------------------------------+
+|                                 0.2600 |                                0.0145 |
++----------------------------------------+---------------------------------------+
+```
+Ví dụ trên, nếu ta đánh index gồm 2 cột ```productVendor``` và ```productScale```, ta thường sẽ lấy ```productVendor``` làm cột trái nhất
+```sql
+alter table `classicmodels`.`products_index` add key (productVendor, productScale);
+```
+
+#### 3.4. Clustered index
+
+#### 3.5. Covering index
