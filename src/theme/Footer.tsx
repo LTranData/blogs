@@ -22,7 +22,7 @@ function Footer(props) {
                 width: 139
               }}
             />
-            <p style={{fontSize: "0.8em", marginTop: "1em"}}>Data Engineer <br/>@ Giaohangtietkiem</p>
+            <p style={{fontSize: "0.8em", marginTop: "1em"}}>Tran Lam<br/>Data Engineer</p>
           </div>
         </div>
       </div>
