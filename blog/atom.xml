@@ -2,11 +2,26 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://lam1051999.github.io/blogs/blog</id>
     <title>Tran Lam Blog</title>
-    <updated>2022-10-15T00:00:00.000Z</updated>
+    <updated>2023-01-01T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://lam1051999.github.io/blogs/blog"/>
     <subtitle>Tran Lam Blog</subtitle>
     <icon>https://lam1051999.github.io/blogs/blogs/img/de.svg</icon>
+    <entry>
+        <title type="html"><![CDATA[Spark catalyst optimizer và Spark extension]]></title>
+        <id>spark-catalyst-optimizer-and-spark-extension</id>
+        <link href="https://lam1051999.github.io/blogs/blog/spark-catalyst-optimizer-and-spark-extension"/>
+        <updated>2023-01-01T00:00:00.000Z</updated>
+        <summary type="html"><![CDATA[Spark catalyst optimizer nằm trong phần core của Spark SQL với mục đích tối ưu các truy vấn có cấu trúc được thể hiện dưới dạng SQL hoặc qua các API DataFrame/Dataset, giảm thiểu thời gian và chi phí chạy của ứng dụng. Khi sử dụng Spark, thường mọi người xem catalyst optimizer như là một black box, khi chúng ta mặc nhiên cho rằng nó hoạt động một cách vi diệu mà không thực sự quan tâm nó hoạt động thế nào. Ở bài viết này, mình sẽ đi vào tìm hiểu bên trong logic của nó thực sự thế nào, các thành phần, và cách mà Spark extension tham gia để thay đổi các plan mà catalyst tạo ra.]]></summary>
+        <content type="html"><![CDATA[<p>Spark catalyst optimizer nằm trong phần core của Spark SQL với mục đích tối ưu các truy vấn có cấu trúc được thể hiện dưới dạng SQL hoặc qua các API DataFrame/Dataset, giảm thiểu thời gian và chi phí chạy của ứng dụng. Khi sử dụng Spark, thường mọi người xem catalyst optimizer như là một black box, khi chúng ta mặc nhiên cho rằng nó hoạt động một cách vi diệu mà không thực sự quan tâm nó hoạt động thế nào. Ở bài viết này, mình sẽ đi vào tìm hiểu bên trong logic của nó thực sự thế nào, các thành phần, và cách mà Spark extension tham gia để thay đổi các plan mà catalyst tạo ra.</p><p><img loading="lazy" alt="Indexing" src="/blogs/assets/images/spark-catalyst-optimizer-03f0f2a4cb6e0c86499aaa51ba69b065.JPG" width="1280" height="720" class="img_ev3q"></p>]]></content>
+        <author>
+            <name>Trần Lâm</name>
+            <uri>https://github.com/lam1051999</uri>
+        </author>
+        <category label="Bigdata" term="Bigdata"/>
+        <category label="Spark" term="Spark"/>
+        <category label="Apache" term="Apache"/>
+    </entry>
     <entry>
         <title type="html"><![CDATA[MySQL series - Indexing]]></title>
         <id>mysql-series-mysql-indexing</id>
