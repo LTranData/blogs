@@ -223,3 +223,5 @@ Ví dụ trên, nếu ta đánh index gồm 2 cột ```productVendor``` và ```p
 ```sql
 alter table `classicmodels`.`products_index` add key (productVendor, productScale);
 ```
+
+Một số cân nhắc nữa về index cần chú ý như clustered index, covering index, loại bỏ các index thừa, không sử dụng,... mình xin đề cập trong bài viết khác.
