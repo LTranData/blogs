@@ -83,7 +83,7 @@ Một số tiêu chí đánh giá index
 - Các hàng được sắp xếp cần đúng với nhu cầu các truy vẫn ứng dụng của bạn cần.
 - Index cần phải chứa tất cả các cột mà truy vấn ứng dụng của bạn lọc.
 
-### 3. Chiến thuật đánh index
+### 3. Một số chiến thuật đánh index
 Việc tạo đúng các index sẽ cải thiện tốc độ truy vấn của bạn rất nhiều, từ đó giúp cho ứng dụng của bạn phản hồi nhanh hơn tới người dùng.
 
 #### 3.1. Index tiền tố các trường text dài
@@ -223,13 +223,3 @@ Ví dụ trên, nếu ta đánh index gồm 2 cột ```productVendor``` và ```p
 ```sql
 alter table `classicmodels`.`products_index` add key (productVendor, productScale);
 ```
-
-#### 3.4. Clustered index
-:::note
-Coming soon
-:::
-
-#### 3.5. Covering index
-:::note
-Coming soon
-:::
