@@ -78,6 +78,7 @@ Một số lợi ích của việc đánh index
 - Index giúp server tiết kiệm thời gian để duyệt và truy vấn.
 - Index giúp server tránh được các hoạt động như sắp xếp dữ liệu hay tạo các bảng tạm.
 - Index biến việc truy cập ổ đĩa một cách ngẫu nhiên thành truy cập tuần tự, cải thiện tốc độ đọc
+
 Một số tiêu chí đánh giá index
 - Index cần phải xếp được các hàng liên quan tới nhau, gần nhau hơn.
 - Các hàng được sắp xếp cần đúng với nhu cầu các truy vẫn ứng dụng của bạn cần.
