@@ -225,5 +225,11 @@ alter table `classicmodels`.`products_index` add key (productVendor, productScal
 ```
 
 #### 3.4. Clustered index
+:::note
+Comming soon
+:::
 
 #### 3.5. Covering index
+:::note
+Coming soon
+:::
