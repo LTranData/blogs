@@ -37,7 +37,7 @@ CREATE TABLE People (
      first_name varchar(50) not null,
      dob date not null,
      KEY `idx_full_col` (last_name, first_name, dob)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB; 
 ```
 
 - Khớp chính xác giá trị: khi các cột trong index được query khớp đúng giá trị nào đó, ví dụ ```WHERE last_name = 'lam' AND first_name = 'tran' AND dob = '1999-05-10'```. Truy vấn loại này sẽ trả về kết quả rất nhanh.
