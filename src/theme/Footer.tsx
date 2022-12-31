@@ -15,7 +15,7 @@ function Footer(props) {
             I am a highly motivated and passionate data engineer. You'll mostly
             find me doing some engineering stuff in the big data ecosystem. I
             often work with Python, Scala, and Java and use the latest big data
-            technologies to solve problems and making tools to improve mine and
+            technologies to solve problems, making tools to improve mine and
             others work productivity.
           </div>
           <div style={{ marginLeft: 30, minWidth: 169 }}>
