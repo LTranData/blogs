@@ -81,7 +81,7 @@ Một số lợi ích của việc đánh index
 
 Một số tiêu chí đánh giá index
 - Index cần phải xếp được các hàng liên quan tới nhau, gần nhau hơn.
-- Các hàng được sắp xếp cần đúng với nhu cầu các truy vẫn ứng dụng của bạn cần.
+- Các hàng được sắp xếp cần đúng với nhu cầu các truy vấn ứng dụng của bạn cần.
 - Index cần phải chứa tất cả các cột mà truy vấn ứng dụng của bạn lọc.
 
 ### 3. Một số chiến thuật đánh index
