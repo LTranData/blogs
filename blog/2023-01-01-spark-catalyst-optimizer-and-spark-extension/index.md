@@ -185,7 +185,236 @@ Cost-based approach được chọn nếu ta set ```spark.sql.cbo.enabled=true``
 Sau khi đã lựa chọn được physical plan phù hợp để chạy, Catalyst sẽ compile một cây các plans hỗ trợ codegen thành một hàm Java duy nhất, về Java bytecode để chạy trên driver và các executor. Phần codegen này cải thiện tốc độ chạy rất nhiều khi mà Spark SQL thường hoạt động trên các in-memory dataset, việc xử lý dữ liệu thường gắn chặt với CPU. Catalyst dựa vào một tính năng của Scala là quasiquotes để thực hiện đơn giản hoá phần codegen này (quasiquotes cho phép xây dựng các abstract syntax tree (ASTs), sau đó sẽ input vào Scala compiler để tạo ra bytecode).
 
 ### 4. Spark session extension
-Spark extension là phần 
+Spark session extension là một tính năng mở rộng của Spark giúp cho ta có thể custom các phần trong Catalyst optimizer để nó hoạt động theo từng ngữ cảnh của ta.
+
+#### 4.1. Custom parser rule
+Như ở trên trình bày, ban đầu query của ta sẽ phải đi qua bộ parsing để kiểm tra tính hợp lệ của query. Spark cung cấp một interface cho ta có thể implement ở stage này là ```ParserInterface```
+
+```scala
+package org.apache.spark.sql.catalyst.parser
+
+@DeveloperApi
+trait ParserInterface {
+  @throws[ParseException]("Text cannot be parsed to a LogicalPlan")
+  def parsePlan(sqlText: String): LogicalPlan
+
+  @throws[ParseException]("Text cannot be parsed to an Expression")
+  def parseExpression(sqlText: String): Expression
+
+  @throws[ParseException]("Text cannot be parsed to a TableIdentifier")
+  def parseTableIdentifier(sqlText: String): TableIdentifier
+
+  @throws[ParseException]("Text cannot be parsed to a FunctionIdentifier")
+  def parseFunctionIdentifier(sqlText: String): FunctionIdentifier
+
+  @throws[ParseException]("Text cannot be parsed to a multi-part identifier")
+  def parseMultipartIdentifier(sqlText: String): Seq[String]
+
+  @throws[ParseException]("Text cannot be parsed to a schema")
+  def parseTableSchema(sqlText: String): StructType
+
+  @throws[ParseException]("Text cannot be parsed to a DataType")
+  def parseDataType(sqlText: String): DataType
+
+  @throws[ParseException]("Text cannot be parsed to a LogicalPlan")
+  def parseQuery(sqlText: String): LogicalPlan
+}
+```
+
+Chúng ta sẽ implement interface đó và inject rule này vào job Spark như sau
+
+```scala
+case class CustomerParserRule(sparkSession: SparkSession, delegateParser: ParserInterface) extends ParserInterface {
+  /* Overwrite those methods here */
+}
+
+val customerParserRuleFunc: SparkSessionExtensions => Unit = (extensionBuilder: SparkSessionExtensions => {
+  extensionBuilder.injectParser(CustomerParserRule)
+}
+```
+
+#### 4.2. Custom analyzer rule
+Analyzer rule bao gồm một số loại rule như resolution rule, check rule. Các rule này được inject thông qua các hàm
+- ```injectResolutionRule```: inject các rule của ta cho resolution phase.
+- ```injectPostHocResolutionRule```: chạy các rule của ta sau resolution phase.
+- ```injectCheckRule```: thêm các rule để kiểm tra một số logic của các logical plan, ví dụ như ta muốn kiểm tra các logic nghiệp vụ, hoặc kiểm tra xem các rule nào đã chạy xong,...
+
+Để inject resolution rule, ta kế thừa một lớp trừu tượng của Spark ```Rule[LogicalPlan]```
+```scala
+case class CustomAnalyzerResolutionRule(sparkSession: SparkSession) extends Rule[LogicalPlan] {
+  override def apply(plan: LogicalPlan): LogicalPlan = {
+    /* Code for resolution rule */
+  }
+}
+
+val customAnalyzerResolutionRuleFunc: SparkSessionExtensions => Unit = (extensionBuilder: SparkSessionExtensions) => {
+  extensionBuilder.injectResolutionRule(CustomAnalyzerResolutionRule)
+}
+```
+
+Để inject check rule, ta kế thừa lớp hàm class ```Function1[LogicalPlan, Unit]```
+```scala
+case class CustomAnalyzerCheckRule(sparkSession: SparkSession) extends (LogicalPlan => Unit) {
+  override def apply(plan: LogicalPlan): Unit = {
+    /* Code for check rule */
+  }
+}
+
+val customAnalyzerCheckRuleFunc: SparkSessionExtensions => Unit = (extensionBuilder: SparkSessionExtensions) => {
+  extensionBuilder.injectCheckRule(CustomAnalyzerCheckRule)
+}
+```
+
+#### 4.3. Custom optimization
+Để custom phần logical plan optimization, ta sẽ kế thừa lớp trừu tượng ```Rule[LogicalPlan]```
+```scala
+case class CustomOptimizer(sparkSession: SparkSession) extends Rule[LogicalPlan] {
+  override def apply(plan: LogicalPlan): LogicalPlan = {
+    /* Code for custom logical optimier */
+  }
+}
+
+val customOptimizerFunc: SparkSessionExtensions => Unit = (extensionBuilder: SparkSessionExtensions) => {
+  extensionBuilder.injectOptimizerRule(CustomOptimizer)
+}
+```
+
+#### 4.4. Custom physical planning
+Để cấu hình phần chiến thuật chạy cho Spark Catalyst optimizer, chúng ta kế thừa lớp trừu tượng ```SparkStrategy``` và implement hàm ```apply``` của class đó
+```scala
+case class CustomStrategy(sparkSession: SparkSession) extends SparkStrategy {
+  override def apply(plan: LogicalPlan): Seq[SparkPlan] = {
+    /* Code for custom spark strategy/physical planning */
+  }
+}
+
+val customStrategyFunc: SparkSessionExtensions => Unit = (extensionBuilder: SparkSessionExtensions) => {
+  extensionBuilder.injectPlannerStrategy(CustomStrategy)
+}
+```
+
+#### 4.5. Ví dụ cấu hình phần logical plan optimization trong Catalyst optimizer
+Phần này mình sẽ code một ví dụ về thay đổi logical plan optimization bằng Spark extension. Một extension đơn giản có code như dưới đây
+
+```scala
+/* class CustomProjectFilterExtension ======================================= */
+package extensions
+import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.catalyst.plans.logical._
+import org.apache.spark.sql.catalyst.rules.Rule
+// create an extension that 
+case class CustomProjectFilterExtension(spark: SparkSession) extends Rule[LogicalPlan] {
+  override def apply(plan: LogicalPlan): LogicalPlan = {
+    val fixedPlan = plan transformDown {
+      case Project(expression, Filter(condition, child)) =>
+          Filter(condition, child)
+    }
+    fixedPlan
+  }
+}
+
+/* class AllExtensions ======================================= */
+package extensions
+import org.apache.spark.sql.SparkSessionExtensions
+// inject the extension to SparkSessionExtensions
+class AllExtensions extends (SparkSessionExtensions => Unit) {
+  override def apply(ext: SparkSessionExtensions): Unit = {
+    ext.injectOptimizerRule(CustomProjectFilterExtension)
+  }
+}
+```
+
+Class ```CustomProjectFilterExtension``` ở trên biến đổi phép Filter (lọc row), Project (chọn cột trong lúc scan file) thành chỉ còn phép Filter. Khi đó, mặc dù ta đã chọn cột nhưng nó vẫn scan tất cả các cột trong file. 
+
+Ta compile project
+```bash
+# compile jar file
+mvn clean package && mvn dependency:copy-dependencies
+```
+
+##### 4.5.1. Khi không apply extension
+Ta khởi tạo ```spark-shell``` không truyền extension
+```bash
+# khởi tạo spark-shell
+$SPARK_330/bin/spark-shell --jars $(echo /Users/tranlammacbook/Documents/spark_streaming_kafka/spark_ex/target/dependency/*.jar | tr ' ' ','),/Users/tranlammacbook/Documents/spark_streaming_kafka/spark_ex/target/custom-extension-1.0-SNAPSHOT.jar
+
+# kiểm tra spark.sql.extensions
+scala> spark.conf.get("spark.sql.extensions")
+res0: String = null
+
+# explain một query có Filter và Project
+scala> spark.sql("SELECT hotel, is_canceled FROM (SELECT * FROM test.hotel_bookings WHERE hotel='Resort Hotel') a").explain(extended = true)
+
+== Parsed Logical Plan ==
+'Project ['hotel, 'is_canceled]
++- 'SubqueryAlias a
+   +- 'Project [*]
+      +- 'Filter ('hotel = Resort Hotel)
+         +- 'UnresolvedRelation [test, hotel_bookings], [], false
+
+== Analyzed Logical Plan ==
+hotel: string, is_canceled: bigint
+Project [hotel#0, is_canceled#1L]
++- SubqueryAlias a
+   +- Project [hotel#0, is_canceled#1L, lead_time#2L, arrival_date_year#3L, arrival_date_month#4, arrival_date_week_number#5L, arrival_date_day_of_month#6L, stays_in_weekend_nights#7L, stays_in_week_nights#8L, adults#9L, children#10, babies#11L, meal#12, country#13, market_segment#14, distribution_channel#15, is_repeated_guest#16L, previous_cancellations#17L, previous_bookings_not_canceled#18L, reserved_room_type#19, assigned_room_type#20, booking_changes#21L, deposit_type#22, agent#23, ... 8 more fields]
+      +- Filter (hotel#0 = Resort Hotel)
+         +- SubqueryAlias spark_catalog.test.hotel_bookings
+            +- Relation test.hotel_bookings[hotel#0,is_canceled#1L,lead_time#2L,arrival_date_year#3L,arrival_date_month#4,arrival_date_week_number#5L,arrival_date_day_of_month#6L,stays_in_weekend_nights#7L,stays_in_week_nights#8L,adults#9L,children#10,babies#11L,meal#12,country#13,market_segment#14,distribution_channel#15,is_repeated_guest#16L,previous_cancellations#17L,previous_bookings_not_canceled#18L,reserved_room_type#19,assigned_room_type#20,booking_changes#21L,deposit_type#22,agent#23,... 8 more fields] parquet
+
+== Optimized Logical Plan ==
+Project [hotel#0, is_canceled#1L]
++- Filter (isnotnull(hotel#0) AND (hotel#0 = Resort Hotel))
+   +- Relation test.hotel_bookings[hotel#0,is_canceled#1L,lead_time#2L,arrival_date_year#3L,arrival_date_month#4,arrival_date_week_number#5L,arrival_date_day_of_month#6L,stays_in_weekend_nights#7L,stays_in_week_nights#8L,adults#9L,children#10,babies#11L,meal#12,country#13,market_segment#14,distribution_channel#15,is_repeated_guest#16L,previous_cancellations#17L,previous_bookings_not_canceled#18L,reserved_room_type#19,assigned_room_type#20,booking_changes#21L,deposit_type#22,agent#23,... 8 more fields] parquet
+
+== Physical Plan ==
+*(1) Filter (isnotnull(hotel#0) AND (hotel#0 = Resort Hotel))
++- *(1) ColumnarToRow
+   +- FileScan parquet test.hotel_bookings[hotel#0,is_canceled#1L] Batched: true, DataFilters: [isnotnull(hotel#0), (hotel#0 = Resort Hotel)], Format: Parquet, Location: InMemoryFileIndex(1 paths)[file:/Users/tranlammacbook/Documents/spark_streaming_kafka/spark_ex/sp..., PartitionFilters: [], PushedFilters: [IsNotNull(hotel), EqualTo(hotel,Resort Hotel)], ReadSchema: struct<hotel:string,is_canceled:bigint>
+```
+
+Ta thấy rằng ```Optimized Logical Plan``` có cả phép Project và Filter, do ta filter ```WHERE hotel='Resort Hotel'``` và project ```SELECT hotel, is_canceled```. Tới physical plan, nó cũng chỉ scan 2 cột ```FileScan parquet test.hotel_bookings[hotel#0,is_canceled#1L]```.
+
+##### 4.5.2. Khi có extension
+```bash
+# khởi tạo spark-shell với extension
+$SPARK_330/bin/spark-shell --jars $(echo /Users/tranlammacbook/Documents/spark_streaming_kafka/spark_ex/target/dependency/*.jar | tr ' ' ','),/Users/tranlammacbook/Documents/spark_streaming_kafka/spark_ex/target/custom-extension-1.0-SNAPSHOT.jar --conf spark.sql.extensions=extensions.AllExtensions
+
+# kiểm tra spark.sql.extensions
+scala> spark.conf.get("spark.sql.extensions")
+res0: String = extensions.AllExtensions
+
+# explain một query có Filter và Project giống hệt câu bên trên
+scala> spark.sql("SELECT hotel, is_canceled FROM (SELECT * FROM test.hotel_bookings WHERE hotel='Resort Hotel') a").explain(extended = true)
+
+== Parsed Logical Plan ==
+'Project ['hotel, 'is_canceled]
++- 'SubqueryAlias a
+   +- 'Project [*]
+      +- 'Filter ('hotel = Resort Hotel)
+         +- 'UnresolvedRelation [test, hotel_bookings], [], false
+
+== Analyzed Logical Plan ==
+hotel: string, is_canceled: bigint
+Project [hotel#0, is_canceled#1L]
++- SubqueryAlias a
+   +- Project [hotel#0, is_canceled#1L, lead_time#2L, arrival_date_year#3L, arrival_date_month#4, arrival_date_week_number#5L, arrival_date_day_of_month#6L, stays_in_weekend_nights#7L, stays_in_week_nights#8L, adults#9L, children#10, babies#11L, meal#12, country#13, market_segment#14, distribution_channel#15, is_repeated_guest#16L, previous_cancellations#17L, previous_bookings_not_canceled#18L, reserved_room_type#19, assigned_room_type#20, booking_changes#21L, deposit_type#22, agent#23, ... 8 more fields]
+      +- Filter (hotel#0 = Resort Hotel)
+         +- SubqueryAlias spark_catalog.test.hotel_bookings
+            +- Relation test.hotel_bookings[hotel#0,is_canceled#1L,lead_time#2L,arrival_date_year#3L,arrival_date_month#4,arrival_date_week_number#5L,arrival_date_day_of_month#6L,stays_in_weekend_nights#7L,stays_in_week_nights#8L,adults#9L,children#10,babies#11L,meal#12,country#13,market_segment#14,distribution_channel#15,is_repeated_guest#16L,previous_cancellations#17L,previous_bookings_not_canceled#18L,reserved_room_type#19,assigned_room_type#20,booking_changes#21L,deposit_type#22,agent#23,... 8 more fields] parquet
+
+== Optimized Logical Plan ==
+Filter (isnotnull(hotel#0) AND (hotel#0 = Resort Hotel))
++- Relation test.hotel_bookings[hotel#0,is_canceled#1L,lead_time#2L,arrival_date_year#3L,arrival_date_month#4,arrival_date_week_number#5L,arrival_date_day_of_month#6L,stays_in_weekend_nights#7L,stays_in_week_nights#8L,adults#9L,children#10,babies#11L,meal#12,country#13,market_segment#14,distribution_channel#15,is_repeated_guest#16L,previous_cancellations#17L,previous_bookings_not_canceled#18L,reserved_room_type#19,assigned_room_type#20,booking_changes#21L,deposit_type#22,agent#23,... 8 more fields] parquet
+
+== Physical Plan ==
+*(1) Filter (isnotnull(hotel#0) AND (hotel#0 = Resort Hotel))
++- *(1) ColumnarToRow
+   +- FileScan parquet test.hotel_bookings[hotel#0,is_canceled#1L,lead_time#2L,arrival_date_year#3L,arrival_date_month#4,arrival_date_week_number#5L,arrival_date_day_of_month#6L,stays_in_weekend_nights#7L,stays_in_week_nights#8L,adults#9L,children#10,babies#11L,meal#12,country#13,market_segment#14,distribution_channel#15,is_repeated_guest#16L,previous_cancellations#17L,previous_bookings_not_canceled#18L,reserved_room_type#19,assigned_room_type#20,booking_changes#21L,deposit_type#22,agent#23,... 8 more fields] Batched: true, DataFilters: [isnotnull(hotel#0), (hotel#0 = Resort Hotel)], Format: Parquet, Location: InMemoryFileIndex(1 paths)[file:/Users/tranlammacbook/Documents/spark_streaming_kafka/spark_ex/sp..., PartitionFilters: [], PushedFilters: [IsNotNull(hotel), EqualTo(hotel,Resort Hotel)], ReadSchema: struct<hotel:string,is_canceled:bigint,lead_time:bigint,arrival_date_year:bigint,arrival_date_mon...
+```
+
+Khi này, ```Optimized Logical Plan``` không còn phép Project nữa, mà chỉ còn phép Filter, làm cho lúc tới bước physical plan, nó scan tất cả các cột trong bảng ```FileScan parquet test.hotel_bookings[hotel#0,is_canceled#1L,lead_time#2L,arrival_date_year#3L,arrival_date_month#4,arrival_date_week_number#5L,arrival_date_day_of_month#6L,stays_in_weekend_nights#7L,stays_in_week_nights#8L,adults#9L,children#10,babies#11L,meal#12,country#13,market_segment#14,distribution_channel#15,is_repeated_guest#16L,previous_cancellations#17L,previous_bookings_not_canceled#18L,reserved_room_type#19,assigned_room_type#20,booking_changes#21L,deposit_type#22,agent#23,... 8 more fields]```.
+
+Ở trên mình đã trình bày cụ thể về các thành phần của Spark Catalyst optimizer và cách viết các spark session extension để can thiệp thay đổi các plan của Catalyst, cũng đã có ví dụ code cụ thể để chứng minh điều này. Ở bài viết sau, mình sẽ trình bày thêm một phần nữa là tính năng mới trong Spark 3.0, đó là Spark Adaptive Query Execution, tính năng cải thiện tốc độ job Spark ở runtime.
 
 ### 5. Tài liệu tham khảo
 
@@ -193,4 +422,4 @@ Spark extension là phần
 
 [Spark Catalyst Pipeline: A Deep Dive Into Spark’s Optimizer](https://www.unraveldata.com/resources/catalyst-analyst-a-deep-dive-into-sparks-optimizer/)
 
-[Adaptive Query Execution: Speeding Up Spark SQL at Runtime](https://www.databricks.com/blog/2020/05/29/adaptive-query-execution-speeding-up-spark-sql-at-runtime.html)
+[Extending Apache Spark Catalyst for Custom Optimizations](https://medium.com/@pratikbarhate/extending-apache-spark-catalyst-for-custom-optimizations-9b491efdd24f)
