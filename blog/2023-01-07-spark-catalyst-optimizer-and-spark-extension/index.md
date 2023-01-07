@@ -17,7 +17,7 @@ Các thành phần chính trong Catalyst được biểu diễn dưới dạng c
 Hai class quan trọng là ```LogicalPlan``` và ```SparkPlan``` đều là subclass của ```QueryPlan```, class kế thừa trực tiếp từ ```TreeNode```. Trong sơ đồ Catalyst bên trên, 3 thành phần đầu là các logical plans, các node trong logical plan thường là các toán tử đại số như join, and, or,... 2 thành phần đằng sau là các spark plan (physical plan), các node thường là các toán tử low-level như ```ShuffledHashJoinExec```, ```SortMergeJoinExec```, ```BroadcastHashJoinExec```, ```FileSourceScanExec```,... Các leaf node sẽ đọc dữ liệu từ các source, storage, memory,... còn root node của cây là toán tử ngoài cùng và trả về kết quả của việc tính toán.
 
 ### 2. Rules
-Để thao tác trên TreeNode ta sử dụng các Rule, các Rule thực chất chứa các hàm biến đổi từ cây này sang cây khác. Thường các hàm này được viết sử dụng pattern matching trong scala để tìm các matching tương ứng trong subtree của nó và thay thế bằng các cấu trúc khác.
+Để thao tác trên TreeNode ta sử dụng các Rule, các Rule thực chất là thành phần biến đổi cây, từ cây này sang cây khác. Trong rule, ta triển khai các logic biến đổi các TreeNode, các logic này thường sử dụng pattern matching trong scala để tìm các matching tương ứng trong subtree của nó và thay thế bằng các cấu trúc khác.
 Các cây cung cấp các hàm transform có thể áp dụng pattern matching này để biến đổi cây như ```transform```, ```transformDown```, ```transformUp```,...
 
 ```scala
