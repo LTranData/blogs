@@ -1,12 +1,12 @@
 ---
-slug: spark-catalyst-optimizer-and-spark-extension
-title: Spark catalyst optimizer và Spark extension
+slug: spark-catalyst-optimizer-and-spark-session-extension
+title: Spark catalyst optimizer và Spark session extension
 authors: tranlam
 tags: [Bigdata, Spark, Apache]
 image: ./images/spark-catalyst-optimizer.JPG
 ---
 
-Spark catalyst optimizer nằm trong phần core của Spark SQL với mục đích tối ưu các truy vấn có cấu trúc được thể hiện dưới dạng SQL hoặc qua các API DataFrame/Dataset, giảm thiểu thời gian và chi phí chạy của ứng dụng. Khi sử dụng Spark, thường mọi người xem catalyst optimizer như là một black box, khi chúng ta mặc nhiên cho rằng nó hoạt động một cách thần bí mà không thực sự quan tâm bên trong nó xảy ra những gì. Ở bài viết này, mình sẽ đi vào tìm hiểu bên trong logic của nó thực sự thế nào, các thành phần, và cách mà Spark extension tham gia để thay đổi các plan của catalyst.
+Spark catalyst optimizer nằm trong phần core của Spark SQL với mục đích tối ưu các truy vấn có cấu trúc được thể hiện dưới dạng SQL hoặc qua các API DataFrame/Dataset, giảm thiểu thời gian và chi phí chạy của ứng dụng. Khi sử dụng Spark, thường mọi người xem catalyst optimizer như là một black box, khi chúng ta mặc nhiên cho rằng nó hoạt động một cách thần bí mà không thực sự quan tâm bên trong nó xảy ra những gì. Ở bài viết này, mình sẽ đi vào tìm hiểu bên trong logic của nó thực sự thế nào, các thành phần, và cách mà Spark session extension tham gia để thay đổi các plan của catalyst.
 
 ![spark catalyst optimizer](./images/spark-catalyst-optimizer.JPG)
 
@@ -184,11 +184,8 @@ Cost-based approach được chọn nếu ta set ```spark.sql.cbo.enabled=true``
 
 Sau khi đã lựa chọn được physical plan phù hợp để chạy, Catalyst sẽ compile một cây các plans hỗ trợ codegen thành một hàm Java duy nhất, về Java bytecode để chạy trên driver và các executor. Phần codegen này cải thiện tốc độ chạy rất nhiều khi mà Spark SQL thường hoạt động trên các in-memory dataset, việc xử lý dữ liệu thường gắn chặt với CPU. Catalyst dựa vào một tính năng của Scala là quasiquotes để thực hiện đơn giản hoá phần codegen này (quasiquotes cho phép xây dựng các abstract syntax tree (ASTs), sau đó sẽ input vào Scala compiler để tạo ra bytecode).
 
-#### 3.5. Tính năng Adaptive query execution trong Spark 3
-
-![spark AQE](./images/catalyst-pipeline-AQE.PNG)
-
-### 4. Spark extension
+### 4. Spark session extension
+Spark extension là phần 
 
 ### 5. Tài liệu tham khảo
 
