@@ -293,7 +293,7 @@ val customStrategyFunc: SparkSessionExtensions => Unit = (extensionBuilder: Spar
 }
 ```
 
-#### 4.5. Ví dụ cấu hình phần logical plan optimization trong Catalyst optimizer
+#### 4.5. Ví dụ code cấu hình phần logical plan optimization trong Catalyst optimizer
 Phần này mình sẽ code một ví dụ về thay đổi logical plan optimization bằng Spark extension. Một extension đơn giản có code như dưới đây
 
 ```scala
