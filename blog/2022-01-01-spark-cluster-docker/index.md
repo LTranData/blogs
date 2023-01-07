@@ -28,7 +28,7 @@ Vì driver đặt lịch trình cho các task trên cluster, nó cần phải ch
 
 Bởi vì các image các node trong 1 cluster cần cài đặt các phần mềm khá giống nhau nên chúng ta sẽ xây dựng một base image cho tổng thể cluster trước, sau đó thì các image sau sẽ import từ image này và thêm vào đó là các dependencies cần thiết khác.
 
-```sh
+```bash
 ARG debian_buster_image_tag=8-jre-slim
 FROM openjdk:${debian_buster_image_tag}
 
@@ -51,7 +51,7 @@ VOLUME ${shared_workspace}
 
 Ta đến với tạo một spark base image với các package chung cho master node và workder node.
 
-```sh
+```bash
 FROM spark-cluster-base
 
 ARG spark_version=3.2.0
@@ -83,7 +83,7 @@ Sau đó sẽ là tải và giải nén Spark, cùng với đó là tạo các b
 
 Có một spark base image, ta bắt đầu tạo master node bằng việc import base image đó và thêm các biến phù hợp với master node như là port của giao diện web ui để lát nữa có thể tương tác với spark trên giao diện.
 
-```sh
+```bash
 FROM spark-base
 
 ARG spark_master_web_ui=8080
@@ -98,7 +98,7 @@ Command trên là để chạy master node.
 
 Tiếp đến là tạo worker node
 
-```sh
+```bash
 FROM spark-base
 
 ARG spark_worker_web_ui=8081
@@ -113,7 +113,7 @@ Command trên là để chạy worker node và trỏ tới địa chỉ của ma
 
 Cuối cùng, để kiểm tra hoạt động của spark cluster, ta sẽ cái Jupyterlab và dùng pyspark để chạy code.
 
-```sh
+```bash
 FROM spark-cluster-base
 
 ARG spark_version=3.2.0
@@ -138,7 +138,7 @@ Sau khi tạo đầy đủ các Dockerfile, ta tiến hành build các image ph�
 
 **Liệt kê các phiên bản**
 
-```sh
+```bash
 SPARK_VERSION="3.2.0"
 HADOOP_VERSION="3.2"
 JUPYTERLAB_VERSION="3.2.5"
@@ -146,7 +146,7 @@ JUPYTERLAB_VERSION="3.2.5"
 
 **Build base image**
 
-```sh
+```bash
 docker build \
   --platform=linux/arm64 \
   -f cluster_base/Dockerfile \
@@ -155,7 +155,7 @@ docker build \
 
 **Build spark base image**
 
-```sh
+```bash
 docker build \
   --build-arg spark_version="${SPARK_VERSION}" \
   --build-arg hadoop_version="${HADOOP_VERSION}" \
@@ -165,7 +165,7 @@ docker build \
 
 **Build master node image**
 
-```sh
+```bash
 docker build \
   -f master_node/Dockerfile \
   -t spark-master .
@@ -173,7 +173,7 @@ docker build \
 
 **Build worker node image**
 
-```sh
+```bash
 docker build \
   -f worker_node/Dockerfile \
   -t spark-worker .
@@ -181,7 +181,7 @@ docker build \
 
 **Build Jupyterlab image**
 
-```sh
+```bash
 docker build \
   --build-arg spark_version="${SPARK_VERSION}" \
   --build-arg jupyterlab_version="${JUPYTERLAB_VERSION}" \
@@ -191,7 +191,7 @@ docker build \
 
 Cuối cùng, để tạo các container cần thiết, ta tạo một file `docker-compose.yml` với nội dung như sau
 
-```sh
+```bash
 version: "3.6"
 volumes:
   shared-workspace:

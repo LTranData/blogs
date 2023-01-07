@@ -114,7 +114,7 @@ Tiếp theo sẽ là lên các container Zookeeper, Kafka, Postgres và Schema R
 
 Tổng hợp lại, ta có một file docker-compose.yml hoàn chỉnh như **[ở đây](https://github.com/lam1051999/spark_kafka_docker/blob/main/spark_ex/docker-compose.yml)**.
 Sau đó, ta thực hiện khởi động các container bằng
-```docker
+```bash
 docker-compose up -d
 ```
 Lưu ý, việc này khởi động tất cả các container cùng một lúc, một số trường hợp Kafka và Schema Registry sẽ bị lỗi vì nó phụ thuộc vào Zookeeper. Hãy chờ container Zookeeper lên xong rồi restart lại container Kafka và Schema Registry.
@@ -149,13 +149,13 @@ Tiếp đến, ta tạo một Kafka Producer để bắn dữ liệu giả bằn
 ```
 Trước hết, để POST schema này lên Schema Registry, ta phải chuyển schema này về dạng escaped json, truy cập **[trang web này](https://www.freeformatter.com/json-escape.html)** để chuyển.
 Sau đó, dùng POST method để push schema lên như sau
-```http
+```bash
 curl -X POST -H "Content-Type: application/vnd.schemaregistry.v1+json" \
   --data '{"schema": "{\"namespace\": \"com.cloudurable.phonebook\",\"type\": \"record\",\"name\": \"Employee\",\"doc\" : \"Represents an Employee at a company\",\"fields\": [{\"name\": \"id\", \"type\": \"string\", \"doc\": \"The person id\"},{\"name\": \"firstName\", \"type\": \"string\", \"doc\": \"The persons given name\"},{\"name\": \"nickName\", \"type\": [\"null\", \"string\"], \"default\" : null},{\"name\": \"lastName\", \"type\": \"string\"},{\"name\": \"age\",  \"type\": \"int\", \"default\": -1},{\"name\": \"emails\", \"type\": \"string\", \"doc\": \"The person email\"},{\"name\": \"phoneNumber\",  \"type\":{ \"type\": \"record\",   \"name\": \"PhoneNumber\",\"fields\": [{\"name\": \"areaCode\", \"type\": \"string\"},{\"name\": \"countryCode\", \"type\": \"string\", \"default\" : \"\"},{\"name\": \"prefix\", \"type\": \"string\"},{\"name\": \"number\", \"type\": \"string\"}]}},{\"name\": \"status\", \"type\": \"string\"}]}"}' \
   http://localhost:8081/subjects/personinformation-value/versions
 ```
 Sau đó, GET về để check xem schema đã lên hay chưa
-```http
+```bash
 curl -X GET http://localhost:8081/subjects/personinformation-value/versions/ // xem các version
 curl -X GET http://localhost:8081/subjects/personinformation-value/versions/1 // xem schema version 1
 ```
@@ -272,7 +272,7 @@ public class KafkaProducerExample {
 #### 4.1. Cấu hình Postgres
 Trước khi có thể chạy job, ta cần cấu hình Postgres với các bảng sau
 * Bảng cấu hình app Spark chạy
-```postgres
+```sql
 CREATE TABLE spark_launcher_config (
     id serial primary  key,
     "desc" varchar(1000) NULL,
@@ -309,7 +309,7 @@ INSERT INTO public.spark_launcher_config
     }', '2022-04-12 09:35:27.511', '2022-04-12 09:35:27.511');
 ```
 * Bảng cấu hình tiêu thụ topic
-```postgres
+```sql
 CREATE TABLE spark_ingest_config (
     id serial primary key,
     app_name varchar(255) not null unique,
@@ -353,7 +353,7 @@ status', 'ingest_avro_from_kafka_personinformation', 'select
 from ingest_avro_from_kafka_personinformation', '', '', '', 'personinformation', '', '', 'avro_flat'::public."kkmt", '', 1, 'NOT_DEFINE'::public."mst", '2022-04-06 19:59:41.745', '2022-04-06 19:59:41.745');
 ```
 * Bảng lưu dữ liệu streaming
-```postgres
+```sql
 create table personinformation (
 	firstName varchar(250) not null,
 	nickName varchar(250) not null,
@@ -366,15 +366,15 @@ create table personinformation (
 ```
 #### 4.2. Cấu hình Spark
 Code Spark Streaming đầy đủ bạn có thể tìm thấy **[tại đây](https://github.com/lam1051999/spark_kafka_docker/tree/main/spark_ex)**. Các bạn compile project bằng việc chạy
-```sh
+```bash
 sh run.sh
 ```
 Khi mọi container đã chạy ổn định, Kafka đã có dữ liệu, ta truy cập vào shell của container Spark master
-```sh
+```bash
 docker exec -it spark-master bash
 ```
 Sau khi đã vào shell, bạn tiếp tục chạy lệnh dưới đây để submit job Spark
-```sh
+```bash
 $SPARK_HOME/bin/spark-submit --jars $(echo /execution_files/dependency/*.jar | tr ' ' ',') --class com.tranlam.App /execution_files/spark_ex-1.0-SNAPSHOT.jar --app-name ingest_avro_from_kafka --jdbc-url "jdbc:postgresql://db:5432/postgres?user=postgres&password=postgres"
 ```
 Như vậy là đã có 1 job Spark tiêu thụ dữ liệu Kafka rồi. Sau đó bạn truy cập **[http://localhost:4040/streaming](http://localhost:4040/streaming)** để xem các batch đang chạy
