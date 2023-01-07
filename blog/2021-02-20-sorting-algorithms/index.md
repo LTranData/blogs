@@ -464,8 +464,8 @@ Ví dụ, nếu ${k}$ lớn, khoảng ${k = \Theta(n^2)}$, thì time complexity 
 Các thuật toán sắp xếp khá thú vị. Một trong những điều khiến con người ta thoải mái nhất là nhìn thấy phòng ngủ của mình được sắp xếp ngăn nắp và sạch đẹp, điều đó cũng tương tự khi ta nhìn vào các thứ được sắp xếp khác. Trang web về animation của các thuật toán sắp xếp cho bạn cảm giác thỏa mãn và thư giãn có thể được tìm thấy **[tại đây](https://www.toptal.com/developers/sorting-algorithms)**.
 
 ### 10. Tài liệu tham khảo
-[https://www.interviewbit.com/tutorial/sorting-algorithms/#sorting-algorithms](https://www.interviewbit.com/tutorial/sorting-algorithms/#sorting-algorithms)
+[Sorting Algorithms](https://www.interviewbit.com/tutorial/sorting-algorithms/#sorting-algorithms)
 
-[https://brilliant.org/wiki/sorting-algorithms/](https://brilliant.org/wiki/sorting-algorithms/)
+[Sorting Algorithms](https://brilliant.org/wiki/sorting-algorithms/)
 
-[https://www.geeksforgeeks.org/quick-sort/](https://www.geeksforgeeks.org/quick-sort/)
+[QuickSort](https://www.geeksforgeeks.org/quick-sort/)

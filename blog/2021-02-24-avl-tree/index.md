@@ -283,6 +283,6 @@ Bạn đọc có thể tìm thấy visualization cho các hoạt động của c
 
 ### 7. Tài liệu tham khảo
 
-[https://en.wikipedia.org/wiki/AVL_tree](https://en.wikipedia.org/wiki/AVL_tree)
+[AVL tree](https://en.wikipedia.org/wiki/AVL_tree)
 
-[https://www.guru99.com/avl-tree.html](https://www.guru99.com/avl-tree.html)
+[AVL Trees: Rotations, Insertion, Deletion with C++ Example](https://www.guru99.com/avl-tree.html)

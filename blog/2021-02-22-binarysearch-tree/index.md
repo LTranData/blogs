@@ -275,8 +275,8 @@ Cây tìm kiếm nhị phân là cấu trúc thú vị và hiệu quả. Bạn �
 
 ### 5. Tài liệu tham khảo
 
-[https://www.geeksforgeeks.org/binary-search-tree-set-1-search-and-insertion/](https://www.geeksforgeeks.org/binary-search-tree-set-1-search-and-insertion/)
+[Binary Search Tree | Set 1 (Search and Insertion)](https://www.geeksforgeeks.org/binary-search-tree-set-1-search-and-insertion/)
 
-[https://vi.wikipedia.org/wiki/C%C3%A2y_t%C3%ACm_ki%E1%BA%BFm_nh%E1%BB%8B_ph%C3%A2n](https://vi.wikipedia.org/wiki/C%C3%A2y_t%C3%ACm_ki%E1%BA%BFm_nh%E1%BB%8B_ph%C3%A2n)
+[Cây tìm kiếm nhị phân](https://vi.wikipedia.org/wiki/C%C3%A2y_t%C3%ACm_ki%E1%BA%BFm_nh%E1%BB%8B_ph%C3%A2n)
 
-[https://codelearn.io/sharing/5-phut-thong-thao-binary-search-tree](https://codelearn.io/sharing/5-phut-thong-thao-binary-search-tree)
+[5 Phút Thông Thạo Binary Search Tree](https://codelearn.io/sharing/5-phut-thong-thao-binary-search-tree)
