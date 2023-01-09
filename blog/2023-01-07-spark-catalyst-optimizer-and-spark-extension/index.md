@@ -228,7 +228,7 @@ case class CustomerParserRule(sparkSession: SparkSession, delegateParser: Parser
   /* Overwrite those methods here */
 }
 
-val customerParserRuleFunc: SparkSessionExtensions => Unit = (extensionBuilder: SparkSessionExtensions => {
+val customerParserRuleFunc: SparkSessionExtensions => Unit = (extensionBuilder: SparkSessionExtensions) => {
   extensionBuilder.injectParser(CustomerParserRule)
 }
 ```
