@@ -85,7 +85,7 @@ Transaction logging khiến việc thực hiện transaction thêm hiệu quả 
 
 ### 6. Autocommit
 Mặc định các câu lệnh INSERT, UPDATE, DELETE được gói trong các transaction tạm và được commit ngay khi nó chạy, đây là chế độ AUTOCOMMIT. Để bật chế độ này chạy câu SET AUTOCOMMIT = 1; ngược lại thì SET AUTOCOMMIT = 0. Một số câu lệnh đặc biệt có thể làm transaction commit khi nằm trong một transaction đang mở, ví dụ như các câu lệnh DDL.
-Ta có thể cài đặt isolation level cho MySQL bằng việc chạy câu lệnh SET TRANSACTION ISOLATION LEVEL, sau khi chạy thì isolation level này sẽ có hiệu dụng trong các transaction tiếp theo. Ta có thể cài đặt trong file cấu hình cho cả server, hoặc là chỉ set trong phiên làm việc của ta 
+Ta có thể cài đặt isolation level cho MySQL bằng việc chạy câu lệnh SET TRANSACTION ISOLATION LEVEL, sau khi chạy thì isolation level này sẽ có hiệu dụng trong các transaction tiếp theo. Ta có thể cài đặt trong file cấu hình cho cả server, hoặc là chỉ set trong phiên làm việc của ta
 ```sql
 SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
 ```
