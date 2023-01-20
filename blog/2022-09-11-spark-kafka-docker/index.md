@@ -366,17 +366,23 @@ create table personinformation (
 ```
 #### 4.2. Cấu hình Spark
 Code Spark Streaming đầy đủ bạn có thể tìm thấy **[tại đây](https://github.com/lam1051999/spark_kafka_docker/tree/main/spark_ex)**. Các bạn compile project bằng việc chạy
+
 ```bash
 sh run.sh
 ```
+
 Khi mọi container đã chạy ổn định, Kafka đã có dữ liệu, ta truy cập vào shell của container Spark master
+
 ```bash
 docker exec -it spark-master bash
 ```
+
 Sau khi đã vào shell, bạn tiếp tục chạy lệnh dưới đây để submit job Spark
+
 ```bash
 $SPARK_HOME/bin/spark-submit --jars $(echo /execution_files/dependency/*.jar | tr ' ' ',') --class com.tranlam.App /execution_files/spark_ex-1.0-SNAPSHOT.jar --app-name ingest_avro_from_kafka --jdbc-url "jdbc:postgresql://db:5432/postgres?user=postgres&password=postgres"
 ```
+
 Như vậy là đã có 1 job Spark tiêu thụ dữ liệu Kafka rồi. Sau đó bạn truy cập **[http://localhost:4040/streaming](http://localhost:4040/streaming)** để xem các batch đang chạy
 
 ![Architecture](./images/spark-ui.PNG)
