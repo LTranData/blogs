@@ -39,7 +39,11 @@ const config = {
         blog: false,
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
-        }
+        },
+        googleAnalytics: {
+          trackingID: process.env.GOOGLE_ANALYTICS_TAG_ID,
+          anonymizeIP: true,
+        },
       }),
     ],
   ],
