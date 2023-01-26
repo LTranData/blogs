@@ -53,7 +53,7 @@ Có 4 isolation level liên quan tới transaction
 Chế độ mặc định của hầu hết các database (nhưng không phải MySQL), nó sẽ làm mất đi một số đặc tính trong tính Isolation của ACID, transaction này sẽ có thể nhìn thấy các sự thay đổi bởi các transactions khác được commit sau khi transaction này bắt đầu, tuy nhiên sự thay đổi của transaction này vẫn vô hình cho đến khi nó được commit. Điều này có thể gây ra việc hai câu lệnh đọc giống nhau trong một transaction có thể trả về các dữ liệu khác nhau.
 - REPEATABLE READ 
 
-Chế độ này là mặc định của MySQL. Nó đảm bảo rằng trong cùng một transaction, các câu lệnh đọc giống nhau sẽ trả về cùng một kết quả giống nhau. Nhưng cũng sẽ có một vấn đề nhỏ xảy ra là nếu ta select một khoảng giá trị, một transaction khác chèn bản ghi mới vào khoảng giá trị đó, ta sẽ nhìn thấy bản ghi mới đó. Các storage engines như InnDB, XtraDB giải quyết vấn đề này bằng việc tạo ra nhiều phiên bản quản lý việc đọc ghi đồng thời.
+Chế độ này là mặc định của MySQL. Nó đảm bảo rằng trong cùng một transaction, các câu lệnh đọc giống nhau sẽ trả về cùng một kết quả giống nhau. Nhưng cũng sẽ có một vấn đề nhỏ xảy ra là nếu ta select một khoảng giá trị, một transaction khác chèn bản ghi mới vào khoảng giá trị đó, ta sẽ nhìn thấy bản ghi mới đó. Các storage engines như InnoDB, XtraDB giải quyết vấn đề này bằng việc tạo ra nhiều phiên bản quản lý việc đọc ghi đồng thời.
 - SERIALIZABLE
 
 Chế độ này giải quyết vấn đề đọc một khoảng giá trị bên trên bằng việc chạy các transactions theo một thứ tự. Chế độ này sẽ khoá tất cả row mà nó đọc, rất nhiều timeout và việc khoá xảy ra thường xuyên, tính đọc ghi đồng thời sẽ bị giảm xuống.
