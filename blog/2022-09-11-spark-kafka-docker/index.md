@@ -1,6 +1,6 @@
 ---
 slug: spark-kafka-docker
-title: Tạo luồng streaming dữ liệu với Spark Streaming, Kafka, Docker
+title: Create A Data Streaming Pipeline With Spark Streaming, Kafka And Docker
 authors: tranlam
 tags: [Bigdata, Spark, Apache, Kafka, Docker]
 image: ./images/architecture.PNG
@@ -8,158 +8,175 @@ image: ./images/architecture.PNG
 
 ![Architecture](./images/architecture.PNG)
 
-Chào các bạn, mình đã trở lại sau một thời gian khá lâu chưa viết gì. Hôm nay, mình muốn chia sẻ về cách tạo 1 luồng Spark Streaming tiêu thụ dữ liệu từ Kafka, tất cả mọi thứ được dựng trên Docker.
+Hi guys, I'm back after a long time without writing anything. Today, I want to share about how to create a Spark Streaming pipeline that consumes data from Kafka, everything is built on Docker.
 
 <!--truncate-->
 
-### 1. Tổng quan mô hình
-Mô hình được containerize bởi Docker. Bao gồm các thành phần sau
-* Producer: là một Kafka Producer sản xuất dữ liệu fake về thông tin một cá thể bằng Java Faker và bắn các message lên Kafka.
-* Kafka cluster: bao gồm các broker để lưu trữ dữ liệu và Zookeeper để quản lý các broker đó.
-* Spark cluster: là một cụm Spark gồm 3 nodes: 1 driver và 2 worker để tiêu thụ dữ liệu từ Kafka.
-* Schema Registry: cung cấp restful interface để lưu trữ và lấy các schema, giúp cho Kafka producer và consumer hoạt động với nhau theo quy chuẩn. Khi mà 2 đầu sản xuất và tiêu thụ message từ 2 đầu Kafka là độc lập, bên đầu tiêu thụ không cần biết bên sản xuất bắn message với format thế nào, thì Schema Registry như là trung gian để 2 bên đăng kí format message với nhau, tránh lỗi hệ thống.
-* Postgres: là database để cung cấp các cấu hình cho app Spark Streaming và ở bài viết này cũng là nơi để đẩy dữ liệu streaming xuống. 
+### 1. Design overview
 
-### 2. Dựng các container cần thiết trên Docker
+The model is containerized by Docker. Includes the following components
 
-#### 2.1. Tạo Spark cluster
-Như trong **[bài viết trước](/blog/2022-01-01-spark-cluster-docker/index.md)** mình có viết về cách dựng cụm Spark trên Docker, ở bài này mình tận dụng luôn cụm đó. Tuy nhiên, có một chút thay đổi, lược bỏ đi một số thứ để phù hợp với bài viết này. Các bạn có thể tìm được script build image **[tại đây](https://github.com/lam1051999/spark_kafka_docker/tree/main/spark_cluster)**. Thế là ta đã có các image cần thiết cho Spark cluster. Sau đây là phần cấu hình các container trong docker-compose.yml
+- Producer: is a Kafka Producer that produces fake data about an user information using Java Faker and produce messages onto Kafka.
+- Kafka cluster: includes brokers to store data and Zookeeper to manage those brokers.
+- Spark cluster: is a Spark cluster consisting of 3 nodes: 1 driver and 2 workers to consume data from Kafka.
+- Schema Registry: provides a restful interface to store and retrieve schemas, helping Kafka producers and consumers work together according to standards. Since the two ends of producing and consuming messages from two Kafka ends are independent, the consumer does not need to know how the producer sends the message with the format, the Schema Registry acts as an intermediary for the two parties to register the message format with each other, avoiding system errors.
+- Postgres: is the database to provide configurations for the Spark Streaming application and in this article is also the place to store the streaming data after processing by Spark.
+
+### 2. Build necessary Docker images and containers
+
+#### 2.1. Create a Spark cluster
+
+As in the **[previous article](/blog/2022-01-01-spark-cluster-docker/index.md)** I wrote about how to build a Spark cluster on Docker, in this article I take advantage of that cluster. However, there is a slight change, leaving out some things to fit this article. You can find the build image script **[here](https://github.com/lam1051999/spark_kafka_docker/tree/main/spark_cluster)**. So we have the necessary images for the Spark cluster. Here is the container configuration in docker-compose.yml
 
 ```yml
-  spark-master:
-    image: spark-master
-    container_name: spark-master
-    ports:
-      - 8080:8080
-      - 7077:7077
-      - 4040:4040
-    volumes:
-      - /Users/tranlammacbook/Documents/spark_streaming_kafka/spark_ex/target:/execution_files
-  spark-worker-1:
-    image: spark-worker
-    container_name: spark-worker-1
-    environment:
-      - SPARK_WORKER_CORES=1
-      - SPARK_WORKER_MEMORY=1024m
-    ports:
-      - 18081:8081
-    volumes:
-      - /Users/tranlammacbook/Documents/spark_streaming_kafka/spark_ex/target:/execution_files
-    depends_on:
-      - spark-master
-  spark-worker-2:
-    image: spark-worker
-    container_name: spark-worker-2
-    environment:
-      - SPARK_WORKER_CORES=1
-      - SPARK_WORKER_MEMORY=1024m
-    ports:
-      - 28081:8081
-    volumes:
-      - /Users/tranlammacbook/Documents/spark_streaming_kafka/spark_ex/target:/execution_files
-    depends_on:
-      - spark-master
+spark-master:
+  image: spark-master
+  container_name: spark-master
+  ports:
+    - 8080:8080
+    - 7077:7077
+    - 4040:4040
+  volumes:
+    - /Users/tranlammacbook/Documents/spark_streaming_kafka/spark_ex/target:/execution_files
+spark-worker-1:
+  image: spark-worker
+  container_name: spark-worker-1
+  environment:
+    - SPARK_WORKER_CORES=1
+    - SPARK_WORKER_MEMORY=1024m
+  ports:
+    - 18081:8081
+  volumes:
+    - /Users/tranlammacbook/Documents/spark_streaming_kafka/spark_ex/target:/execution_files
+  depends_on:
+    - spark-master
+spark-worker-2:
+  image: spark-worker
+  container_name: spark-worker-2
+  environment:
+    - SPARK_WORKER_CORES=1
+    - SPARK_WORKER_MEMORY=1024m
+  ports:
+    - 28081:8081
+  volumes:
+    - /Users/tranlammacbook/Documents/spark_streaming_kafka/spark_ex/target:/execution_files
+  depends_on:
+    - spark-master
 ```
 
-#### 2.2. Thêm các container Zookeeper, Kafka, Postgres, Schema Registry
-Tiếp theo sẽ là lên các container Zookeeper, Kafka, Postgres và Schema Registry
+#### 2.2. Add Zookeeper, Kafka, Postgres, Schema Registry containers
+
+Next will be on Zookeeper, Kafka, Postgres and Schema Registry containers
+
 ```yml
-  zookeeper:
-    image: confluentinc/cp-zookeeper:3.3.1
-    container_name: zookeeper
-    ports:
-      - "2181:2181"
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
-  kafka:
-    image: confluentinc/cp-kafka:3.3.1
-    container_name: kafka
-    depends_on:
-      - zookeeper
-    ports:
-      - "29092:29092"
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+zookeeper:
+  image: confluentinc/cp-zookeeper:3.3.1
+  container_name: zookeeper
+  ports:
+    - "2181:2181"
+  environment:
+    ZOOKEEPER_CLIENT_PORT: 2181
+    ZOOKEEPER_TICK_TIME: 2000
+kafka:
+  image: confluentinc/cp-kafka:3.3.1
+  container_name: kafka
+  depends_on:
+    - zookeeper
+  ports:
+    - "29092:29092"
+  environment:
+    KAFKA_BROKER_ID: 1
+    KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+    KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+    KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+    KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
-  db:
-    image: postgres
-    container_name: db-postgres
-    volumes:
-      - ./data/db:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_NAME=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+db:
+  image: postgres
+  container_name: db-postgres
+  volumes:
+    - ./data/db:/var/lib/postgresql/data
+  ports:
+    - "5432:5432"
+  environment:
+    - POSTGRES_NAME=postgres
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=postgres
 
-  schema-registry:
-    image: confluentinc/cp-schema-registry:3.3.1
-    container_name: schema-registry
-    depends_on:
-      - zookeeper
-      - kafka
-    ports:
-      - "8081:8081"
-    environment:
-      SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: zookeeper:2181
-      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+schema-registry:
+  image: confluentinc/cp-schema-registry:3.3.1
+  container_name: schema-registry
+  depends_on:
+    - zookeeper
+    - kafka
+  ports:
+    - "8081:8081"
+  environment:
+    SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: zookeeper:2181
+    SCHEMA_REGISTRY_HOST_NAME: schema-registry
 ```
 
-Tổng hợp lại, ta có một file docker-compose.yml hoàn chỉnh như **[ở đây](https://github.com/lam1051999/spark_kafka_docker/blob/main/spark_ex/docker-compose.yml)**.
-Sau đó, ta thực hiện khởi động các container bằng
+To sum up, we have a complete docker-compose.yml file like **[this](https://github.com/lam1051999/spark_kafka_docker/blob/main/spark_ex/docker-compose.yml)**. Then we start the containers with
+
 ```bash
 docker-compose up -d
 ```
-Lưu ý, việc này khởi động tất cả các container cùng một lúc, một số trường hợp Kafka và Schema Registry sẽ bị lỗi vì nó phụ thuộc vào Zookeeper. Hãy chờ container Zookeeper lên xong rồi restart lại container Kafka và Schema Registry.
 
-### 3. Tạo một Kafka Producer bắn dữ liệu giả bằng Java Faker
-Tiếp đến, ta tạo một Kafka Producer để bắn dữ liệu giả bằng Java. Trước tiên, ta cần tạo 1 schema trên Schema Registry. Vì Schema Registry cung cấp một restful interface nên ta có thể dễ dàng tương tác với nó bằng các lời gọi GET, POST,... Schema ta sử dụng trong bài viết này sẽ có dạng như sau
+Note, this starts all containers at once, some Kafka and Schema Registry instances will fail because it depends on Zookeeper. Wait for the Zookeeper container to finish up and then restart the Kafka container and the Schema Registry (you can also check the Zookeeper service by implementing some healthcheck techniques).
+
+### 3. Create a Kafka Producer that produce fake data using Java Faker
+
+Next, we create a Kafka Producer to fire dummy data in Java. First, we need to create a schema on the Schema Registry. Because the Schema Registry provides a restful interface, we can easily interact with it by calling GET, POST,... The schema we use in this article will have the following form.
+
 ```json
-{"namespace": "com.cloudurable.phonebook",
+{
+  "namespace": "com.cloudurable.phonebook",
   "type": "record",
   "name": "Employee",
-  "doc" : "Represents an Employee at a company",
+  "doc": "Represents an Employee at a company",
   "fields": [
-    {"name": "id", "type": "string", "doc": "The person id"},
-    {"name": "firstName", "type": "string", "doc": "The persons given name"},
-    {"name": "nickName", "type": ["null", "string"], "default" : null},
-    {"name": "lastName", "type": "string"},
-    {"name": "age",  "type": "int", "default": -1},
-    {"name": "emails", "type": "string", "doc": "The person email"},
-    {"name": "phoneNumber",  "type":
-      { "type": "record",   "name": "PhoneNumber",
+    { "name": "id", "type": "string", "doc": "The person id" },
+    { "name": "firstName", "type": "string", "doc": "The persons given name" },
+    { "name": "nickName", "type": ["null", "string"], "default": null },
+    { "name": "lastName", "type": "string" },
+    { "name": "age", "type": "int", "default": -1 },
+    { "name": "emails", "type": "string", "doc": "The person email" },
+    {
+      "name": "phoneNumber",
+      "type": {
+        "type": "record",
+        "name": "PhoneNumber",
         "fields": [
-          {"name": "areaCode", "type": "string"},
-          {"name": "countryCode", "type": "string", "default" : ""},
-          {"name": "prefix", "type": "string"},
-          {"name": "number", "type": "string"}
+          { "name": "areaCode", "type": "string" },
+          { "name": "countryCode", "type": "string", "default": "" },
+          { "name": "prefix", "type": "string" },
+          { "name": "number", "type": "string" }
         ]
       }
     },
-    {"name": "status", "type": "string"}
+    { "name": "status", "type": "string" }
   ]
 }
 ```
-Trước hết, để POST schema này lên Schema Registry, ta phải chuyển schema này về dạng escaped json, truy cập **[trang web này](https://www.freeformatter.com/json-escape.html)** để chuyển.
-Sau đó, dùng POST method để push schema lên như sau
+
+First, to POST this schema to the Schema Registry, we must convert this schema to escaped json, visit **[this website](https://www.freeformatter.com/json-escape.html)**. Then use the POST method to push the schema as follows
+
 ```bash
 curl -X POST -H "Content-Type: application/vnd.schemaregistry.v1+json" \
   --data '{"schema": "{\"namespace\": \"com.cloudurable.phonebook\",\"type\": \"record\",\"name\": \"Employee\",\"doc\" : \"Represents an Employee at a company\",\"fields\": [{\"name\": \"id\", \"type\": \"string\", \"doc\": \"The person id\"},{\"name\": \"firstName\", \"type\": \"string\", \"doc\": \"The persons given name\"},{\"name\": \"nickName\", \"type\": [\"null\", \"string\"], \"default\" : null},{\"name\": \"lastName\", \"type\": \"string\"},{\"name\": \"age\",  \"type\": \"int\", \"default\": -1},{\"name\": \"emails\", \"type\": \"string\", \"doc\": \"The person email\"},{\"name\": \"phoneNumber\",  \"type\":{ \"type\": \"record\",   \"name\": \"PhoneNumber\",\"fields\": [{\"name\": \"areaCode\", \"type\": \"string\"},{\"name\": \"countryCode\", \"type\": \"string\", \"default\" : \"\"},{\"name\": \"prefix\", \"type\": \"string\"},{\"name\": \"number\", \"type\": \"string\"}]}},{\"name\": \"status\", \"type\": \"string\"}]}"}' \
   http://localhost:8081/subjects/personinformation-value/versions
 ```
-Sau đó, GET về để check xem schema đã lên hay chưa
+
+After that, GET back to check if the schema is up or not
+
 ```bash
-curl -X GET http://localhost:8081/subjects/personinformation-value/versions/ // xem các version
-curl -X GET http://localhost:8081/subjects/personinformation-value/versions/1 // xem schema version 1
+curl -X GET http://localhost:8081/subjects/personinformation-value/versions/ // check all versions
+curl -X GET http://localhost:8081/subjects/personinformation-value/versions/1 // check schema version 1
 ```
-Khi này, Kafka đã lên, schema đã có trên Schema Registry, việc còn lại là đẩy message lên topic đó. Viết một class như sau (xem đầy đủ code **[tại đây](https://github.com/lam1051999/spark_kafka_docker/tree/main/KafkaClient)**), và chạy thì dữ liệu đã lên Kafka với chema ở trên rồi.
+
+Now that Kafka is up, the schema is on the Schema Registry, the rest is to push the message to that topic. Write a class as follows (see full code **[here](https://github.com/lam1051999/spark_kafka_docker/tree/main/KafkaClient)**), and run, then the data will be uploaded to Kafka with the above chema.
+
 ```java
 package kafkaclient;
 
@@ -217,11 +234,6 @@ public class KafkaProducerExample {
             String nickName = faker.name().username();
             String lastName = faker.name().lastName();
             int age = faker.number().numberBetween(18, 90);
-//            ArrayList<String> emails = new ArrayList<String>();
-//            int nEmails = 3;
-//            for(int k = 0; k < nEmails; k++){
-//                emails.add(faker.internet().safeEmailAddress());
-//            }
             String emails = faker.internet().safeEmailAddress();
             String areaCode = String.valueOf(faker.number().numberBetween(200, 500));
             String countryCode = String.valueOf(faker.number().numberBetween(80, 85));
@@ -266,12 +278,17 @@ public class KafkaProducerExample {
     }
 }
 ```
-Ở trên, mỗi 2 giây ta sẽ đẩy 1 message lên Kafka, đẩy tổng cộng 1000 message.
 
-### 4. Submit job Spark
-#### 4.1. Cấu hình Postgres
-Trước khi có thể chạy job, ta cần cấu hình Postgres với các bảng sau
-* Bảng cấu hình app Spark chạy
+Above, every 2 seconds we will push 1 message to Kafka, pushing a total of 1000 messages.
+
+### 4. Submit Spark job
+
+#### 4.1. Configure the Postgres database
+
+Before we can run the job, we need to configure Postgres with the following tables
+
+- Configuration for Spark applications
+
 ```sql
 CREATE TABLE spark_launcher_config (
     id serial primary  key,
@@ -308,7 +325,9 @@ INSERT INTO public.spark_launcher_config
     "_kafka_.request.timeout.ms": "50000"
     }', '2022-04-12 09:35:27.511', '2022-04-12 09:35:27.511');
 ```
-* Bảng cấu hình tiêu thụ topic
+
+- Topic consumption configuration table
+
 ```sql
 CREATE TABLE spark_ingest_config (
     id serial primary key,
@@ -342,7 +361,7 @@ lastName,
 age,
 emails,
 phoneNumber,
-status', 'ingest_avro_from_kafka_personinformation', 'select 
+status', 'ingest_avro_from_kafka_personinformation', 'select
 	cast(firstName as STRING) as firstName,
 	cast(nickName as STRING) as nickName,
 	cast(lastName as STRING) as lastName,
@@ -352,7 +371,9 @@ status', 'ingest_avro_from_kafka_personinformation', 'select
 	cast(status as STRING) as status
 from ingest_avro_from_kafka_personinformation', '', '', '', 'personinformation', '', '', 'avro_flat'::public."kkmt", '', 1, 'NOT_DEFINE'::public."mst", '2022-04-06 19:59:41.745', '2022-04-06 19:59:41.745');
 ```
-* Bảng lưu dữ liệu streaming
+
+- Streaming data table
+
 ```sql
 create table personinformation (
 	firstName varchar(250) not null,
@@ -364,33 +385,35 @@ create table personinformation (
 	status varchar(10) not null
 );
 ```
-#### 4.2. Cấu hình Spark
-Code Spark Streaming đầy đủ bạn có thể tìm thấy **[tại đây](https://github.com/lam1051999/spark_kafka_docker/tree/main/spark_ex)**. Các bạn compile project bằng việc chạy
+
+#### 4.2. Spark application configuration
+
+The full Spark Streaming Code you can find **[here](https://github.com/lam1051999/spark_kafka_docker/tree/main/spark_ex)**. Compile the project by running
 
 ```bash
 sh run.sh
 ```
 
-Khi mọi container đã chạy ổn định, Kafka đã có dữ liệu, ta truy cập vào shell của container Spark master
+When all containers are running stable, Kafka has the data, we access the shell of the Spark master container
 
 ```bash
 docker exec -it spark-master bash
 ```
 
-Sau khi đã vào shell, bạn tiếp tục chạy lệnh dưới đây để submit job Spark
+After entering the shell, you continue to run the command below to submit the Spark job
 
 ```bash
 $SPARK_HOME/bin/spark-submit --jars $(echo /execution_files/dependency/*.jar | tr ' ' ',') --class com.tranlam.App /execution_files/spark_ex-1.0-SNAPSHOT.jar --app-name ingest_avro_from_kafka --jdbc-url "jdbc:postgresql://db:5432/postgres?user=postgres&password=postgres"
 ```
 
-Như vậy là đã có 1 job Spark tiêu thụ dữ liệu Kafka rồi. Sau đó bạn truy cập **[http://localhost:4040/streaming](http://localhost:4040/streaming)** để xem các batch đang chạy
+So there is already a Spark job that consumes Kafka data. Visit **[http://localhost:4040/streaming](http://localhost:4040/streaming)** to see the batches running
 
 ![Architecture](./images/spark-ui.PNG)
 
-Vào Postgres query bảng ```personinformation``` ta thấy có dữ liệu như mong muốn
+In Postgres, query the table `personinformation` we get the data as desired
 
 ![Postgres](./images/postgres.PNG)
 
-Trên đây là tất cả nội dung để dựng một luồng streaming cơ bản từ Kafka. Còn một điều lưu ý nữa là thay vì bạn commit offset của các lần tiêu thụ lên 1 topic của Kafka như trong code Spark, bạn có thể commit nó một cách thủ công vào một đường dẫn ở Zookeeper để chủ động hơn trong việc kiểm soát.
+Above is the steps for building a basic Spark streaming pipeline to stream data from Kafka. Another thing to note is that instead of committing the offset of the consumptions to a Kafka topic like in above code, you can manually commit it to a path in Zookeeper for more proactive control.
 
-Code của cả bài viết bạn đọc có thể tìm thấy ở đây: **[https://github.com/lam1051999/spark_kafka_docker](https://github.com/lam1051999/spark_kafka_docker)**
+The code of the whole article you read can be found at: **[https://github.com/lam1051999/spark_kafka_docker](https://github.com/lam1051999/spark_kafka_docker)**

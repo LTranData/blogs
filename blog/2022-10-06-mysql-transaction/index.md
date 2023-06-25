@@ -1,6 +1,6 @@
 ---
 slug: mysql-series-mysql-transaction
-title: MySQL series - Transaction trong MySQL
+title: MySQL series - Transaction In MySQL
 authors: tranlam
 tags: [Bigdata, MySQL, Database, Data Engineering, Transaction]
 image: ./images/transaction.JPEG
@@ -8,12 +8,13 @@ image: ./images/transaction.JPEG
 
 ![Poster](./images/transaction.JPEG)
 
-Bài viết tiếp theo trong series MySQL về transaction. Một hoạt động rất phổ biến trong MySQL nói riêng và các cơ sở dữ liệu quan hệ nói chung. Cùng đi vào bài viết nào.
+The next article in the MySQL series is about transactions. A very common operation in MySQL in particular and relational databases in general. Let's go to the article.
 
 <!--truncate-->
 
-### 1. Transaction là gì?
-Transaction là một tập các câu lệnh SQL kết hợp với nhau như là một đơn vị công việc. Nếu như database chạy thành công toàn bộ lệnh SQL trong nhóm đó, nó được coi là thành công. Nếu như một trong số lệnh SQL gặp lỗi, tất cả các lệnh SQL đã chạy hoặc chưa chạy sẽ không ảnh hưởng gì tới database. Ví dụ các một tập câu lệnh SQL gói trong một transaction sau
+### 1. What is transaction?
+
+A transaction is a set of SQL statements put together as a unit of work. If the database successfully runs all SQL statements in that group, it is considered successful. If one of the SQL commands fails, all the SQL commands that have been run or not run will have no effect on the database. An example of a set of SQL statements wrapped in a transaction follows
 
 ```sql
     1  START  TRANSACTION;
@@ -23,72 +24,87 @@ Transaction là một tập các câu lệnh SQL kết hợp với nhau như là
     5  COMMIT;
 ```
 
-Transaction được bắt đầu bởi START TRANSACTION và thường được đóng bởi COMMIT (xác nhận thực hiện transaction) hoặc ROLLBACK (trở lại trạng thái trước khi transaction). Nếu như câu lệnh thứ 4 bị lỗi, câu lệnh thứ 3 sẽ được rollback và không có gì xảy ra ảnh hưởng tới dữ liệu cũ.
+Transactions are started by START TRANSACTION and are usually closed by COMMIT (confirm transaction) or ROLLBACK (return to pre-transaction state). If the ${4^{th}}$ statement fails, the ${3^{rd}}$ statement will be rolledback and nothing will happen to affect the old data.
 
-### 2. 4 tính chất bảo toàn dữ liệu trong cơ sở dữ liệu quan hệ
+### 2. Four data preservation properties in relational database
 
 ![ACID](./images/acid.PNG)
 
-Mỗi một hệ thống cần thoả mãn 4 tính chất ACID để đảm bảo an toàn về dữ liệu
+Every system needs to satisfy four ACID properties to ensure data preservation
+
 - Atomicity
 
-Transaction cần hoạt động như một đơn vị công việc. Hoặc là tất cả câu lệnh SQL trong transaction được áp dụng hoặc là không có câu lệnh nào được áp dụng.
+Transaction needs to act as a unit of work. Either all SQL statements in the transaction are applied or none are applied.
+
 - Consistency
 
-Database cần có tính nhất quán, chỉ được chuyển từ trạng thái nhất quán này đến trạng thái nhất quán khác. Ví dụ ở bên trên, nếu lỗi xảy ra sau khi chạy xong câu thứ 3, tài khoản checking sẽ không bị mất đi 200 tiền khi transaction chưa commit. Tổng tiền ở hai tài khoản trước và sau vẫn giữ nguyên.
+Database needs to be consistent, only being moved from one consistent state to another. The example above, if the error occurs after running the ${3^{rd}}$ statement, the checking account will not lose 200$ when the transaction has not been committed. The total money in the two accounts before and after the transaction remains the same.
+
 - Isolation
 
-Kết quả của transaction này sẽ vô hình đối với các transaction khác khi transaction này chưa kết thúc, chưa commit. Ví dụ khi transaction 1 đang chạy giữa câu 3 và câu 4 bên trên, một transaction khác tính toán tóm lược lại số dư các tài khoản sẽ vẫn nhìn thấy 200 tiền ở trong tài khoản checking. Khi một transaction chưa commit, không có sự thay đổi nào sẽ ảnh hưởng lên database.
+The result of this transaction will be invisible to other transactions when this transaction is not finished, not committed. For example, when transaction 1 is running between ${3^{rd}}$ and ${4^{th}}$ statements above, another transaction that summarizes the balances of the accounts will still see 200$ in the checking account. When a transaction is uncommitted, no changes will affect the database.
+
 - Durability
 
-Một khi commit, các thay đổi bởi transaction sẽ tồn tại lâu dài, các sự thay đổi đó cần được ghi chép lại đảm bảo việc dữ liệu không bị mất nếu hệ thống bị lỗi.
+Once committed, the changes made by the transaction will be permanent, the changes need to be recorded to ensure that the data is not lost if the system fails.
 
-### 3. 4 isolation level trong môi trường có nhiều đọc ghi đồng thời
-Có 4 isolation level liên quan tới transaction
+### 3. Four isolation level in highly concurrent read and write environments
+
+There are 4 isolation levels related to transactions
+
 - READ UNCOMMITTED
 
-Ở chế độ này, các transactions có thể nhìn thấy kết quả của các transactions chưa commit khác. Chế độ này hiệu năng không nhanh hơn quá nhiều chế độ khác nhưng dễ gây nhiều vấn đề khi đọc dữ liệu sai.
+In this mode, transactions can see the results of other uncommitted transactions. This mode does not perform much faster than many other modes but easily causes problems when reading wrong data.
+
 - READ COMMITTED
 
-Chế độ mặc định của hầu hết các database (nhưng không phải MySQL), nó sẽ làm mất đi một số đặc tính trong tính Isolation của ACID, transaction này sẽ có thể nhìn thấy các sự thay đổi bởi các transactions khác được commit sau khi transaction này bắt đầu, tuy nhiên sự thay đổi của transaction này vẫn vô hình cho đến khi nó được commit. Điều này có thể gây ra việc hai câu lệnh đọc giống nhau trong một transaction có thể trả về các dữ liệu khác nhau.
-- REPEATABLE READ 
+The default mode of most databases (but not MySQL), it will lose some of the ACID Isolation properties, this transaction will be visible to changes by other transactions committed after this transaction starts, however changes to this transaction remain invisible until it is committed. This can cause two identical read statements in a transaction to return two different datasets.
 
-Chế độ này là mặc định của MySQL. Nó đảm bảo rằng trong cùng một transaction, các câu lệnh đọc giống nhau sẽ trả về cùng một kết quả giống nhau. Nhưng cũng sẽ có một vấn đề nhỏ xảy ra là nếu ta select một khoảng giá trị, một transaction khác chèn bản ghi mới vào khoảng giá trị đó, ta sẽ nhìn thấy bản ghi mới đó. Các storage engines như InnoDB, XtraDB giải quyết vấn đề này bằng việc tạo ra nhiều phiên bản quản lý việc đọc ghi đồng thời.
+- REPEATABLE READ
+
+This mode is the default of MySQL. It ensures that within the same transaction, the same read statements will return the same result. But there will also be a small problem that if we select a range of values, another transaction inserts a new record in that range, we will see that new record. Storage engines like InnoDB, XtraDB solve this problem by creating multiple versions of a record that manage concurrent reads and writes.
+
 - SERIALIZABLE
 
-Chế độ này giải quyết vấn đề đọc một khoảng giá trị bên trên bằng việc chạy các transactions theo một thứ tự. Chế độ này sẽ khoá tất cả row mà nó đọc, rất nhiều timeout và việc khoá xảy ra thường xuyên, tính đọc ghi đồng thời sẽ bị giảm xuống.
+This mode solves the problem of reading a range of values ​​above by running transactions in order. This mode will lock all the rows it reads, a lot of timeouts and locking occur frequently, concurrent reads and writes will be reduced.
 
 ![Isolation Level](./images/isolation_levels.PNG)
 
-### 4. Deadlock trong transaction
-Deadlock xảy ra khi hai hoặc nhiều các transactions khoá cũng các tài nguyên, tạo ra một vòng tròn phụ thuộc
+### 4. Transaction deadlock
+
+Deadlock occurs when two or more transactions lock the same resources, creating a cycle of dependency
+
 ```sql
--- Transaction 1 
+-- Transaction 1
     START TRANSACTION;
     UPDATE StockPrice SET close = 45.50 WHERE stock_id = 4 and date = ‘2020-05-01’;
     UPDATE StockPrice SET close = 19.80 WHERE stock_id = 3 and date = ‘2020-05-02’;
     COMMIT;
--- Transaction 2 
+-- Transaction 2
     START TRANSACTION;
     UPDATE StockPrice SET high = 20.12 WHERE stock_id = 3 and date = ‘2020-05-02’;
     UPDATE StockPrice SET high = 47.20 WHERE stock_id = 4 and date = ‘2020-05-01’;
     COMMIT;
 ```
-Sau khi 2 transaction này chạy xong lệnh đầu tiên, khi chạy lệnh thứ 2. Các bản ghi với id tương ứng của transaction này đang bị khoá bởi transaction khác, cũng như transaction khác bị khoá bởi transaction này. InnoDB sẽ trả về lỗi nếu phát hiện một vòng tròn phụ thuộc. Cách mà InnoDB xử lý deadlock là nó sẽ rollback transaction có ít row bị lock nhất.
+
+After these two transactions finish running the first command, when running the second command. The records with the corresponding id of this transaction are being locked by another transaction, as well as another transaction that is locked by this transaction. InnoDB will return an error if a dependency circle is detected. The way InnoDB handles deadlock is that it will rollback the transaction with the fewest locked rows.
 
 ![Deadlock](./images/deadlock.JPEG)
 
 ### 5. Transaction logging
-Transaction logging khiến việc thực hiện transaction thêm hiệu quả hơn. Thay vì cập nhật thẳng vào bảng ở disk mỗi khi có sự thay đổi nào đó, nó cập nhật vào bảng copy của dữ liệu trong bộ nhớ (in-memory). Sau đó các transaction log sẽ được ghi xuống disk với mode append, hoạt động này rất nhanh vì chỉ yêu cầu I/O tuần tự trong disk, hiệu quả về chi phí hơn, một thời gian sau các thay đổi này mới được áp dụng vào dữ liệu thực ở disk. Bởi vì log này được ghi trên disk nên nó sẽ tồn tại lâu, nếu hệ thống lỗi sau khi ghi transaction log xuống disk nhưng trước khi cập nhật thay đổi vào dữ liệu chính, storage engine vẫn có thể phục hồi các thay đổi đó được.
+
+Transaction logging makes transaction execution more efficient. Instead of updating directly to the disk table every time there is a change, it updates to the copy of the data in memory. Then the transaction log will be written to disk with append mode, this operation is very fast because only sequential I/O is required in disk, more cost-effective, after a while these changes will be applied to the actual data on disk. Because this log is written on disk, it will be durable, if the system fails after writing the transaction log to disk but before updating the changes to the main data, the storage engine can still recover those changes.
 
 ![Transaction Log](./images/transaction_log.PNG)
 
 ### 6. Autocommit
-Mặc định các câu lệnh INSERT, UPDATE, DELETE được gói trong các transaction tạm và được commit ngay khi nó chạy, đây là chế độ AUTOCOMMIT. Để bật chế độ này chạy câu SET AUTOCOMMIT = 1; ngược lại thì SET AUTOCOMMIT = 0. Một số câu lệnh đặc biệt có thể làm transaction commit khi nằm trong một transaction đang mở, ví dụ như các câu lệnh DDL.
-Ta có thể cài đặt isolation level cho MySQL bằng việc chạy câu lệnh SET TRANSACTION ISOLATION LEVEL, sau khi chạy thì isolation level này sẽ có hiệu dụng trong các transaction tiếp theo. Ta có thể cài đặt trong file cấu hình cho cả server, hoặc là chỉ set trong phiên làm việc của ta
+
+By default, INSERT, UPDATE, and DELETE statements are wrapped in temporary transactions and committed as soon as they run, this is AUTOCOMMIT mode. To enable this mode run the sentence SET AUTOCOMMIT = 1; otherwise, SET AUTOCOMMIT = 0. Some special commands can commit a transaction while in an open transaction, such as DDL statements. We can set the isolation level for MySQL by running the SET TRANSACTION ISOLATION LEVEL command, after running this isolation level will take effect in subsequent transactions. You can set it in the configuration file for the whole server, or just set it in your session
+
 ```sql
 SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
 ```
-Ta không nên xử lý các bảng có khác storage engine trong cùng một transaction, vì có một số storage engine sẽ không hỗ trợ việc rollback dữ liệu (MyISAM storage engine), nếu có một số lỗi xảy ra trong quá trình thực hiện transaction, sẽ chỉ có một số bảng được rollback lại khiến làm mất đi tính Consistency.
 
-Bài viết kết thúc tại đây, hẹn gặp các bạn trong các blog tiếp theo.
+We should not process tables with different storage engines in the same transaction, because there are some storage engines that will not support data rollback (MyISAM storage engine), if some error occurs during transaction execution, only some tables will be rolled back causing loss of consistency.
+
+This is the end of the article, see you in the next blogs.

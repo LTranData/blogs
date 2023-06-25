@@ -1,24 +1,28 @@
 ---
 slug: spark-catalyst-optimizer-and-spark-session-extension
-title: Spark catalyst optimizer và Spark session extension
+title: Spark Catalyst Optimizer And Spark Session Extension
 authors: tranlam
 tags: [Bigdata, Spark, Apache]
 image: ./images/spark-catalyst-optimizer.JPG
 ---
 
-Spark catalyst optimizer nằm trong phần core của Spark SQL với mục đích tối ưu các truy vấn có cấu trúc được thể hiện dưới dạng SQL hoặc qua các API DataFrame/Dataset, giảm thiểu thời gian và chi phí chạy của ứng dụng. Khi sử dụng Spark, thường mọi người xem catalyst optimizer như là một black box, khi chúng ta mặc nhiên cho rằng nó hoạt động một cách thần bí mà không thực sự quan tâm bên trong nó xảy ra những gì. Ở bài viết này, mình sẽ đi vào tìm hiểu bên trong logic của nó thực sự thế nào, các thành phần, và cách mà Spark session extension tham gia để thay đổi các plan của catalyst.
+Spark catalyst optimizer is located at the core of Spark SQL with the purpose of optimizing structured queries expressed in SQL or through DataFrame/Dataset APIs, minimizing application running time and costs. When using Spark, often people see the catalyst optimizer as a black box, when we assume that it works mysteriously without really caring what happens inside it. In this article, I will go in depth of its logic, its components, and how the Spark session extension participates to change the Catalyst's plans.
 
 ![spark catalyst optimizer](./images/spark-catalyst-optimizer.JPG)
 
 <!--truncate-->
 
-### 1. Tree và Node
-Các thành phần chính trong Catalyst được biểu diễn dưới dạng cây và các node, được kế thừa từ class ```TreeNode```, hoặc các class con của nó. Class ```TreeNode``` này có tập các node con ứng với thuộc tính ```children```, kiểu dữ liệu ```Seq[BaseType]```, do vậy, một ```TreeNode``` có thể có 0 hoặc nhiều các node con. Các object này là immutable và được thao tác bằng những functional transformation, khiến cho việc debug optimizer trở nên dễ dàng hơn và các hoạt động song song trở nên dễ đoán hơn.     
-Hai class quan trọng là ```LogicalPlan``` và ```SparkPlan``` đều là subclass của ```QueryPlan```, class kế thừa trực tiếp từ ```TreeNode```. Trong sơ đồ Catalyst bên trên, 3 thành phần đầu là các logical plans, các node trong logical plan thường là các toán tử đại số như ```Join```, ```Filter```, ```Project```,... 2 thành phần đằng sau là các spark plan (physical plan), các node thường là các toán tử low-level như ```ShuffledHashJoinExec```, ```SortMergeJoinExec```, ```BroadcastHashJoinExec```, ```FileSourceScanExec```,... Các leaf node sẽ đọc dữ liệu từ các source, storage, memory,... còn root node của cây là toán tử ngoài cùng và trả về kết quả của việc tính toán.
+### 1. TreeNode
+
+The main components in Catalyst are represented as tree nodes, which are inherited from class `TreeNode`, or its subclasses. Class `TreeNode` has a set of child nodes with the attribute `children`, datatype `Seq[BaseType]`, therefore, one `TreeNode` can have 0 or more child nodes. These objects are immutable and manipulated using functional transformations, making the debug optimizer easier and parallel operations more predictable.
+
+The two important classes are `LogicalPlan` and `SparkPlan` are both subclasses of `QueryPlan`, the class inherits directly from `TreeNode`. In the above Catalyst diagram, the first 3 components are logical plans, the nodes in the logical plan are usually algebraic operators such as `Join`, `Filter`, `Project`,... the two components behind are spark plans (physical plans), nodes are usually low-level operators like `ShuffledHashJoinExec`, `SortMergeJoinExec`, `BroadcastHashJoinExec`, `FileSourceScanExec`,...
+
+Leaf nodes will read data from sources, storage, memory ,... and the root node of the tree is the outermost operator and returns the result of the calculation.
 
 ### 2. Rules
-Để thao tác trên TreeNode ta sử dụng các Rule, các Rule thực chất là thành phần biến đổi cây, từ cây này sang cây khác. Trong rule, ta triển khai các logic biến đổi các TreeNode, các logic này thường sử dụng pattern matching trong scala để tìm các matching tương ứng trong subtree của nó và thay thế bằng các cấu trúc khác.
-Các cây cung cấp các hàm transform có thể áp dụng pattern matching này để biến đổi cây như ```transform```, ```transformDown```, ```transformUp```,...
+
+To manipulate the TreeNode we use rules, rules are actually components that transforms the tree, from one tree to another. In the rule, we implement the logic that transforms the TreeNode, which often uses the pattern matching in Scala to find the corresponding matches in its subtree and replace it with other constructs. Trees provide transformation functions that can apply this pattern matching to transform trees like `transform`, `transformDown`, `transformUp`,...
 
 ```scala
 package org.apache.spark.sql.catalyst.trees
@@ -70,7 +74,7 @@ def transformDown(rule: PartialFunction[BaseType, BaseType]): BaseType = {
 def transformDownWithPruning(cond: TreePatternBits => Boolean,
     ruleId: RuleId = UnknownRuleId)(rule: PartialFunction[BaseType, BaseType])
   : BaseType = {
-    /* More code */    
+    /* More code */
 }
 
 def transformUp(rule: PartialFunction[BaseType, BaseType]): BaseType = {
@@ -80,13 +84,14 @@ def transformUp(rule: PartialFunction[BaseType, BaseType]): BaseType = {
 def transformUpWithPruning(cond: TreePatternBits => Boolean,
     ruleId: RuleId = UnknownRuleId)(rule: PartialFunction[BaseType, BaseType])
   : BaseType = {
-    /* More code */    
+    /* More code */
 }
 
 /* ... */
 ```
 
-Dưới đây là ví dụ đơn giản về sử dụng transform và parttern matching để biến đổi một Treenode sang Treenode khác
+Here is a simple example of using transform and partn matching to transform one Treenode to another
+
 ```scala
 package com.tranlam
 
@@ -112,22 +117,24 @@ object TestTransform {
 }
 ```
 
-Trong ví dụ trên, hàm transformDown được sử dụng, nó đi qua các node của 1 cây và sử dụng parttern matching để trả về kết quả khác. Nếu như node đó là dạng binary operator như Multiply, Subtract, nó sẽ biến đổi thành phép cộng Add. Nếu node là hằng số nguyên lớn hơn 5, nó sẽ biến đổi về 1, hằng số bé hơn 5 sẽ biến đổi thành 0, hằng số bằng 5 thì giữ nguyên giá trị.
+In the above example, the transformDown function is used, which traverses the nodes of a tree and uses pattern matching to return a different result. If the node is a binary operator like Multiply, Subtract, it will convert to Add. If node is an integer constant greater than 5, it will change to 1, constant less than 5 will change to 0, a constant of 5 will keep the same value.
 
-### 3. Các hoạt động của Catalyst trong Spark SQL
-Spark Catalyst sử dụng các phép biến đổi cây trong 4 phase chính: (1) phân tích logical plan để duyệt các relation trong plan đó, (2) logical plan optimization, (3) physical planning, (4) code generation để compile các query thành Java bytecode. 
+### 3. Catalyst Operations in Spark SQL
 
-#### 3.1. Parsing và Analyzing
+Spark Catalyst uses tree transformations in four main phases: (1) logical plan analysis to traverse the relations in that plan, (2) logical plan optimization, (3) physical planning, (4) code generation to compile the query into Java bytecode.
+
+#### 3.1. Parsing and Analyzing
 
 ![spark catalyst parseing analyzing](./images/catalyst-pipeline-parsing-analyzing.PNG)
 
-Ở phase này, các Catalyst rule và Catalog object sẽ được Spark SQL sử dụng để kiểm tra xem các relation trong câu query của chúng ta có tồn tại hay không, các thuộc tính của relation như cột, tên cột cũng được kiểm tra nó có chuẩn hay không, syntax đã đúng chưa và resolve các relation đó.
+In this phase, Catalyst rules and Catalog objects will be used by Spark SQL to check if the relations in our query exist or not, relation properties such as columns, column names are also checked, the syntax of the query is examined and then resolve those relations.
 
-Ví dụ, nhìn vào plan câu query dưới đây, đầu tiên Spark SQL sẽ biến đổi query về một parsed tree được gọi là "unresolved logical plan" với các thuộc tính và datatypes chưa xác định, chưa được gán với một table (hoặc alias) cụ thể nào. Sau đó nó sẽ
-- Tìm kiếm relation theo tên từ Catalog object.
-- Mapping các thuộc tính như cột của input với các relation đã tìm được.
-- Quyết định xem các thuộc tính nào sẽ trỏ tới cùng giá trị để gán cho nó một unique ID (phục vụ mục đích về sau để tối ưu các expressions như ```col = col```).
-- Cast các expression về datatype cụ thể (ví dụ, chúng ta sẽ không biết datatype trả về của ```col * 2``` cho tới khi col được resolved và được xác định datatype).
+For example, looking at the query plan below, Spark SQL will first transform the query into a parsed tree called an "unresolved logical plan" with undefined attributes and datatypes, not yet assigned to a specific table (or alias). Then it will
+
+- Search for relation by name from Catalog object.
+- Mapping properties as columns of input with found relations.
+- Decide which properties should point to the same value to assign it a unique ID (for the purpose of later optimizing expressions like `col = col`).
+- Cast expressions of a specific datatype (for example, we won't know the return datatype of `col * 2` until col is resolved and the datatype is determined).
 
 ```sql
 SELECT * FROM test.describe_abc;
@@ -154,41 +161,46 @@ Relation test.describe_abc[id#5833,name#5834] parquet
 
 ![spark LP optimization](./images/catalyst-pipeline-LP-optimization.PNG)
 
-Catalyst áp dụng các standard optimization rule cho logical plan được được phân tích ở bước trên, với các dữ liệu được cache. Ở đây, cost-based optimization được sử dụng để sinh ra nhiều plans, và sau đó tính toán cost cho từng plan. Phần này bao gồm các rule như 
-- Constant folding: loại bỏ các expression tính toán một giá trị mà có ta có thể xác định trước khi code chạy, ví dụ như ```y = x * 2 * 2```, compiler sẽ không sinh ra 2 multiply instruction mà nó sẽ thay thế trước các giá trị có thể được tính toán ```y = x * 4```.
-- Predicate pushdown: push down các phần của query tới nơi dữ liệu được lưu trữ, filter lượng lớn dữ liệu, cải thiện network traffic.
-- Projection: chọn đúng các cột được select, số cột được lấy từ storage tới Spark ít hơn, phục vụ đọc các columnar storage nhanh hơn và chỉ đọc các cột cần thiết.
-- Boolean expression simplification: ví dụ, A and (A or B) = A(A+B) = A.A + A.B = A + A.B = A.(1+B) = A.
-- Và nhiều các rule khác... 
+Catalyst applies standard optimization rules to the logical plan analyzed in the previous step, with cached data. This section includes rules like
 
-Catalyst optimizer của Spark sẽ bao gồm các batch of rule, một số rule có thể tồn tại trong nhiều batch. Thường các batch rule này sẽ được chạy 1 lần trên plan đó, tuy nhiên, có một số batch sẽ chạy lặp đi lặp lại cho đến một số lần duyệt nhất định.
+- Constant folding: removes expressions that compute a value that we can define before the code runs, for example, with the expression `y = x * 2 * 2`, compiler will not generate 2 multiply instructions, it will first replace the constants before the values ​​can be computed `y = x * 4`.
+- Predicate pushdown: push down parts of the query to where the data is stored, filter large amounts of data, improve network traffic.
+- Projection: read only selected columns, less columns will be passed from the storage to Spark, significantly efficient with columnar file format such as Parquet.
+- Boolean expression simplification: eg. A and (A or B) = A(A+B) = A.A + A.B = A + A.B = A.(1+B) = A
+- Many other rules,…
+
+Spark's Catalyst optimizer will include batches of rules, some of which can exist in multiple batches. Usually these batch rules will be run once on that plan, however, there are some batches that will run repeatedly until a certain number of passes.
 
 #### 3.3. Physical planning
 
 ![spark PP planning](./images/catalyst-pipeline-PP-planning.PNG)
 
-Spark SQL nhận vào logical plan và sinh ra một hoặc nhiều physical plan, sau đó nó sẽ chọn physical plan phù hợp dựa vào các cost model. Các cost model thường dựa vào các chỉ số thống kê của các relation, định lượng các thống kê chảy vào một node trong TreeNode như
-- Kích thước dữ liệu chảy vào node.
-- Lượng bản ghi từng bảng.
-- Các chỉ số thống kê liên quan tới cột như: lượng giá trị phân biệt, giá trị lớn nhất giá trị nhỏ nhất, giá trị độ dài trung bình và lớn nhất của cột, histogram các giá trị của cột,...
+Spark SQL takes a logical plan and generates one or more physical plans, then it chooses the appropriate physical plan based on the cost models. Cost models typically rely on relational statistics, quantifying statistics flowing into a node in a TreeNode such as
 
-Một số hướng tiếp cận của Spark SQL cho phần cost model này
-- Size-only approach: chỉ sử dụng thống kê về kích thước vật lý của dữ liệu chảy vào node, có thể thêm chỉ số số bản ghi trong một số trường hợp.
-- Cost-based approach: thống kê các thông tin liên quan đến mức cột cho các node Aggregate, Filter, Join, Project (lưu ý, cost-based approach chỉ được áp dụng cho các node loại này, với những node loại khác, nó sẽ trở về sử dụng size-only approach), cải thiện kích thước và lượng bản ghi cho các node đó.
+- Size of data flowing into node.
+- Number of records per table.
+- Statistical indexes related to columns such as: number of distinct values and nulls, minimum and maximum value, average and maximum length of the values, an equi-height histogram of the values,...
 
-Cost-based approach được chọn nếu ta set ```spark.sql.cbo.enabled=true```. Bên cạnh đó, các thống kê về bảng và cột cũng cần được thu thập để Spark có thể dựa vào đó tính toán, bằng việc chạy các lệnh **[ANALYZE](https://spark.apache.org/docs/latest/sql-ref-syntax-aux-analyze-table.html)**
+Some Spark SQL approaches to this cost model
+
+- Size-only approach: only uses statistics about the physical size of the data flowing into the node, also take the number of records index in some cases.
+- Cost-based approach: statistics related to column level information for Aggregate, Filter, Join, Project nodes (note, cost-based approach is only applicable to nodes of this type, with other types of nodes, it will revert to using the size-only approach), improving the size and number of records for those nodes.
+
+The cost-based approach is chosen if we set `spark.sql.cbo.enabled=true`. Besides, table and column statistics also need to be collected so that Spark can calculate based on it, by running **[ANALYZE](https://spark.apache.org/docs/latest/sql-ref-syntax-aux-analyze-table.html)**
 
 #### 3.4. Code generation
 
 ![spark codegen](./images/catalyst-pipeline-codegen.PNG)
 
-Sau khi đã lựa chọn được physical plan phù hợp để chạy, Catalyst sẽ compile một cây các plans hỗ trợ codegen thành một hàm Java duy nhất, về Java bytecode để chạy trên driver và các executor. Phần codegen này cải thiện tốc độ chạy rất nhiều khi mà Spark SQL thường hoạt động trên các in-memory dataset, việc xử lý dữ liệu thường gắn chặt với CPU. Catalyst dựa vào một tính năng của Scala là quasiquotes để thực hiện đơn giản hoá phần codegen này (quasiquotes cho phép xây dựng các abstract syntax tree (ASTs), sau đó sẽ input vào Scala compiler để tạo ra bytecode).
+After selecting the right physical plan to run, Catalyst will compile a tree of plans that support codegen into a single Java function, to Java bytecode to run on drivers and executors. This codegen greatly improves running speed when Spark SQL often works on in-memory datasets, data processing is often tied to the CPU. Catalyst relies on a Scala feature, quasiquotes, to simplify this part of the codegen (quasiquotes allow building abstract syntax trees (ASTs), which then input the Scala compiler to generate bytecode).
 
 ### 4. Spark session extension
-Spark session extension là một tính năng mở rộng của Spark giúp cho ta có thể custom các phần trong Catalyst optimizer để nó hoạt động theo từng ngữ cảnh của ta.
+
+Spark session extension is an extension of Spark that allows us to customize parts of the Catalyst optimizer so that it works in each of our contexts.
 
 #### 4.1. Custom parser rule
-Như ở trên trình bày, ban đầu query của ta sẽ phải đi qua bộ parsing để kiểm tra tính hợp lệ của query. Spark cung cấp một interface cho ta có thể implement ở stage này là ```ParserInterface```
+
+As shown above, initially our query will have to go through the parsing set to check the validity of the query. Spark provides an interface that we can implement at this stage `ParserInterface`
 
 ```scala
 package org.apache.spark.sql.catalyst.parser
@@ -221,7 +233,7 @@ trait ParserInterface {
 }
 ```
 
-Chúng ta sẽ implement interface đó và inject rule này vào job Spark như sau
+We will implement that interface and inject this rule into Spark job as follows
 
 ```scala
 case class CustomerParserRule(sparkSession: SparkSession, delegateParser: ParserInterface) extends ParserInterface {
@@ -234,12 +246,15 @@ val customerParserRuleFunc: SparkSessionExtensions => Unit = (extensionBuilder: 
 ```
 
 #### 4.2. Custom analyzer rule
-Analyzer rule bao gồm một số loại rule như resolution rule, check rule. Các rule này được inject thông qua các hàm
-- ```injectResolutionRule```: inject các rule của ta cho resolution phase.
-- ```injectPostHocResolutionRule```: chạy các rule của ta sau resolution phase.
-- ```injectCheckRule```: thêm các rule để kiểm tra một số logic của các logical plan, ví dụ như ta muốn kiểm tra các logic nghiệp vụ, hoặc kiểm tra xem các rule nào đã chạy xong,...
 
-Để inject resolution rule, ta kế thừa một lớp trừu tượng của Spark ```Rule[LogicalPlan]```
+Analyzer rule includes several types of rules such as resolution rule, check rule. These rules are injected through functions
+
+- `injectResolutionRule`: inject our rules for the resolution phase.
+- `injectPostHocResolutionRule`: run our rules after the resolution phase.
+- `injectCheckRule`: add rules to check some logic of logical plans, for example, we want to check business logic, or check which rules have finished running,...
+
+To inject resolution rule, we extend an abstract class of Spark `Rule[LogicalPlan]`
+
 ```scala
 case class CustomAnalyzerResolutionRule(sparkSession: SparkSession) extends Rule[LogicalPlan] {
   override def apply(plan: LogicalPlan): LogicalPlan = {
@@ -252,7 +267,8 @@ val customAnalyzerResolutionRuleFunc: SparkSessionExtensions => Unit = (extensio
 }
 ```
 
-Để inject check rule, ta kế thừa lớp hàm class ```Function1[LogicalPlan, Unit]```
+To inject check rule, we inherit the class `Function1[LogicalPlan, Unit]`
+
 ```scala
 case class CustomAnalyzerCheckRule(sparkSession: SparkSession) extends (LogicalPlan => Unit) {
   override def apply(plan: LogicalPlan): Unit = {
@@ -266,7 +282,9 @@ val customAnalyzerCheckRuleFunc: SparkSessionExtensions => Unit = (extensionBuil
 ```
 
 #### 4.3. Custom optimization
-Để custom phần logical plan optimization, ta sẽ kế thừa lớp trừu tượng ```Rule[LogicalPlan]```
+
+To customize the logical plan optimization phase, we will inherit the abstract class `Rule[LogicalPlan]`
+
 ```scala
 case class CustomOptimizer(sparkSession: SparkSession) extends Rule[LogicalPlan] {
   override def apply(plan: LogicalPlan): LogicalPlan = {
@@ -280,7 +298,9 @@ val customOptimizerFunc: SparkSessionExtensions => Unit = (extensionBuilder: Spa
 ```
 
 #### 4.4. Custom physical planning
-Để cấu hình phần chiến thuật chạy cho Spark Catalyst optimizer, chúng ta kế thừa lớp trừu tượng ```SparkStrategy``` và implement hàm ```apply``` của class đó
+
+To configure the running strategy for Spark Catalyst optimizer, we inherit the abstract class `SparkStrategy` and implement the method `apply` of that class
+
 ```scala
 case class CustomStrategy(sparkSession: SparkSession) extends SparkStrategy {
   override def apply(plan: LogicalPlan): Seq[SparkPlan] = {
@@ -293,8 +313,9 @@ val customStrategyFunc: SparkSessionExtensions => Unit = (extensionBuilder: Spar
 }
 ```
 
-#### 4.5. Ví dụ code cấu hình phần logical plan optimization trong Catalyst optimizer
-Phần này mình sẽ code một ví dụ về thay đổi logical plan optimization bằng Spark extension. Một extension đơn giản có code như dưới đây
+#### 4.5. Example code to configuree logical plan optimization phase in Catalyst optimizer
+
+In this section, I will make an example of changing logical plan optimization phase with Spark extension. A simple extension with code as below
 
 ```scala
 /* class CustomProjectFilterExtension ======================================= */
@@ -302,7 +323,7 @@ package extensions
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.plans.logical._
 import org.apache.spark.sql.catalyst.rules.Rule
-// create an extension that 
+// create an extension that
 case class CustomProjectFilterExtension(spark: SparkSession) extends Rule[LogicalPlan] {
   override def apply(plan: LogicalPlan): LogicalPlan = {
     val fixedPlan = plan transformDown {
@@ -324,25 +345,28 @@ class AllExtensions extends (SparkSessionExtensions => Unit) {
 }
 ```
 
-Class ```CustomProjectFilterExtension``` ở trên biến đổi phép Filter (lọc row), Project (chọn cột trong lúc scan file) thành chỉ còn phép Filter. Khi đó, mặc dù ta đã chọn cột nhưng nó vẫn scan tất cả các cột trong file. 
+The above class `CustomProjectFilterExtension` transforms Filter (row filter), Project (select column while scanning file) operators to only Filter. Then, even though we have selected the column, it still scans all the columns of the file in the storage.
 
-Ta compile project
+Compile project
+
 ```bash
 # compile jar file
 mvn clean package && mvn dependency:copy-dependencies
 ```
 
-##### 4.5.1. Khi không apply extension
-Ta khởi tạo ```spark-shell``` không truyền extension
+##### 4.5.1. When not applying extension
+
+We initialize `spark-shell` without passing extension
+
 ```bash
-# khởi tạo spark-shell
+# initialize spark-shell
 $SPARK_330/bin/spark-shell --jars $(echo /Users/tranlammacbook/Documents/spark_streaming_kafka/spark_ex/target/dependency/*.jar | tr ' ' ','),/Users/tranlammacbook/Documents/spark_streaming_kafka/spark_ex/target/custom-extension-1.0-SNAPSHOT.jar
 
-# kiểm tra spark.sql.extensions
+# check spark.sql.extensions
 scala> spark.conf.get("spark.sql.extensions")
 res0: String = null
 
-# explain một query có Filter và Project
+# explain a query that contains Filter and Project operators
 scala> spark.sql("SELECT hotel, is_canceled FROM (SELECT * FROM test.hotel_bookings WHERE hotel='Resort Hotel') a").explain(extended = true)
 
 == Parsed Logical Plan ==
@@ -372,18 +396,19 @@ Project [hotel#0, is_canceled#1L]
    +- FileScan parquet test.hotel_bookings[hotel#0,is_canceled#1L] Batched: true, DataFilters: [isnotnull(hotel#0), (hotel#0 = Resort Hotel)], Format: Parquet, Location: InMemoryFileIndex(1 paths)[file:/Users/tranlammacbook/Documents/spark_streaming_kafka/spark_ex/sp..., PartitionFilters: [], PushedFilters: [IsNotNull(hotel), EqualTo(hotel,Resort Hotel)], ReadSchema: struct<hotel:string,is_canceled:bigint>
 ```
 
-Ta thấy rằng ```Optimized Logical Plan``` có cả phép Project và Filter, do ta filter ```WHERE hotel='Resort Hotel'``` và project ```SELECT hotel, is_canceled```. Tới physical plan, nó cũng chỉ scan 2 cột ```FileScan parquet test.hotel_bookings[hotel#0,is_canceled#1L]```.
+We see that `Optimized Logical Plan` there are both Project and Filter operations, because we filter `WHERE hotel='Resort Hotel'` and project `SELECT hotel, is_canceled`. Therefore, in the physical plan, it only scans 2 columns `FileScan parquet test.hotel_bookings[hotel#0,is_canceled#1L]`.
 
-##### 4.5.2. Khi có extension
+##### 4.5.2. When applying extension
+
 ```bash
-# khởi tạo spark-shell với extension
+# initialize spark-shell with extension
 $SPARK_330/bin/spark-shell --jars $(echo /Users/tranlammacbook/Documents/spark_streaming_kafka/spark_ex/target/dependency/*.jar | tr ' ' ','),/Users/tranlammacbook/Documents/spark_streaming_kafka/spark_ex/target/custom-extension-1.0-SNAPSHOT.jar --conf spark.sql.extensions=extensions.AllExtensions
 
-# kiểm tra spark.sql.extensions
+# check spark.sql.extensions
 scala> spark.conf.get("spark.sql.extensions")
 res0: String = extensions.AllExtensions
 
-# explain một query có Filter và Project giống hệt câu bên trên
+# explain a query that contains Filter and Project operators
 scala> spark.sql("SELECT hotel, is_canceled FROM (SELECT * FROM test.hotel_bookings WHERE hotel='Resort Hotel') a").explain(extended = true)
 
 == Parsed Logical Plan ==
@@ -412,11 +437,11 @@ Filter (isnotnull(hotel#0) AND (hotel#0 = Resort Hotel))
    +- FileScan parquet test.hotel_bookings[hotel#0,is_canceled#1L,lead_time#2L,arrival_date_year#3L,arrival_date_month#4,arrival_date_week_number#5L,arrival_date_day_of_month#6L,stays_in_weekend_nights#7L,stays_in_week_nights#8L,adults#9L,children#10,babies#11L,meal#12,country#13,market_segment#14,distribution_channel#15,is_repeated_guest#16L,previous_cancellations#17L,previous_bookings_not_canceled#18L,reserved_room_type#19,assigned_room_type#20,booking_changes#21L,deposit_type#22,agent#23,... 8 more fields] Batched: true, DataFilters: [isnotnull(hotel#0), (hotel#0 = Resort Hotel)], Format: Parquet, Location: InMemoryFileIndex(1 paths)[file:/Users/tranlammacbook/Documents/spark_streaming_kafka/spark_ex/sp..., PartitionFilters: [], PushedFilters: [IsNotNull(hotel), EqualTo(hotel,Resort Hotel)], ReadSchema: struct<hotel:string,is_canceled:bigint,lead_time:bigint,arrival_date_year:bigint,arrival_date_mon...
 ```
 
-Khi này, ```Optimized Logical Plan``` không còn phép Project nữa, mà chỉ còn phép Filter, làm cho lúc tới bước physical plan, nó scan tất cả các cột trong bảng ```FileScan parquet test.hotel_bookings[hotel#0,is_canceled#1L,lead_time#2L,arrival_date_year#3L,arrival_date_month#4,arrival_date_week_number#5L,arrival_date_day_of_month#6L,stays_in_weekend_nights#7L,stays_in_week_nights#8L,adults#9L,children#10,babies#11L,meal#12,country#13,market_segment#14,distribution_channel#15,is_repeated_guest#16L,previous_cancellations#17L,previous_bookings_not_canceled#18L,reserved_room_type#19,assigned_room_type#20,booking_changes#21L,deposit_type#22,agent#23,... 8 more fields]```.
+At this point, `Optimized Logical Plan` there is no longer Project operator, but only Filter operator, so that when it comes to the physical plan step, it scans all the columns in the table `FileScan parquet test.hotel_bookings[hotel#0,is_canceled#1L,lead_time#2L,arrival_date_year#3L,arrival_date_month#4,arrival_date_week_number#5L,arrival_date_day_of_month#6L,stays_in_weekend_nights#7L,stays_in_week_nights#8L,adults#9L,children#10,babies#11L,meal#12,country#13,market_segment#14,distribution_channel#15,is_repeated_guest#16L,previous_cancellations#17L,previous_bookings_not_canceled#18L,reserved_room_type#19,assigned_room_type#20,booking_changes#21L,deposit_type#22,agent#23,... 8 more fields]`.
 
-Ở trên mình đã trình bày cụ thể về các thành phần của Spark Catalyst optimizer và cách viết các spark session extension để can thiệp thay đổi các plan của Catalyst, cũng đã có ví dụ code cụ thể để chứng minh điều này. Ở bài viết sau, mình sẽ trình bày thêm một phần nữa là tính năng mới trong Spark 3.0, đó là Spark Adaptive Query Execution, tính năng cải thiện tốc độ job Spark ở runtime.
+Above, I have specifically presented the components of Spark Catalyst optimizer and how to write spark session extensions to intervene to change Catalyst's plans, there are also specific code examples to demonstrate this. In the next article, I will present one more part that is a new feature in Spark 3.0, which is Spark Adaptive Query Execution, a feature that improves Spark job speed at runtime.
 
-### 5. Tài liệu tham khảo
+### 5. References
 
 [Deep Dive into Spark SQL's Catalyst Optimizer](https://www.databricks.com/blog/2015/04/13/deep-dive-into-spark-sqls-catalyst-optimizer.html)
 

@@ -1,6 +1,6 @@
 ---
 slug: sorting-algorithms
-title: Các thuật toán sắp xếp cơ bản
+title: Fundamental Sorting Algorithms
 authors: tranlam
 tags: [algorithms, sorting]
 image: ./images/intro.JPEG
@@ -8,50 +8,57 @@ image: ./images/intro.JPEG
 
 ![Intro](./images/intro.JPEG)
 
-Trở lại thôi. Những blogs đầu tiên này mình sẽ chỉ viết về những thuật toán cơ bản nhất khi mới chập chững vào học lập trình thôi. Thứ nhất, để mình học lại các thứ cơ bản (vì mình cực kì hay quên). Thứ hai, để các bạn mới học lập trình có thể tham khảo ha. Bài viết này sẽ nói về các thuật toán sắp xếp cơ bản mình được học ở trường lớp, và cũng tự học nữa.
+In these early blogs, I will only write about the most basic algorithms when I'm just starting to learn programming. First, let me relearn the basics (because I'm extremely forgetful). Second, for those who are new to programming, you can refer to it. This article will talk about the basic sorting algorithms I learned in school, and also taught myself.
 
 <!--truncate-->
 
-### 1. Tại sao chúng ta cần những thuật toán sắp xếp?
-**Thứ nhất**, đơn giản là chỉ để qua các kì thi ở trường đại học, học mấy môn Ngôn ngữ lập trình, Cấu trúc dữ liệu và giải thuật,... đi thi dễ bị hỏi mấy cái sắp xếp này lắm luôn.
+### 1. Why do we need sorting algorithms?
 
-**Thứ hai**, khâu sắp xếp phần tử thường là khâu trung gian, tiền xử lý dữ liệu trong các bài toán, hệ thống xử lý,... để thực hiện các công việc lớn hơn sau nó. Vì lượng dữ liệu trong các hệ thống thực tế luôn rất lớn, nên ta cần các thuật toán sắp xếp hiệu quả để đỡ tốn chi phí nhất (thời gian và bộ nhớ).
+**Firstly**, simply to pass exams at university, learn some Programming Languages, Data Structures and Algorithms, etc., it's easy to be asked these sorts of questions when taking the exam.
 
-**Các ví dụ đơn giản về áp dụng thuật toán sắp xếp**
-* Sắp xếp danh sách khách hàng theo tên trong tệp tin quản lý.
-* Tìm phần tử trung vị trong ${\Theta(1)}$, hay là tìm kiếm 1 phần tử nào đó với ${\Theta(logn)}$ nếu như có một mảng đã được sắp xếp.
-* Database sử dụng các thuật toán merge sort để sắp xếp các tập dữ liệu khi chúng quá lớn để load cả cục vào bộ nhớ.
-* Tìm kiếm file, nén dữ liệu, tìm đường đi.
-* Các trình thiết kế đồ họa cũng sử dụng thuật toán để sắp xếp các tầng (layers) để render thế nào cho hiệu quả.
-* Ăn xong cỗ, mẹ bạn bắt bạn rửa bát. Bạn vật lộn với chục chồng bát trong 1 tiếng lận và giờ bạn không muốn mất thêm bất cứ thời gian nào cho đống bát kia nữa. Hóa ra, công việc còn lại là sắp xếp đồng bát vào trạn sao cho ngăn nắp, đẹp và hơn hết là nhanh chóng để bạn còn đi nghịch điện thoại. Theo bản năng của tất cả người châu Á trí thông minh trung bình đổ lên, bạn đã sắp xếp chúng rất nhanh và chồng nhỏ đến chồng to rất bắt mắt, sau đó, bạn nhận ra là mình đã vô tình áp dụng Counting Sort vào việc này.
+**Second**, element arrangement is usually an intermediate stage, pre-processing data in many problems, processing systems,... to perform larger jobs after it. Since the amount of data in real systems is always very large, we need efficient sorting algorithms to save the cost (time and memory).
 
-**Các phép toán cơ bản sử dụng trung gian**
-* Phép toán so sánh 2 phần tử ${(a, b)}$, trả về ${True}$ nếu ${(a > b)}$, trả về ${False}$ nếu ngược lại.
-* Phép toán đổi chỗ 2 phần tử ${(a, b)}$, trong Python sẽ được thực hiện như sau
+**Basic examples of applying sorting algorithms**
+
+- Sort the list of customers by name in the customer management system.
+- Find the median element in ${\Theta(1)}$, or search for an element with ${\Theta(logn)}$ if there is a sorted array.
+- The database uses merge sort algorithms to sort data sets when they are too large to load locally into memory.
+- Files search, data compression, routes finding.
+- Graphic application also use sorting algorithms to arrange layers to render efficiently.
+- After finishing the meal, your mother made you wash the dishes. You struggled with dozens of bowls for an hour and now you don't want to waste any more time on those bowls. As it turns out, the remaining job is to arrange the dishes so that they are neat, beautiful, and most of all, quickly so that you can play with your phone. Instinctively for all Asians of average intelligence, you've sorted them out very quickly and stacked them up from small to big chunks, and then you realize you've accidentally applied Counting Sort algorithm.
+
+**Basic operations using in the intermediate stages**
+
+- Compare 2 elements ${(a, b)}$, return ${True}$ if ${(a > b)}$, otherwise return ${False}$.
+- Swap 2 elements ${(a, b)}$, in Python, it can be performed easily like
+
 ```python
 a, b = b, a
 ```
-Trong quá trình phân tích các thuật toán, ta giả sử rằng các phép toán trên chỉ tốn constant time ${\Theta(1)}$.
 
-### 2. Sắp xếp nổi bọt (bubble sort)
-Sắp xếp nổi bọt là loại sắp xếp đơn giản và kém hiệu quả, thường được dạy trong hầu hêt tất cả các course về thuật toán bởi nó khá trực quan. Sắp xếp nổi bọt so sánh từng cặp số trong một mảng và hoán đổi vị trí cho nhau nếu chúng không theo thứ tự. Những phần tử lớn nhất sẽ được đẩy xuống cuối mảng, trong khi những phần tử nhỏ sẽ dần dần "nổi lên" đầu mảng.
+During the analysis of algorithms, we assume that the above operations take only constant time ${\Theta(1)}$.
 
-**Thuật toán:**
-* So sánh ${arr[0]}$ với ${arr[1]}$, nếu ${arr[0] > arr[1]}$, hoán đổi vị trí của chúng. Tiếp tục làm như vậy cho với (${arr[1], arr[2]}$), (${arr[2], arr[3]}$),...
-* Thực hiện bước ${n}$ lần.
-Để trực quan hơn, mình đem ra hình ảnh mô tả sau
+### 2. Bubble sort
+
+Bubble sort is a simple and inefficient sort that is taught in almost all algorithm courses because it is quite intuitive. Bubble sort compares each pair of numbers in an array and swaps places if they're out of order. The largest elements will be pushed to the bottom of the array, while the smaller elements will gradually "float" to the top of the array.
+
+**Algorithm:**
+
+- Compare ${arr[0]}$ to ${arr[1]}$, if ${arr[0] > arr[1]}$, swap their positions. Continue doing this with (${arr[1], arr[2]}$), (${arr[2], arr[3]}$),...
+- Repeat this step ${n}$ times.
+
+To make it more intuitive, I give the following descriptive image
 
 ![Bubble Sort](./images/bubble.GIF)
 
-**Phân tích thuật toán:**
-* **Best case:** xảy ra khi ta áp dụng thuật toán trên mảng đã được sắp xếp. Khi đó, sẽ không có bước swap nào trong lần duyệt đầu tiên, chỉ có các bước so sánh, từ đó thì thuật toán sẽ kết thúc luôn sau lần duyệt này.
-Vì thế, time complexity sẽ là ${\Theta(n)}$.
-Vì lý do này, bubble sort cũng được dùng để kiểm tra xem một mảng đã được sắp xếp hay chưa.
-* **Worst case:** xảy ra khi mảng bị sắp xếp theo chiều ngược lại, do đó, có ${n-1}$ phép so sánh và hoán đổi sẽ được thực hiện trong lần duyệt đầu tiên, ${n-2}$ phép so sánh và hoán đổi sẽ được thực hiện trong lần duyệt tiếp theo,...
-Vì thế, tổng số phép so sánh và hoán đổi sẽ là ${Sum = (n-1) + (n-2) +...+ 2 + 1 = \frac{n \times (n-1)}{2}}$. Do đó, time complexity sẽ là ${\Theta(n^2)}$.
-* **Space complexity:** ${\Theta(1)}$.
+**Algorithm analysis:**
 
-**Code Python**
+- **Best case:** occurs when we apply the algorithm on the sorted array. Then, there will be no swap steps in the first pass, only comparison steps, from which the algorithm will end after this pass. So the time complexity will be ${\Theta(n)}$. For this reason, bubble sort is also used to check if an array is sorted.
+- **Worst case:** occurs when the array is sorted in reverse, therefore, ${n-1}$ comparisons and swaps will be performed on the first pass, ${n-2}$ comparisons and swaps will be performed on the second pass,... Therefore, the total number of comparisons and swaps will be ${Sum = (n-1) + (n-2) +...+ 2 + 1 = \frac{n \times (n-1)}{2}}$. Time complexity will be ${\Theta(n^2)}$.
+- **Space complexity:** ${\Theta(1)}$.
+
+**Python Code**
+
 ```python
 ini_arr = [1, 5, 2, 45, 2, 32, 12, 55, 26, 77, 8]
 
@@ -68,28 +75,32 @@ def bubble_sort(arr):
 bubble_sort(ini_arr)
 print(ini_arr)
 ```
+
 Output
+
 ```python
 [1, 2, 2, 5, 8, 12, 26, 32, 45, 55, 77]
 ```
 
-### 3. Sắp xếp chèn (insertion sort)
-Tưởng tượng bạn chơi tiến lên miền Nam, khi mới được phát xong bộ bài trong tay, bạn có nhiều cách sắp xếp tùy theo cá tính của bạn. Với mình, mình thường sắp xếp theo thứ tự quân bài từ bé đến lớn. Những lúc muốn sắp 1 lá bài mới vào bộ quân bài trên tay đã theo thứ tự, mình thực hiện chèn lá bài vào vị trí thích hợp, và đó cũng là ý tưởng của insertion sort.
+### 3. Insertion sort
 
-**Thuật toán:**
-Với ${i = 1, 2,..., n - 1}$, ta sẽ chèn ${arr[i]}$ vào trong mảng đã sắp xếp ${arr[0:i-1]}$ bằng việc thực hiện dịch lần lượt các phần tử lớn hơn ${arr[i]}$ của mảng ${arr[0:i-1]}$ lên và đặt ${arr[i]}$ vào đúng vị trí thích hợp.
-Để trực quan hơn, mình đem ra hình ảnh mô tả sau
+Imagine you play card game, when you have the deck in your hand, you have many ways to arrange it depending on your personality. For me, I usually arrange the cards in order from smallest to largest. When I want to arrange a new card into the deck of cards in my hand that is in order, I just insert the card into the appropriate position, and that is also the idea of ​​insertion sort.
+
+**Algorithm:**
+With ${i = 1, 2,..., n - 1}$, we will insert ${arr[i]}$ into the sorted array ${arr[0:i-1]}$ by moving the elements greater than ${arr[i]}$ of the array ${arr[0:i-1]}$ to the top and put ${arr[i]}$ in the desired position.
+
+To make it more intuitive, I give the following descriptive image
 
 ![Insertion Sort](./images/insertion.GIF)
 
-**Phân tích thuật toán:**
-* **Best case:** xảy ra khi ta áp dụng thuật toán với mảng đã được sắp xếp. Khi đó, ta chỉ cần duyệt qua 1 lượt mảng, chỉ so sánh và không cần thực hiện một bước hoán đổi nào cả.
-Vì thế, time complexity sẽ là ${\Theta(n)}$.
-* **Worst case:** xảy ra khi mảng bị sắp xếp theo chiều ngược lại, sẽ có 1 phép so sánh và gán trong lần duyệt đầu tiên, 2 phép so sánh và gán trong lần dịch thứ hai,...
-Vì thế, tổng số phép so sánh và gán sẽ là ${Sum = 1 + 2 +...+ (n-1) = \frac{n \times (n-1)}{2}}$. Do đó, time complexity sẽ là ${\Theta(n^2)}$.
-* **Space complexity:** ${\Theta(1)}$.
+**Algorithm analysis:**
 
-**Code Python**
+- **Best case:** occurs when we apply the algorithm to the sorted array. Then, we only need to iterate over the array, only compare and do not need to perform a swap step at all. So the time complexity will be ${\Theta(n)}$.
+- **Worst case:** occurs when the array is sorted in reverse, there will be 1 comparison and assignment in the first pass, 2 comparisons and assignment in the second,... Therefore, the total number of operations compare and assign would be ${Sum = 1 + 2 +...+ (n-1) = \frac{n \times (n-1)}{2}}$. Therefore, time complexity will be ${\Theta(n^2)}$.
+- **Space complexity:** ${\Theta(1)}$.
+
+**Python Code**
+
 ```python
 ini_arr = [1, 5, 2, 45, 2, 32, 12, 55, 26, 77, 8]
 
@@ -106,31 +117,35 @@ def insertion_sort(arr):
 insertion_sort(ini_arr)
 print(ini_arr)
 ```
+
 Output
+
 ```python
 [1, 2, 2, 5, 8, 12, 26, 32, 45, 55, 77]
 ```
 
-### 4. Sắp xếp lựa chọn (selection sort)
-Ý tưởng là ta sẽ **giả định** chia mảng của ta ra làm 2 phần: mảng con được sắp xếp ${arr{_1}}$ và mảng con chưa được sắp xếp ${arr{_2}}$. Lúc này, ${arr = (arr{_1})(arr{_2})}$.
-Ta sẽ lần lượt tìm phần tử nhỏ nhất của ${arr{_2}}$, tách ra và đẩy phần tử đó sang ${arr{_1}}$. Mình nói **giả định** ở đây là sao, là chúng ta không thực sự tạo ra 2 mảng con mới, mà các hoạt động đều được thực hiện trên mảng gốc.
+### 4. Selection sort
 
-**Thuật toán:**
-* Tìm phần tử nhỏ nhất của ${arr{_2}}$.
-* Hoán đổi vị trí của phần tử nhỏ nhất ấy với phần tử đầu tiên của ${arr{_2}}$. Lúc này, ta xem như ${arr{_2}}$ đã không còn phần tử nhỏ nhất đó, và giờ phần từ nhỏ nhất đó đã ghép vào ${arr{_1}}$.
+The idea is that we will **assume** to split our array into 2 parts: sorted subarray ${arr{_1}}$ and unsorted subarray ${arr{_2}}$. At this moment, ${arr = (arr{_1})(arr{_2})}$.
+We will in turn find the smallest element of ${arr{_2}}$, detach and push the element to ${arr{_1}}$. The **assumption** here, that we are not actually creating 2 new sub-arrays, but the operations are performed on the original array.
 
-Mình có hình ảnh để thuật toán thêm trực quan hơn
+**Algorithm:**
+
+- Find the smallest element of ${arr{_2}}$.
+- Swap the position of that smallest element with the first element of ${arr{_2}}$. At this point, we assume in ${arr{_2}}$, ​that smallest element is gone, and now it has been merged into ${arr{_1}}$.
+
+I have an image to make the algorithm more intuitive
 
 ![Selection Sort](./images/selection.PNG)
 
-**Phân tích thuật toán:**
-* **Best case:** xảy ra khi áp dụng thuật toán trên mảng đã sắp xếp, ta chỉ phải so sánh chứ không cần thực hiện hoán đổi vị trí.
-Vì thế, time complexity sẽ là ${\Theta(n)}$.
-* **Worst case:** xảy ra khi mảng trên được sắp xếp theo chiều ngược lại, mỗi lần duyệt ta phải tìm phần tử nhỏ nhất của mảng con ${arr{_2}}$.
-Vì thế, tổng số phép duyệt để tìm các phần tử nhỏ nhất sẽ là ${Sum = (n-1) + (n-2) +...+ 1 = \frac{n \times (n-1)}{2}}$. Do đó, time complexity sẽ là ${\Theta(n^2)}$.
-* **Space complexity:** ${\Theta(1)}$.
+**Algorithm analysis:**
 
-**Code Python**
+- **Best case:** occurs when applying the algorithm on the sorted array, we only have to compare, not swap positions. So the time complexity will be ${\Theta(n)}$.
+- **Worst case:** occurs when the above array is sorted in reverse, each time we have to find the smallest element of the subarray ${arr{_2}}$. Therefore, the total number of traversals to find the smallest elements will be ${Sum = (n-1) + (n-2) +...+ 1 = \frac{n \times (n-1)}{2}}$. Time complexity will be ${\Theta(n^2)}$.
+- **Space complexity:** ${\Theta(1)}$.
+
+**Python Code**
+
 ```python
 ini_arr = [1, 5, 2, 45, 2, 32, 12, 55, 26, 77, 8]
 
@@ -146,32 +161,36 @@ def selection_sort(arr):
 selection_sort(ini_arr)
 print(ini_arr)
 ```
+
 Output
+
 ```python
 [1, 2, 2, 5, 8, 12, 26, 32, 45, 55, 77]
 ```
 
-### 5. Sắp xếp trộn (merge sort)
-Sắp xếp trộn là một trong những thuật toán hiệu quả nhất. Thuật toán hoạt động dựa trên nguyên tắc chia và trị, lần lượt tách các mảng ra 2 mảng con cho đến khi các mảng con chỉ còn 1 phần tử. Sau đó, thuật toán "trộn" các mảng con đó thành mảng được sắp xếp hoàn chỉnh.
+### 5. Merge sort
 
-**Thuật toán:**
-* Lần lượt chia mảng gốc thành 2 mảng con, 2 mảng con thành 4 mảng con nữa,... đến khi ta được ${n}$ mảng con, mỗi mảng con chứa 1 phần tử.
+Merge sort is one of the most efficient algorithms. The algorithm works on the principle of divide and conquer, separating the arrays into 2 sub-arrays, respectively, until the sub-arrays have only 1 element left. Then the algorithm "merge" those sub-arrays into a fully sorted array.
+
+**Algorithm:**
+
+- Divide the original array into 2 sub-arrays, 2 sub-arrays into 4 more sub-arrays,... until we get ${n}$ subarrays, each subarray contains 1 element.
 
 ![Merge Sort 1](./images/merge_1.PNG)
 
-* Trộn các mảng con để tạo ra mảng lớn hơn được sắp xếp theo thứ tự cho đến khi ta nhận được 1 mảng duy nhất. Đó chính là mảng đã được sắp xếp từ mảng gốc.
+- Merge sub-arrays to create larger arrays sorted in order until we get a single array. That is the sorted array from the original array.
 
 ![Merge Sort 2](./images/merge_2.PNG)
 
-Tổng kết lại thuật toán trong 1 hình ảnh
+Summarize the algorithm in 1 image
 
 ![Merge Sort](./images/merge.PNG)
 
-**Phân tích thuật toán:**
-* **Tách mảng:** thuật toán sẽ tính toán điểm giữa của mảng bằng việc lấy chiều dài mảng rồi chia 2, do đó, tốn constant time ${\Theta(1)}$ để chia mảng ra làm 2 mảng con.
-* **Sắp xếp mảng con:** giả sử sắp xếp mảng tốn ${T(n)}$ time. Như vậy để sắp xếp 2 mảng con, ta tốn ${2T(\frac{n}{2})}$ time.
-* **Trộn 2 mảng con:** sử dụng thuật toán "2 ngón tay", mỗi ngón trỏ tới vị trí đầu của mỗi mảng con. Chúng ta lần lượt so sánh 2 số tại 2 vị trí mà 2 ngón tay trỏ đến và chọn số bé hơn để đẩy vào mảng kết quả. Cứ phần tử ở mảng con nào được đẩy vào, ta đưa ngón tay trỏ tới phần tử tiếp theo của mảng đó. Việc này khiến ta phải duyệt qua ${2 \times \frac{n}{2} = n}$ phần tử, do đó, ta tốn ${\Theta(n)}$.
-Như vậy, ta có biểu thức sau
+**Algorithm analysis:**
+
+- **Split array:** the algorithm will calculate the midpoint of the array by taking the array length and then dividing it by 2, so it takes constant time ${\Theta(1)}$ to split the array into 2 sub-arrays.
+- **Sorting subarrays:** assuming array sorting costs ${T(n)}$ time. So to sort 2 sub-arrays, we spend ${2T(\frac{n}{2})}$ time.
+- **Merge 2 subarrays:** using the "2-finger" algorithm, each index finger points to the beginning of each subarray. We in turn compare 2 numbers at 2 positions that 2 fingers point to and choose the smaller number to push into the resulting array. Every element in a subarray is pushed in, we move the index finger to the next element of that array. This will make us have to traverse ${2 \times \frac{n}{2} = n}$ elements, therefore, that costs ${\Theta(n)}$. Thus, we have the following expression
 
 <p style={{textAlign: "center"}}>
 
@@ -179,14 +198,16 @@ ${T(n) = \Theta(1) + 2T(\frac{n}{2}) + \Theta(n)}$
 
 </p>
 
-Với base case ở đây là ${T(1) = \Theta(1)}$.
+With base case here is ${T(1) = \Theta(1)}$.
 
 ![Merge Sort 3](./images/merge_3.PNG)
 
-Với mỗi mức thuật toán thực hiện ${\Theta(n)}$ công việc, có ${1+logn}$ mức. Do đó, ${T(n) = \Theta(n + nlogn) = \Theta(nlogn)}$. Thuật toán sẽ có time complexity là ${\Theta(nlogn)}$.
-* **Space complexity:** Vì trong bước "trộn", ta phải tự tạo ra 2 mảng con, mỗi mảng con có số phần tử là ${\frac{n}{2}}$, do vậy, không gian bộ nhớ phụ trợ sẽ là ${\Theta(n)}$.
+For each tree level, the algorithm executes ${\Theta(n)}$ units of work, there are total ${1+logn}$ levels. Therefore, ${T(n) = \Theta(n + nlogn) = \Theta(nlogn)}$. Time complexity will be ${\Theta(nlogn)}$.
 
-**Code Python**
+- **Space complexity:** Because in the "merge" step, we have to manually create 2 sub-arrays, each with a number of elements ${\frac{n}{2}}$, so the auxiliary memory space will be ${\Theta(n)}$.
+
+**Python Code**
+
 ```python
 import math
 ini_arr = [1, 5, 2, 45, 2, 32, 12, 55, 26, 77, 8]
@@ -230,36 +251,42 @@ def merge_sort(arr, l, r):
 merge_sort(ini_arr, 0 ,len(ini_arr) - 1)
 print(ini_arr)
 ```
+
 Output
+
 ```python
 [1, 2, 2, 5, 8, 12, 26, 32, 45, 55, 77]
 ```
 
-### 6. Sắp xếp vun đống (heap sort)
-Sắp xếp vun đống lấy dựa trên cấu trúc dữ liệu binary heap.
+### 6. Heap sort
 
-**Cấu trúc dữ liệu binary heap:**
-Một mảng dữ liệu có thể được biểu diễn dưới dạng cây nhị phân như sau
+The heap sort is based on the binary heap data structure.
+
+**Binary heap data structure:**
+An array of data can be represented as a binary tree as follows
 
 ![Heap Sort](./images/heap.PNG)
 
-Với mỗi node bất kỳ với chỉ số tương ứng là ${i}$ trong cây nhị phân ở trên
-* Node cha của ${i}$ sẽ có chỉ số ${parent(i)}$ là ${\Bigl\lfloor\dfrac{i}{2}\Bigr\rfloor\qquad}$.
-* Node con trái sẽ có chỉ số ${leftchild(i)}$ là ${2i}$.
-* Node con phải sẽ có chỉ số ${rightchild(i)}$ là ${2i + 1}$.
+For any node with the corresponding index ${i}$ in the binary tree above
 
-Có 2 kiểu của cấu trúc dữ liệu này đó là: max-heap và min-heap.
-* Trong max-heap, ta luôn có ${A[parent(i)] \ge A[i]}$. Do vậy, phần tử lớn nhất nằm ở root, còn phần tử nhỏ nhất nằm ở leaf.
-* Trong min-heap, ta luôn có ${A[parent(i)] \le A[i]}$. Do vậy, phần tử nhỏ nhất nằm ở root, còn phần tử lớn nhất nằm ở leaf.
+- Parent node of ${i}$, which is ${parent(i)}$ will have the index of ${\Bigl\lfloor\dfrac{i}{2}\Bigr\rfloor\qquad}$.
+- Left child node, which is ${leftchild(i)}$ will have the index of ${2i}$.
+- Right child node, which is ${rightchild(i)}$ will have the index of ${2i + 1}$.
 
-Từ đó, thuật toán sắp xếp này áp dụng max-heap hoặc min-heap (trong bài này mình sẽ dùng max-heap) để tạo ra mảng sắp xếp theo thứ tự.
+There are two types of this data structure: max-heap and min-heap.
 
-**Tạo max-heap:** gọi là **max_heapify**
-Mình sẽ đưa ra ví dụ đơn giản với mảng 3 phần tử để thêm trực quan, còn với mảng n phần tử sẽ cần làm theo một cách tổng quát hơn
+- In max-heap, we always have ${A[parent(i)] \ge A[i]}$. Therefore, the largest element is in the root, and the smallest element is in the leaf.
+- In min-heap, we always have ${A[parent(i)] \le A[i]}$. Therefore, the smallest element is in the root, and the largest element is in the leaf.
+
+From there, this sorting algorithm applies max-heap or min-heap (in this article, I will use max-heap) to create an ordered array.
+
+**Create a max-heap:** called **max_heapify**
+I will give a simple example with a 3-element array for added visualization, but with an n-element array it will need to be done in a more general way
 
 ![Heap Sort 2](./images/heap_2.PNG)
 
-Code python cho **max_heapify** tại một node có chỉ số ${i = index}$, ${length}$ là chiều dài của mảng, thêm vào để làm điều kiện ràng buộc cho chỉ số các node con. Thuật toán ở dưới nói rằng, nếu node ở chỉ số ${i = index}$ chưa đúng với quy luật max-heap, ta sẽ **max_heapify** lại cây với root là node đó, đồng thời **max_heapify** lại các cây với root là các node con trái và phải của node đó.
+Python code for **max_heapify** at a node with index ${i = index}$, ${length}$ is the length of the array, added as a constraint for the index of child nodes. The algorithm below says that, if the node is at ${i = index}$ ot in accordance with the max-heap rule, we will **max_heapify** the tree with the root as that node, and **max_heapify** the trees with the root being the left and right child nodes of that node.
+
 ```python
 def max_heapify(arr, length, index):
     l = (index + 1) * 2 - 1
@@ -273,18 +300,21 @@ def max_heapify(arr, length, index):
         arr[index], arr[largest] = arr[largest], arr[index]
         max_heapify(arr, length, largest)
 ```
-**max_heapify** này sẽ tốn ${\Theta(logn)}$ với mỗi node được xét. Bởi vì mỗi lần, node đó sẽ cần phải đi xuống 1 cấp trên cây để xét, thuật toán sẽ chọn đúng nhánh để đi xuống và nó sẽ không backtrack lại lên trên. Do vậy, đường đi dài nhất thuật toán này có thể phải duyệt là từ root đến 1 leaf, là chiều cao của cây. Chiều cao của cây nhị phân có ${n}$ node là ${\Theta(logn)}$.
 
-**Thuật toán:**
-* Ta biểu diễn mảng và sắp xếp các phần tử để có một cây max-heap. Do đó, root của cây này (khi này sẽ tương ứng với phần tử có chỉ số là ${i = 0}$ trong mảng, với ${i = 0, 1,..., n-1}$) sẽ là phần tử lớn nhất.
-* Ta hoán đổi vị trí của root ${arr[0]}$ với phần tử cuối cùng của mảng ${arr[n-1]}$. Lúc này, phần tử lớn nhất của mảng đã nằm ở vị trí cuối cùng.
-* Làm lại bước 1 và 2 với phần mảng còn lại ${arr[0:n-2]}$,...
+**max_heapify** will cost ${\Theta(logn)}$ for each node under consideration. Because each time, that node will need to go down 1 level in the tree to be considered, the algorithm will choose the correct branch to go down and it will not backtrack back up. Therefore, the longest path this algorithm can take is from root to a leaf, which is the height of the tree. The height of the binary tree has ${n}$ nodes is ${\Theta(logn)}$.
 
-**Phân tích thuật toán:**
-Xây dựng một cây max-heap từ mảng chưa sắp xếp cần ${\Theta(n)}$ lời gọi hàm **max_heapify**, mỗi lời gọi **max_heapify** tốn ${\Theta(logn)}$ time. Như vậy, toàn bộ thuật toán có time complexity là ${\Theta(nlogn)}$.
-Tuy vậy, thuật toán heap sort có ưu điểm hơn so với merge sort đó là nó chỉ sử dụng ${\Theta(1)}$ bộ nhớ tạm thời, trong khi merge sort là ${\Theta(n)}$. Nếu yếu tố bộ nhớ cũng quan trọng trong hệ thống của bạn (giả dụ các hệ thống bộ nhớ nhỏ như hệ thống nhúng,...), bạn hãy cân nhắc dùng heap sort hơn là merge sort. 
+**Algorithm:**
 
-**Code Python**
+- We represent the array and sort the elements to get a max-heap tree. Therefore, the root of this tree (this will correspond to the element with index ${i = 0}$ in the array, for ${i = 0, 1,..., n-1}$) will be the largest element.
+- We swap the location of root ${arr[0]}$ with the last element of the array ${arr[n-1]}$. At this point, the largest element of the array is in the last index.
+- Repeat steps 1 and 2 with the rest of the array ${arr[0:n-2]}$,...
+
+**Algorithm analysis:**
+Building a max-heap tree from an unsorted array needs ${\Theta(n)}$ functiohn calls **max_heapify**, each **max_heapify** cost ${\Theta(logn)}$ time. Thus, the whole algorithm has a time complexity of ${\Theta(nlogn)}$.
+However, the heap sort algorithm has an advantage over merge sort in that it only uses ${\Theta(1)}$ temporary memory, while merge sort is ${\Theta(n)}$. If the memory factor is also important in your system (eg. small memory systems like embedded systems, etc.), you should consider using heap sort rather than merge sort.
+
+**Python Code**
+
 ```python
 import math
 ini_arr = [1, 5, 2, 45, 2, 32, 12, 55, 26, 77, 8]
@@ -314,47 +344,52 @@ def heap_sort(arr):
 heap_sort(ini_arr)
 print(ini_arr)
 ```
+
 Output
+
 ```python
 [1, 2, 2, 5, 8, 12, 26, 32, 45, 55, 77]
 ```
 
-### 7. Sắp xếp nhanh (quick sort)
-Thuật toán sắp xếp nhanh được phát triển bởi một nhà khoa học máy tính người Anh Tony Hoare vào năm 1959, sử dụng nguyên lý chia và trị để sắp xếp 1 mảng.
+### 7. Quick sort
 
-**Thuật toán:**
-* **Chia mảng:** 
-    * Chọn một phần tử bất kỳ (gọi là pivot), ${A[m]}$. Nếu ta chọn được 1 pivot tốt thì thuật toán của ta sẽ chạy rất nhanh. Tuy nhiên, sẽ rất khó để biết được phần tử nào được coi là 1 pivot tốt. Có một vài cách chọn pivot phổ biến sau:
-        * Chọn pivot ngẫu nhiên.
-        * Chọn phần tử trái nhất hoặc phải nhất.
-        * Lấy 3 phần tử: đầu tiên, ở giữa, cuối cùng của mảng và chọn ra phần tử trung vị từ chúng.
-    * Chia mảng của ta ra làm 2 phần con: ${A[l:m-1]}$ gồm các phần tử nhỏ hơn ${A[m]}$, và ${A[m+1:r]}$ chứa các phần tử lớn hơn ${A[m]}$.
-    Hình ảnh dưới đây thể hiện trực quan hơn cách chia mảng, với pivot luôn lấy là phần tử cuối cùng
+The quick sort algorithm, developed by a British computer scientist Tony Hoare in 1959, uses the principle of divide and conquer to sort an array.
+
+**Algorithm:**
+
+- **Split array:**
+  - Select any element (called pivot), ${A[m]}$. If we choose a good pivot, our algorithm will run very fast. However, it will be difficult to know which element is considered a good pivot. There are a few common pivot selections:
+    - Choose a random pivot.
+    - Select the leftmost or rightmost element.
+    - Take 3 elements: first, middle, last of the array and pick the median from them.
+  - Split our array into 2 subparts: ${A[l:m-1]}$ consists of elements smaller than ${A[m]}$, and ${A[m+1:r]}$ consists of elements larger than ${A[m]}$. The image below shows more visually how to divide the array, with pivot always taking the last element
 
 ![Quick Sort 2](./images/quick_2.PNG)
 
-* **Trị:** sắp xếp một cách đệ quy 2 phần con trên bằng quick sort.
-* **Kết hợp:** không cần kết hợp các phần con được chia vì kết quả cuối cùng đã cho mảng sắp xếp theo thứ tự.
-* **Thuật toán đệ quy hoàn chỉnh:**
-    * Chọn một pivot. Chia mảng ra làm 2 phần dựa trên pivot.
-    * Áp dụng quick sort trên phần nửa nhỏ hơn pivot.
-    * Áp dụng quick sort trên phần nửa lớn hơn pivot.
+- **Conquer:** recursively sort the above 2 subsections using quick sort.
+- **Merge:** no need to combine the divided subsections because the final result is already sorted array.
+- **The complete recursive algorithm:**
+  - Select a pivot. Split array into 2 parts based on pivot.
+  - Apply quick sort on the smaller half of the pivot.
+  - Apply quick sort on half larger than pivot.
 
-**Phân tích thuật toán:**
+**Algorithm analysis:**
+
 <p style={{textAlign: "center"}}>
 
 ${T(n) = T(k) + T(n-k-1) + \Theta(n)}$
 
 </p>
 
-Với ${k}$ là số phần tử nhỏ hơn pivot. Time complexity cho quá trình **partition** là ${\Theta(n)}$.
+With ${k}$ is the number of elements which are smaller than pivot. The time complexity for **partitioning** process is ${\Theta(n)}$.
 
-* **Best case:** xảy ra khi thuật toán chia nửa **partition** luôn chia được mảng của ta thành đúng 2 phần bằng hoặc gần bằng nhau.
+- **Best case:** occurs when the **partitioning** algorithm always divides our array into exactly 2 equal or nearly equal parts.
 
 ![Quick Sort](./images/quick.PNG)
 
-Như vậy, ở best case, time complexity sẽ là ${\Theta(nlogn)}$.
-* **Worst case:** xảy ra khi **partition** luôn chọn phải số lớn nhất hoặc số nhỏ nhất làm pivot. Nếu như ta chọn pivot theo chiến thuật "luôn chọn phần tử cuối của mảng", worst case sẽ xảy ra khi mà mảng đã được sắp xếp theo thứ tự giảm dần. Lúc này
+Thus, in the best case, the time complexity will be ${\Theta(nlogn)}$.
+
+- **Worst case:** occurs when the **partitioning** algorithm always chooses the largest or the smallest number as the pivot. If we choose the pivot using the "always pick the last element of the array" strategy, the worst case will happen when the array is sorted in descending order. At this moment
 
 <p style={{textAlign: "center"}}>
 
@@ -362,11 +397,12 @@ ${T(n) = T(0) + T(n-1) + \Theta(n) = T(n-1) + \Theta(n)}$
 
 </p>
 
-Với base case là ${\Theta(1)}$ thì worst case, time complexity sẽ là ${T(n) = \Theta(1) + \Theta(n) + \Theta(n) +...+ \Theta(n) = \Theta(n^2)}$
+With the base case being ${\Theta(1)}$ then in the worst case, time complexity will be ${T(n) = \Theta(1) + \Theta(n) + \Theta(n) +...+ \Theta(n) = \Theta(n^2)}$
 
-Mặc dù worst case của quick sort chậm hơn nhiều so với các thuật toán sắp xếp khác, nhưng trong thực tế, vòng lặp trong **partition** có thể được triển khai một cách hiệu quả trên hầu như tất cả cấu trúc dữ liệu, bởi nó chứa khá ít các "constant factors" (các phép toán yêu cầu constant time ${\Theta(1)}$) hơn các thuật toán khác, và nếu 2 thuật toán nào có cùng time complexity là ${\Theta(nlogn)}$, thuật toán nào có ít "constant factors" hơn thì chạy nhanh hơn. Hơn nữa, worst case của quick sort sẽ hiếm khi xảy ra. Tuy vậy, với lượng dữ liệu rất lớn và được lưu trữ ở bộ nhớ ngoài, merge sort sẽ được ưu ái hơn quick sort.
+Although the worst case of quick sort is much slower than other sorting algorithms, in practice the partition loop can be implemented efficiently on almost all data structures, because it contains relatively fewer "constant factors" (operators that require constant time ${\Theta(1)}$) than other algorithms, and if two algorithms have the same time complexity ${\Theta(nlogn)}$, the algorithm with fewer "constant factors" runs faster. Furthermore, the worst case of quick sort will rarely happen. However, with a very large amount of data and stored in external memory, merge sort will be preferred over quick sort.
 
-**Code Python**
+**Python Code**
+
 ```python
 ini_arr = [1, 5, 2, 45, 2, 32, 12, 55, 26, 77, 8]
 
@@ -389,33 +425,40 @@ def quick_sort(arr, l, r):
 quick_sort(ini_arr, 0, len(ini_arr) - 1)
 print(ini_arr)
 ```
+
 Output
+
 ```python
 [1, 2, 2, 5, 8, 12, 26, 32, 45, 55, 77]
 ```
 
-### 8. Sắp xếp đếm (counting sort)
-Một thuật toán khá thú vị mà mình học được, thậm chí nó chạy ở linear time, đó là counting sort. Thuật toán này hầu như chỉ được áp dụng với số nguyên, rất khó hoặc không thể áp dụng được với số thực.
+### 8. Counting sort
 
-**Thuật toán:**
-* Giả sử các phần tử của mảng gốc ${A[0, 1, 2,..., n-1]}$ chứa các phần tử có giá trị trong khoảng ${[0, k]}$. Counting sort tạo ra một mảng tạm thời nữa để đếm là mảng ${B[0, 1, 2,..., k-1]}$ gồm ${k}$ phần tử. Phần tử thứ ${i}$ của ${B}$ sẽ chứa số phần tử ${A[j]}$ thỏa mãn ${A[j] = i }$ với ${j = 0, 1, 2,..., n-1}$.
-* Từ mảng ${B}$ có được, ta làm phẳng thì sẽ được mảng ${C[0, 1, 2,..., n-1]}$ chứa các phần tử sắp xếp theo thứ tự.
-Để trực quan hơn, mình có ví dụ sau
+An interesting algorithm I learned that even runs at linear time is counting sort. This algorithm is applied almost exclusively to integers, it is difficult or impossible to apply to real numbers.
+
+**Algorithm:**
+
+- Assume the elements of the original array ${A[0, 1, 2,..., n-1]}$ contains elements with values ​​in the range ${[0, k]}$. Counting sort creates another temporary array to count as array ${B[0, 1, 2,..., k-1]}$ including ${k}$ elements. The ${i^{th}}$ element of ${B}$ will contain the number of elements ${A[j]}$ satisfy ${A[j] = i }$ with ${j = 0, 1, 2,..., n-1}$.
+- From ${B}$, if we flatten it, we will get an array ${C[0, 1, 2,..., n-1]}$ contains ordered elements. To be more intuitive, I have the following example
 
 ![Counting Sort](./images/counting.PNG)
 
-Đối với trường hợp mảng ${A}$ chứa các phần tử âm, ta thực hiện tìm phần tử nhỏ nhất của ${A}$ và lưu trữ số phần tử đó của ${A}$ tại chỉ số ${0}$ của ${B}$ (vì không thể tồn tại chỉ số âm trong mảng).
+For the case ${A}$ contains negative elements, we find the smallest element of ${A}$ and store that element of ${A}$ at the index ${0}$ of the array ${B}$ (because there cannot exist negative index in an array).
 
-**Phân tích thuật toán:**
-* Tạo ra mảng ${B}$ rỗng tốn ${\Theta(k)}$ time.
-* Tính các phần tử của mảng ${B}$ dựa vào mảng ${A}$ tốn ${\Theta(n)}$ time.
-* Làm phẳng ${B}$ để lấy ${C}$ tốn ${\Theta(n)}$ time.
+**Algorithm analysis:**
 
-Tổng time complexity sẽ là ${\Theta(n+k)}$.
-Phần phân tích này sẽ được viết rõ trong comment của code.
-* **Space complexity:** ${\Theta(n+k)}$
+- Create empty array ${B}$ cost ${\Theta(k)}$ time.
+- Calculate the elements of the array ${B}$ based on ${A}$ cost ${\Theta(n)}$ time.
+- Flatten ${B}$ to have ${C}$ will cost ${\Theta(n)}$ time.
 
-**Code Python**
+Total time complexity will be ${\Theta(n+k)}$.
+
+This analysis will be clearly written in the comments of the code.
+
+- **Space complexity:** ${\Theta(n+k)}$
+
+**Python Code**
+
 ```python
 ini_arr = [-10, -5, -20, -10, -1, -5, 5, 2, 45, 2, 32, 12, 55, 26, 77, 8]
 
@@ -424,46 +467,50 @@ def counting_sort(A):
     max_ele = int(max(A))
     range_ele = max_ele - min_ele + 1
     B = []
-    # Bước này tốn O(k) time
+    # This costs O(k) time
     for i in range(range_ele):
         B.append(0)
     ###############################
 
-    # Bước này tốn O(n) time
+    # This costs O(n) time
     for i in range(len(A)):
         B[A[i] - min_ele] += 1
     ###############################
 
     C = []
-    # Ta có sum(B)= n = len(A) và append() tốn constant time O(1). Như vậy bước này tốn O(n)
+    # We have sum(B)= n = len(A) and append() cost constant time O(1). So this step costs O(n) time
     for i in range(range_ele):
         for j in range(B[i]):
             C.append(i + min_ele)
     ###############################
 
-    # ----> Tổng sẽ tốn O(n+k)
+    # ----> In total, the algorithm costs O(n+k) time complexity
     return C
 
 print(counting_sort(ini_arr))
 ```
+
 Output
+
 ```python
 [-20, -10, -10, -5, -5, -1, 2, 2, 5, 8, 12, 26, 32, 45, 55, 77]
 ```
 
-**Nhận xét counting sort:** 
-* Như ta đã thấy ở trên, counting sort có time complexity và space complexity là ${\Theta(n+k)}$, do đó, counting sort sẽ rất hiệu quả khi mà khoảng của dữ liệu đầu vào nhỏ, không quá lớn hơn nhiều so với ${n}$ (hay ${k}$ khá nhỏ).
-Ví dụ, nếu ${k}$ lớn, khoảng ${k = \Theta(n^2)}$, thì time complexity và space complexity sẽ là ${\Theta(n^2)}$ rất tệ.
-* Counting sort cũng có thể phù hợp với các bài toán mà các phần tử của mảng là một cấu trúc dữ liệu khác, nhưng cấu trúc dữ liệu đó phải có một ${key}$ là số nguyên để đại diện cho từng object trong cấu trúc dữ liệu đó.
-* Counting sort còn là chương trình con cho thuật toán mạnh mẽ hơn là Radix sort, thuật toán sắp xếp chạy ở linear time với giá trị ${k}$ lớn hơn trong counting sort, là ${k = n^{\Theta(1)}}$ (lũy thừa hằng của ${n}$). 
-* Như đã nói ở phần giới thiệu, việc bạn sắp bát theo thứ tự từ nhỏ đến lớn, tích lũy số bát theo từng kích thước thành các khối một. Đó chính là sử dụng counting sort. Như ví dụ dưới đây, các số bằng nhau được kết khối theo màu.
+**Counting sort comments:**
+
+- As we saw above, counting sort has a time complexity and a space complexity ${\Theta(n+k)}$, o counting sort is very efficient when the range of the input data is small, not much larger than ${n}$ (or when ${k}$ is quite small). For example, if ${k}$ is large, about ${k = \Theta(n^2)}$, then time complexity and space complexity will be ${\Theta(n^2)}$, that is very bad.
+- Counting sort can also be suitable for problems where the elements of the array are another data structure, but that data structure must have a ${key}$ is the integer to represent each object in that data structure.
+- Counting sort is also a subroutine for a more powerful algorithm called Radix sort, a sort algorithm that runs at linear time with values ${k}$ greater than in counting sort, which is ${k = n^{\Theta(1)}}$ (constant power of ${n}$).
+- As mentioned in the introduction, you arrange the bowls in order from small to large, accumulating the number of bowls by size into blocks one by one. That is using counting sort. As the example below, equal numbers are cubed by color.
 
 ![Counting Sort 2](./images/counting_2.PNG)
 
-### 9. Mở rộng
-Các thuật toán sắp xếp khá thú vị. Một trong những điều khiến con người ta thoải mái nhất là nhìn thấy phòng ngủ của mình được sắp xếp ngăn nắp và sạch đẹp, điều đó cũng tương tự khi ta nhìn vào các thứ được sắp xếp khác. Trang web về animation của các thuật toán sắp xếp cho bạn cảm giác thỏa mãn và thư giãn có thể được tìm thấy **[tại đây](https://www.toptal.com/developers/sorting-algorithms)**.
+### 9. Additional notes
 
-### 10. Tài liệu tham khảo
+Sorting algorithms are quite interesting. One of the things that makes people feel the most comfortable is seeing their bedrooms organized and clean, the same is true when we look at other things arranged. The website about animations of sorting algorithms that give you a sense of satisfaction and relaxation can be found **[here](https://www.toptal.com/developers/sorting-algorithms)**.
+
+### 10. References
+
 [Sorting Algorithms](https://www.interviewbit.com/tutorial/sorting-algorithms/#sorting-algorithms)
 
 [Sorting Algorithms](https://brilliant.org/wiki/sorting-algorithms/)

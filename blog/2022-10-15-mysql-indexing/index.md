@@ -6,30 +6,35 @@ tags: [Bigdata, MySQL, Database, Data Engineering, Indexing]
 image: ./images/indexing.PNG
 ---
 
-Indexing là phương pháp giúp truy vấn nhanh hơn, là một phần rất quan trọng trong việc cải thiện hiệu năng. Đối với các bảng dữ liệu lớn, việc đánh index chính xác giúp tăng tốc độ nhanh hơn gấp nhiều lần, tuy nhiên, việc này thường không được tính toán sát sao trong quy trình thiết kế bảng. Bài viết này nói về các loại index và cách đánh index sao cho hợp lý.
+Indexing is a method to make queries faster, which is a very important part of improving performance. For large data tables, precise indexing will increase the query speed as a whole, however, this is often not taken into account in the table design process. This article talks about the types of indexes and how to properly index them.
 
 ![Indexing](./images/indexing.PNG)
 
 <!--truncate-->
 
-### 1. Các loại index
-Có rất nhiều loại index thiết kế cho nhiều mục đích khác nhau. Nên nhớ rằng, index được triển khai ở storage engine, không phải ở tầng server, do vậy, chúng hoạt động khác nhau ở các storage engine khác nhau. Các loại index ở bài viết này chủ yếu về index trong InnoDB.
+### 1. Types of index
+
+There are many types of indexes designed for different purposes. Remember, indexes are implemented at the storage engine layer, not at the server layer, so they behave differently in different storage engines. The types of indexes in this article are mainly about indexes in InnoDB.
 
 #### 1.1. B-tree index
-B-tree index dùng cây cân bằng để lưu trữ dữ liệu của nó, hầu như tất cả storage engine của MySQL đều hỗ trợ kiểu index này (hoặc là biến thể của nó), ví dụ, NDB Cluster storage engine sử dụng cấu trúc dữ liệu T-tree cho indexing, InnoDB sử dụng B+ tree,... 
-Trong B-tree, tất cả giá trị đều được sắp xếp, và các lá (leaf) đều có khoảng cách bằng nhau tới gốc (root) của cây. Dưới đây hình là mô tả cấu trúc dữ liệu B-tree. 
+
+B-tree index uses a balanced tree to store its data, almost all MySQL storage engines support this type of index (or its variant), for example, the NDB Cluster storage engine uses the data structure T-tree for indexing, InnoDB uses B+ tree,...
+
+In B-tree, all values ​​are sorted, and leaves are equally spaced from the root of the tree. Below figure is a description of the B-tree data structure.
 
 ![B Tree](./images/BTree.PNG)
 
-B-tree cung cấp cho ta khả năng tìm kiếm, truy cập dữ liệu tuần tự, chèn và xoá với độ phức tạp logarithmic ${O(log(n))}$. Ở root node sẽ có con trỏ trỏ đến các node con, khi ta truy vấn, storage engine sẽ biết nhánh node con phù hợp để duyệt bằng các nhìn vào các giá trị trong node pages, chứa thông tin ngưỡng trên và ngưỡng dưới giá trị các node con trong page đó. Ở tầng leaf page, các con trỏ trỏ đến dữ liệu thay vì trỏ tới các page khác.
+B-trees provide the ability to search, access sequential data, insert and delete with logarithmic time complexity ${O(log(n))}$. At the root node, there will be pointers to the child nodes, when we query, the storage engine will know the appropriate subnode branch to browse by looking at the values ​​in the node pages, containing the upper and lower threshold information, child nodes in that page. At the leaf page layer, pointers point to data instead of other pages.
 
-Ở hình trên, chúng ta chỉ nhìn thấy 1 node page và các leaf page. Thực tế B-tree có rất nhiều tầng node page giữa root node và leaf nodes, độ lớn của cây dựa vào độ lớn của bảng được đánh index.
+In the image above, we only see a node page and leaf pages. In fact, the B-tree has many layers of node pages between the root node and the leaf nodes, the size of the tree depends on the size of the indexed table.
 
 ##### 1.1.1. Adaptive hash index
-Khi các giá trị index được truy cập với tần số cao, InnoDB sẽ dựng một bộ hash index cho chúng ở memory trên nền của B-tree index, giúp chúng ta có thể tìm kiếm giá trị hash này rất nhanh và hiệu quả. Chế độ này là tự động bởi InnoDB, tuy nhiên, bạn vẫn có thể vô hiệu hoá adaptive hash index nếu muốn.
 
-##### 1.1.2. Các loại truy vấn có thể dùng B-tree index
-B-tree index hoạt động hiệu quả với các loại truy vấn chính xác giá trị, một khoảng giá trị, hay một tiền tố giá trị. Các truy vấn này là tốt nhất khi chúng ta dùng chúng trên cột trái nhất trong tập cột được đánh index.
+When index values ​​are accessed with high frequency, InnoDB will build a hash index for them in memory on top of the B-tree index, making it possible to find this hash value very quickly and efficiently. This mode is automatic by InnoDB, however, you can still disable adaptive hash index if you want.
+
+##### 1.1.2. Types of query that are efficient with B-tree index
+
+B-tree indexes work well with exact-value, range, or value-prefix query types. These queries are best when we use them on the leftmost column in the indexed set of columns.
 
 ```sql
 CREATE TABLE People (
@@ -40,58 +45,67 @@ CREATE TABLE People (
 ) ENGINE=InnoDB;
 ```
 
-- Khớp chính xác giá trị: khi các cột trong index được query khớp đúng giá trị nào đó, ví dụ ```WHERE last_name = 'lam' AND first_name = 'tran' AND dob = '1999-05-10'```. Truy vấn loại này sẽ trả về kết quả rất nhanh.
-- Khớp cột trái nhất: Ví dụ nếu ta truy vấn tìm người có ```last_name = 'lam'```.
-- Khớp phần đầu của cột trái nhất: Ví dụ khi ta tìm người có last_name bắt đầu bằng chữ 'L'.
-- Khớp một khoảng giá trị: Khi ta cần lấy tập người có last_name ở giữa 'anh' và 'lam'.
-- Khớp cột trái nhất và một khoảng giá trị cột tiếp theo: Ví dụ khi ta cần thông tin những người last_name là 'lam' và first_name bắt đầu bằng chứ 't'.
+- Exact match: when the columns in the index are queried to match a certain value, for example `WHERE last_name = 'lam' AND first_name = 'tran' AND dob = '1999-05-10'`. This type of query will return results very quickly.
+- Match the leftmost column: for example, if we query to find people with `last_name = 'lam'`.
+- Match the first part of the left most column: For example, when we find the person whose last_name starts with the letter 'L'.
+- Match a range of values: when we need to get the set of people whose last_name is between 'anh' and 'lam'.
+- Match the leftmost column and a range of the next column values: for example, when we need information about people last_name is 'lam' and first_name starts with 't'.
 
-##### 1.1.3. Một số nhược điểm của B-tree index
-- Nó sẽ không thực sự có ích khi điều kiện truy vấn không bắt đầu bằng cột trái nhất, cũng như không tốt khi truy vấn tìm những người có last_name kết thúc bằng chữ cụ thể.
-- Các truy vấn bỏ quãng một số cột cũng không tận dụng hết được lợi ích index. Ví dụ khi tìm những người có ```last_name = 'lam' AND dob = '1999-05-10'``` mà không có điều kiện trên first_name.
-- Index kiểu này sẽ không tận dụng phần các cột đằng sau cột khớp khoảng giá trị. Ví dụ, truy vấn người ```last_name = 'lam' AND first_name LIKE 't%' AND dob = '1999-05-10'``` sẽ chỉ áp dụng index trên 2 cột last_name và first_name. Với những cột ít dữ liệu phân biệt, ta có thể overcome cái này bằng việc liệt kê tất cả giá trị thay vì truy cập khoảng giá trị.
+##### 1.1.3. Drawbacks of B-tree index
 
-Như vậy, thứ tự của các cột trong index thực sự rất quan trọng, bạn cần xem xét mục tiêu truy vấn của ứng dụng trước khi đánh index cho các cột.
+- It won't really help when the query condition doesn't start with the leftmost column, nor is it good when the query finds people whose last_name ends with a specific letter.
+- Queries that skip some columns also don't take full advantage of the index. For example when looking for people `last_name = 'lam' AND dob = '1999-05-10'` with no condition on first_name.
+- Indexes of this type will not take advantage of the columns behind the range matching column. For example, the query people `last_name = 'lam' AND first_name LIKE 't%' AND dob = '1999-05-10'` will only apply the index on the last_name and first_name columns. For columns with less distinct data, we can overcome this by enumerating all values ​​instead of accessing the range of values.
+
+Thus, the order of the columns in the index is really important, you need to consider the query goal of the application before indexing the columns.
 
 #### 1.2. Full-text index
-Full-text index tìm kiếm các từ khoá trong chuỗi chữ thay vì so sánh trực tiếp cả giá trị của trường đó. Nó hỗ trợ cho việc tìm kiếm hơn là việc suy xét dữ liệu khớp với kiểu nào. Khi một cột được đánh full-text index, ta vẫn có thể đánh B-tree index trên cột đó được.
+
+The full-text index searches for keywords in the text string instead of comparing the field's value directly. It aids in searching rather than judging what type the data matches. When a column has a full-text index, we can still type a B-tree index on that column.
 
 ```sql
 CREATE TABLE tutorial (
-    id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY, 
-    title VARCHAR(200), 
-    description TEXT, 
+    id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    title VARCHAR(200),
+    description TEXT,
     FULLTEXT `idx_full_text` (title,description)
 ) ENGINE=InnoDB;
 ```
-Full-text index được dùng bằng cú pháp ```MATCH() AGAINST()``` với tham số của ```MATCH()``` là các cột để tìm kiếm, cách nhau bằng dấu phảy, tham số của ```AGAINST()``` là chuỗi để tìm kiếm cùng loại tìm kiếm để thực hiện.
 
-##### 1.2.1. Các loại full-text index
-- Natural language search: chế độ này sẽ diễn giải chuỗi chữ tìm kiếm dưới dạng một cụm từ trong ngôn ngữ tự nhiên của con người. Chế độ này không tính các stopwords cũng như các từ ngắn hơn số kí tự tối thiếu (mặc định là 3 kí tự với InnoDB)
-- Boolean search: diễn giải chuỗi chữ tìm kiếm sử dụng quy tắc ngôn ngữ truy vấn đặc biệt. Chuỗi chữ đó chứa tất cả các từ cần tìm kiếm, nó cũng có thể chứa các operator đặc biệt cho các tìm kiếm nâng cao, như một từ cần phải được xuất hiện trong chuỗi, hay từ được đánh trọng số nặng hơn hay nhẹ hơn. Các stop words sẽ bị bỏ qua trong chế độ này.
-- Query expansion: là một biến thể của natural language search. Các từ trong các rows liên quan nhất được trả về sẽ được thêm vào chuỗi chữ tìm kiếm, và việc tìm kiếm sẽ được lặp lại. Truy vấn sẽ trả về các rows trong lần tìm kiếm thứ hai.
+The full-text index is used by syntax `MATCH() AGAINST()` with the parameter of `MATCH()` are columns to search, separated by commas. The parameter of `AGAINST()` is a string to search and type of search to perform.
 
-Mình sẽ không đi vào chi tiết từng loại, vì mình cũng ít khi dùng full-text index.
+##### 1.2.1. Types of full-text index
 
-### 2. Lợi ích việc đánh index
-Một số lợi ích của việc đánh index
-- Index giúp server tiết kiệm thời gian để duyệt và truy vấn.
-- Index giúp server tránh được các hoạt động như sắp xếp dữ liệu hay tạo các bảng tạm.
-- Index biến việc truy cập ổ đĩa một cách ngẫu nhiên thành truy cập tuần tự, cải thiện tốc độ đọc
+- Natural language search: this mode will interpret the search string as a phrase in natural human language. This mode does not count stopwords as well as words shorter than the minimum number of characters (default is 3 characters with InnoDB).
+- Boolean search: interprets the search string using special query language rules. The string contains all the words to be searched, it can also contain special operators for advanced searches, such as a word that needs to appear in the string, or a word that is weighted heavier or lighter. Stop words will be ignored in this mode.
+- Query expansion: is a variation of natural language search. The words in the most relevant rows returned will be added to the search string, and the search will be repeated. The query will return rows in the second search.
 
-Một số tiêu chí đánh giá index
-- Index cần phải xếp được các hàng liên quan tới nhau, gần nhau hơn.
-- Các hàng được sắp xếp cần đúng với nhu cầu các truy vấn ứng dụng của bạn cần.
-- Index cần phải chứa tất cả các cột mà truy vấn ứng dụng của bạn lọc.
+I won't go into each type in detail, because I rarely use the full-text index.
 
-### 3. Một số chiến thuật đánh index
-Việc tạo đúng các index sẽ cải thiện tốc độ truy vấn của bạn rất nhiều, từ đó giúp cho ứng dụng của bạn phản hồi nhanh hơn tới người dùng.
+### 2. Benefits of indexing
 
-#### 3.1. Index tiền tố các trường text dài
-Gọi index selectivity là chỉ số giữa số giá trị khác nhau của cột / tổng bản ghi của bảng. Với các cột có index selectivity cao, thì việc đánh index trên các trường này rất hiệu quả bởi vì MySQL sẽ loại bỏ được nhiều bản ghi hơn khi lọc trên các cột ấy.
-Với các trường text dài, ta không thể đánh index trên cả độ dài cột vì MySQL sẽ không cho phép điều đó, do vậy ta cần tìm một lượng prefix đủ tốt của trường đó để đánh index và nó sẽ cho ta một performance đủ tốt.
+Some benefits of indexing
 
-Thử với dữ liệu về sản phẩm dưới đây, ta liệt kê mười nhà bán có xuất hiện nhiều nhất
+- Index helps server save time for browsing and querying.
+- Index helps the server avoid operations such as sorting data or creating temporary tables.
+- Index turns random disk access into sequential access, improving read speed
+
+Some criteria to evaluate index
+
+- Index needs to arrange related rows, closer together.
+- The sorted rows should be exactly what your application queries need.
+- Index needs to contain all the columns that your application query filters.
+
+### 3. Indexing strategies
+
+Creating the right indexes will greatly improve your query speed, which in turn makes your application more responsive to users.
+
+#### 3.1. Prefix index for text field
+
+Consider Index Selectivity is the ratio between the number of different column values ​​/ total records of the table. For columns with high Index Selectivity, indexing on these fields is very effective because MySQL will remove more records when filtering on those columns. For long text fields, we cannot index the whole column length because MySQL won't allow that, so we need to find a good enough prefix of that field to index and it will give us a good enough performance.
+
+Try with the product data below, we list the top ten sellers that appear the most
+
 ```sql
 select productVendor, count(1) c from `classicmodels`.`products_index`
 group by productVendor
@@ -114,7 +128,8 @@ LIMIT 10;
 +--------------------------------------------------+----+
 ```
 
-Thử tính toán tần số xuất hiện của prefix với độ dài là 3 của trường ```productVendor```
+Try to calculate the frequency of occurrence of length 3 prefix with the field `productVendor`
+
 ```sql
 select LEFT(productVendor, 3), count(1) c from `classicmodels`.`products_index`
 group by LEFT(productVendor, 3)
@@ -137,9 +152,10 @@ LIMIT 10;
 +------------------------+----+
 ```
 
-Ta thấy rằng tần số xuất hiện của các giá trị prefix độ dài 3 nhiều hơn với cả giá trị cột nhiều, tương đương với việc ít giá trị khác nhau hơn, tương đương với index selectivity sẽ bé hơn nhiều. Do vậy prefix 3 không phải là lựa chọn tốt
+We see that the frequency of occurrence of length 3 prefix is a lot more compare to full column values, which equates to fewer distinct values, which equates to a much smaller Index Selectivity. So prefix 3 is not a good choice
 
-Ta cùng tính toán index selectivity với nhiều loại độ dài prefix
+Let's calculate the Index Selectivity with various prefix lengths
+
 ```sql
 select COUNT(DISTINCT LEFT(productVendor, 3))/COUNT(1) AS selectivity_3,
 COUNT(DISTINCT LEFT(productVendor, 4))/COUNT(1) AS selectivity_4,
@@ -160,14 +176,16 @@ from `classicmodels`.`products_index`;
 +---------------+---------------+---------------+---------------+---------------+---------------+---------------+----------------+----------------+-------------+
 ```
 
-Ta thấy rằng selectivity prefix 11 rất gần với giá trị selectivity cả cột, và cũng khá phù hợp với trường text dài như cột này, nên chọn prefix 11 sẽ cân bằng được về độ lớn của index cũng như độ nhanh khi truy vấn.
+We see that the selectivity prefix 11 is very close to the column selectivity value, and is also quite suitable for long text fields like this column, so choosing prefix 11 will balance the size of the index as well as the speed of the query.
 
 ```sql
 ALTER TABLE `classicmodels`.`products_index` ADD KEY (productVendor(11));
 ```
 
-#### 3.2. Index trên nhiều column
-Một số sai lầm khi đánh index đó là đánh index từng cột một cách riêng rẽ, và tạo index cho tất cả các cột ở trong câu lệnh WHERE.
+#### 3.2. Index on multiple columns
+
+Some mistakes when indexing is indexing each column separately, and creating indexes for all columns in the WHERE statement.
+
 ```sql
 CREATE TABLE t (
      c1 INT,
@@ -178,12 +196,15 @@ CREATE TABLE t (
      KEY(c3)
 );
 ```
-Các index riêng rẽ như trên thường sẽ không tối ưu hiệu năng nhiều lắm trong hầu hết các hoàn cảnh, bởi vì khi này MySQL có thể sử dụng một chiến thuật gọi là index merge. Index merge sẽ sử dụng tất cả index trong câu truy vấn, quét các index một cách đồng thời, sau đó sẽ merge kết quả lại
-- union index sẽ dùng cho điều kiện OR
-- intersection index sẽ dùng cho điều kiện AND
-- union of intersection index cho sự kết hợp của cả 2
 
-Dưới đây là ví dụ query trên 2 trường index nhưng MySQL sử dụng index merge
+Separate indexes like the one above will usually not optimize performance very much in most situations, because then MySQL can use a tactic called index merge. Index merge will use all the indexes in the query, scan the indexes simultaneously, then merge the results again.
+
+- Union index will be used for OR condition
+- Intersection index will be used for AND condition
+- Union of intersection index for the union of both 2
+
+Here is an example query on 2 index fields but MySQL uses index merge
+
 ```sql
 mysql> explain select * from `classicmodels`.`products_index` where productVendor = 'Infor Global Solutions' OR productScale = '1:10'\G
 *************************** 1. row ***************************
@@ -200,14 +221,17 @@ possible_keys: productVendor,productScale
      filtered: 100.00
         Extra: Using sort_union(productVendor,productScale); Using where
 ```
-Một số cân nhắc khi query gặp index merge
-- Nếu server intersect index (điều kiện AND trên các index), điều đó có nghĩa là bạn có thể tạo 1 index chứa tất cả các cột liên quan tới nhau, không phải từng index cho từng cột.
-- Nếu server union index (điều kiện OR trên các index), kiểm tra xem các cột ấy có index selectivity có cao không, nếu index selectivity trong một số cột thấp, nghĩa là cột ấy ít giá trị khác nhau, nghĩa là phần scan index trả về nhiều bản ghi hơn cho các hoạt động merge tiếp sau nó, tiêu tốn nhiều CPU và bộ nhớ hơn. Đôi khi, viết lại truy vấn với lệnh UNION còn cho kết quả khả quan hơn là khi server union các index trong index merge.
 
-Khi ta nhìn thấy index merge trong câu lệnh EXPLAIN, hãy xem lại query và cấu trúc bảng để kiểm tra xem hiện tại thiết kế đã là tối ưu nhất hay chưa.
+Some considerations when query encounters index merge
 
-#### 3.3. Chọn đúng thứ tự cột để index
-Khi một index của ta chưa nhiều cột, thứ tự các cột trong index đó rất quan trọng, vì trong B-tree index, index sẽ được sắp xếp từ cột trái nhất đến các cột tiếp theo đó (một số nhược điểm của B-tree index **[ tại đây](#113-một-số-nhược-điểm-của-b-tree-index)**). Do vậy, ta thường chọn các cột có index selectivity cao làm cột trái nhất, thứ tự các cột theo độ giảm dần của index selectivity, để tổng thể index của ta có selectivity cao.
+- If the server intersects the index (AND condition on the indexes), it means that you can create an index containing all the columns related to each other, not each index for each column.
+- If the server union index (OR condition on the indexes), check if those columns have high Index Selectivity, if the Index Selectivity in some columns is low, it means that the column has few different values, that is, the scan index returns more records for the merge operations that follow it, consuming more CPU and memory. Sometimes, rewriting the query with the UNION statement gives better results than when the server unions the indexes in the index merge.
+
+When you see the index merge in the EXPLAIN statement, review the query and table structure to check if the current design is optimal.
+
+#### 3.3. Choose the correct order of columns to index
+
+When our index contains many columns, the order of columns in that index is very important, because in B-tree index, the index will be sorted from the leftmost column to the next columns (some disadvantages of B- tree index **[here](#113-một-số-nhược-điểm-của-b-tree-index)**). Therefore, we often choose the columns with the highest Index Selectivity as the leftmost column, order the columns in descending order of Index Selectivity, so that our overall index has high selectivity.
 
 ```sql
 select count(distinct productVendor)/count(1),
@@ -220,9 +244,11 @@ from `classicmodels`.`products_index`;
 |                                 0.2600 |                                0.0145 |
 +----------------------------------------+---------------------------------------+
 ```
-Ví dụ trên, nếu ta đánh index gồm 2 cột ```productVendor``` và ```productScale```, ta thường sẽ lấy ```productVendor``` làm cột trái nhất
+
+In the above example, if we index 2 columns `productVendor` and `productScale`, we will usually take `productVendor` as the leftmost column
+
 ```sql
 alter table `classicmodels`.`products_index` add key (productVendor, productScale);
 ```
 
-Một số cân nhắc nữa về index cần chú ý như clustered index, covering index, loại bỏ các index thừa, không sử dụng,... mình xin đề cập trong bài viết khác.
+Some more considerations about the index to pay attention to such as clustered index, covering index, remove redundant, unused indexes, ... I would like to mention in another article.

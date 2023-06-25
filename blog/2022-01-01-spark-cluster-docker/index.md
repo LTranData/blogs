@@ -1,6 +1,6 @@
 ---
 slug: spark-cluster-docker
-title: Tạo 1 Standalone Spark Cluster với Docker
+title: Create A Standalone Spark Cluster With Docker
 authors: tranlam
 tags: [Bigdata, Spark, Apache, Docker]
 image: ./images/cluster-overview.PNG
@@ -8,25 +8,34 @@ image: ./images/cluster-overview.PNG
 
 ![Cluster Overview](./images/cluster-overview.PNG)
 
-Thời gian vừa qua, mình đã dành nhiều thời gian tự học về cách xây dựng các cluster Hadoop, Spark, tích hợp Hive và một số thứ nữa. Bài viết này sẽ viết về cách bạn có thể xây dựng một Spark cluster cho việc xử lý dữ liệu bằng Docker, bao gồm 1 master node và 2 worker node, loại cluster là standalone cluster (có thể các bài viết sắp tới mình sẽ làm về Hadoop cluster và tích hợp resource manager là Yarn). Cùng đi vào bài viết nào.
+Lately, I've spent a lot of time teaching myself how to build Hadoop clusters, Spark, Hive integration, and more. This article will write about how you can build a Spark cluster for data processing using Docker, including 1 master node and 2 worker nodes, the cluster type is standalone cluster (maybe the upcoming articles I will do about Hadoop cluster and integrated resource manager is Yarn). Let's go to the article.
 
 <!--truncate-->
 
-### 1. Tổng quan về cấu trúc và cách hoạt động của một Spark cluster
+### 1. Overview of a Spark cluster
 
-Spark là công cụ xử lý dữ liệu nhanh, mạnh mẽ cho phép bạn xử lý dữ giải quyết vấn đề dữ liệu lớn đối với cả dữ liệu có cấu trúc, bán cấu trúc và không có cấu trúc. Nó cung cấp tính linh hoạt và khả năng mở rộng, được tạo ra để cải thiện hiệu năng của MapReduce nhưng ở một tốc độ cao hơn nhiều: 100 lần nhanh hơn Hadoop khi dữ liệu được lưu trong bộ nhớ và 10 lần khi truy cập ổ đĩa. Nó được thiết kế cho các hiệu suất nhanh và sử dụng RAM để caching và xử lý dữ liệu. Spark không có một file system riêng, nhưng nó có thể tương tác với nhiều loại hệ thống lưu trữ, có thể sử dụng tích hợp với Hadoop. Dưới đây là tổng quan cấu trúc của một ứng dụng Spark.
+Apache Spark is a data processing framework that can quickly perform processing tasks on very large data sets, and can also distribute tasks across multiple computers. It was design for fast computing and use RAM for caching and processing data.
+
+It provides flexibility and scalability, created to improve the performance of MapReduce but at a much higher speed: 100 times faster than Hadoop when data is stored in memory and 10 times faster when accessed CD driver.
+
+Spark does not have a file system of its own, but it can interact with many types of storage systems and can be used to integrate with Hadoop. Below is an overview of the structure of a Spark application.
 
 ![Cluster Overview](./images/cluster-overview.PNG)
 
-Các ứng dụng Spark sinh ra một chương trình driver ở master node, và tạo ra 1 SparkContext. Để chạy trên 1 cluster, SparkContext cần kết nối đến một trong nhiều loại cluster managers (standalone cluster, Mesos hoặc YARN). Một khi được kết nối, Spark có được kết nối tới các worker nodes ở cluster. Những node đó thực hiện tiến trình làm các công việc tính toán và lưu trữ dữ liệu cho ứng dụng. Sau đó, nó gửi các code đến các executor. Cuối cùng, SparkContext sẽ gửi các tasks cho các executors để chạy.
+Each time we submit a Spark application, it will create a driver program at the master node, which then create a SparkContext object. To be able to run in a cluster, SparkContext need to connect to a cluster resource manager, that could be Spark’s standalone cluster manager, Mesos or Yarn. Once the SparkContext get the connection, it will have specific RAM and CPU resources of the worker nodes in the cluster.
 
-Mỗi ứng dụng đều có các tiến trình executors riêng của nó, nằm ở đó suốt thời gian ứng dụng chạy và chạy các task ở nhiều threads, cô lập ứng dụng này với ứng dụng khác. Điều đó cũng có nghĩa là dữ liệu không thể được chia sẻ qua lại giữa các ứng dụng nếu mà không ghi dữ liệu ra một hệ thống lưu trữ ngoài.
+Each worker node will receive the code and tasks from the driver, compute and process the data.
 
-Vì driver đặt lịch trình cho các task trên cluster, nó cần phải chạy gần với các worker node, sẽ là lý tưởng nếu nó chạy cùng một mạng LAN. Nếu bạn muốn gửi các request đến cluster từ xa, nó sẽ tốt hơn nếu như bạn tạo 1 RPC, chạy driver và submit các hoạt động từ phạm vi gần hơn là chạy driver ở khoảng cách xa các node worker.
+The master node will be responsible for scheduling all the tasks and send those to the worker nodes so it’s ideal when we put it in the same network area with all the worker nodes to achieve low latency between requests
 
-### 2. Tạo một base image
+There are 2 Spark running modes
 
-Bởi vì các image các node trong 1 cluster cần cài đặt các phần mềm khá giống nhau nên chúng ta sẽ xây dựng một base image cho tổng thể cluster trước, sau đó thì các image sau sẽ import từ image này và thêm vào đó là các dependencies cần thiết khác.
+- **Running locally:** running all the tasks in the same machine which is your local machine, utilize the number of cores in that machine to perform parallelism
+- **Running in a cluster:** Spark distribute the tasks to all the machine in the cluster. There are 2 deploy modes which are client mode and cluster mode, with 4 options of cluster resource manager, which are Spark standalone cluster manager, Apache Mesos, Hadoop Yarn, or Kubernetes.
+
+### 2. Create a base image for the cluster
+
+Because the images of the nodes in a cluster need to install the same software, we will build a base image for the whole cluster first, then the following images will import from this image and add the following images. other necessary dependencies.
 
 ```bash
 ARG debian_buster_image_tag=8-jre-slim
@@ -45,11 +54,11 @@ ENV SHARED_WORKSPACE=${shared_workspace}
 VOLUME ${shared_workspace}
 ```
 
-Ở đây, vì Spark yêu cầu java phiên bản 8 hoặc 11, nên chúng ta sẽ tạo một image chạy jdk 8, chúng ta sẽ lấy biến `shared_workspace` là đường dẫn môi trường làm việc của Jupyterlab (ở phần sau). Thêm vào đó, chúng ta sẽ cài `python3` cho việc chạy Jupyterlab.
+Here, since Spark requires java version 8 or 11, we will create an image running jdk 8, we will take the variable `shared_workspace` as the Jupyterlab working environment path (later). In addition, we will install `python3` for running Jupyterlab.
 
-### 3. Tạo một spark base image
+### 3. Create a spark base image
 
-Ta đến với tạo một spark base image với các package chung cho master node và workder node.
+We come to create a spark base image with common packages for master node and worker node.
 
 ```bash
 FROM spark-cluster-base
@@ -73,15 +82,15 @@ ENV PYSPARK_PYTHON python3
 WORKDIR ${SPARK_HOME}
 ```
 
-Đầu tiên, ta sẽ import image từ base image bên trên (là `spark-cluster-base`, cái tên này sẽ được gán vào thời gian build image), liệt kê các phiên bản Spark và Hadoop tương thích với nhau. Các bạn có thể kiểm tra tương thích phiên bản trên trang chủ của Spark.
+First, we will import the image from the base image above (that is `spark-cluster-base`, this name will be assigned at build time), listing the compatible Spark and Hadoop versions. You can check version compatibility on Spark's homepage.
 
 ![Spark Version](./images/spark-version.PNG)
 
-Sau đó sẽ là tải và giải nén Spark, cùng với đó là tạo các biến môi trường cần thiết để hỗ trợ chạy command line về sau. Ở đây, `SPARK_MASTER_HOST` và `SPARK_MASTER_PORT` được các worker node dùng để register với master node địa chỉ tương ứng.
+Then it will be to download and extract Spark, along with creating the necessary environment variables to support running the command line later. Here, `SPARK_MASTER_HOST` and `SPARK_MASTER_PORT` used by worker nodes to register with the corresponding master node address.
 
-### 4. Tạo một master node image
+### 4. Create a master node image
 
-Có một spark base image, ta bắt đầu tạo master node bằng việc import base image đó và thêm các biến phù hợp với master node như là port của giao diện web ui để lát nữa có thể tương tác với spark trên giao diện.
+Having a spark base image, we start creating the master node by importing that base image and adding the appropriate variables to the master node as the port of the web ui interface so we can interact with spark on the interface later.
 
 ```bash
 FROM spark-base
@@ -92,11 +101,11 @@ EXPOSE ${spark_master_web_ui} ${SPARK_MASTER_PORT}
 CMD bin/spark-class org.apache.spark.deploy.master.Master >> logs/spark-master.out
 ```
 
-Command trên là để chạy master node.
+The above command is to run master node.
 
-### 5. Tạo một worker node image
+### 5. Create a worker node image
 
-Tiếp đến là tạo worker node
+Next is to create worker node
 
 ```bash
 FROM spark-base
@@ -107,11 +116,11 @@ EXPOSE ${spark_worker_web_ui}
 CMD bin/spark-class org.apache.spark.deploy.worker.Worker spark://${SPARK_MASTER_HOST}:${SPARK_MASTER_PORT} >> logs/spark-worker.out
 ```
 
-Command trên là để chạy worker node và trỏ tới địa chỉ của master node để register.
+The above command is to run the worker node and point to the address of the master node to register.
 
-### 6. Tạo một Jupyterlab image cho việc kiểm thử
+### 6. Create a Jupyterlab image for testing
 
-Cuối cùng, để kiểm tra hoạt động của spark cluster, ta sẽ cái Jupyterlab và dùng pyspark để chạy code.
+Finally, to test the spark cluster working, we will install Jupyterlab and use pyspark to run the code.
 
 ```bash
 FROM spark-cluster-base
@@ -128,15 +137,15 @@ WORKDIR ${SHARED_WORKSPACE}
 CMD jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token=
 ```
 
-Cùng với đó là liệt kê command chạy Jupyter ở port 8888.
+Along with that is to list the command to run Jupyter on port 8888.
 
-### 7. Kết hợp các image và tạo các container
+### 7. Combine images and create containers
 
-Sau khi tạo đầy đủ các Dockerfile, ta tiến hành build các image phù hợp.
+After creating all the Dockerfiles, we proceed to build the appropriate images.
 
 ![Folder Structure](./images/folder-structure.PNG)
 
-**Liệt kê các phiên bản**
+**Listing versions**
 
 ```bash
 SPARK_VERSION="3.2.0"
@@ -189,7 +198,7 @@ docker build \
   -t spark-jupyterlab .
 ```
 
-Cuối cùng, để tạo các container cần thiết, ta tạo một file `docker-compose.yml` với nội dung như sau
+Finally, to create the necessary containers, we create a file `docker-compose.yml` with the following content
 
 ```bash
 version: "3.6"
@@ -239,24 +248,24 @@ services:
       - spark-master
 ```
 
-Bao gồm volume mà ta sẽ lưu dữ liệu để khi xoá các container không bị mất dữ liệu, cùng với đó là các container (service) cần thiết. Ở mỗi container các biến môi trường phù hợp được thêm vào, các port để map ra máy host, và thứ tự chạy các container. Ở đây, master node phải chạy lên trước để lấy hostname nên worker node sẽ depend vào master node container. Sau đó, ta chạy `docker-compose up`, như thế là đã khởi chạy hết các container cần thiết rồi.
+Include the volume in which we will save data so that when deleting containers, data will not be lost, along with the necessary containers (services). To each container the appropriate environment variables are added, the ports to map to the host machine, and the order in which the containers are run. Here, the master node has to run first to get the hostname, so the worker node will depend on the master node container. After that, we run `docker-compose up`, so we have launched all the necessary containers.
 
-### 8. Chạy Jupyterlab để kiểm tra hoạt động của cluster
+### 8. Running Jupyterlab to check the cluster
 
-Sau khi đã chạy `docker-compose up` và thấy ở terminal các logs thể hiện đã khởi động thành công master node và worker node, cùng với trạng thái register thành công của các node, ta vào `localhost:8080` để xem spark ui.
+After running `docker-compose up` and seeing in the terminal the logs showing that the master node and worker node have been successfully started, along with the successful register status of the nodes, we go to `localhost:8080` to access spark ui.
 
 ![Spark UI](./images/spark-ui.PNG)
 
-Ở giao diện, ta thấy được có 2 worker đang hoạt động như vùng khoanh đỏ.
+In the interface, we can see that there are 2 workers working as red circled areas.
 
-Vào `localhost:8888` để vào giao diện Jupyterlab, thực hiện code sau
+Enter `localhost:8888` to access the Jupyterlab interface, execute the following code
 
 ![Jupyter Lab](./images/jupyterlab.PNG)
 
-Chạy code, rồi quay lại spark ui, ta thấy được ứng dụng của ta đang chạy
+Run the code, then go back to spark ui, we can see our application is running
 
 ![Application](./images/application.PNG)
 
-Ấn vào ứng dụng, ta thấy các worker của ta đang xử lý job
+Click on the application, we see our workers processing the job
 
 ![Application Workers](./images/application-workers.PNG)

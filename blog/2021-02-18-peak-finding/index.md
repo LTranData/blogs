@@ -1,6 +1,6 @@
 ---
 slug: peak-finding
-title: Thuật toán tìm đỉnh Peak Finding
+title: Peak Finding Algorithm
 authors: tranlam
 tags: [peak, peak finding, algorithms]
 image: ./images/intro.PNG
@@ -8,60 +8,68 @@ image: ./images/intro.PNG
 
 ![Intro](./images/intro.PNG)
 
-Hôm nay mình sẽ nói về môt thuật toán cực kì cơ bản mà mình và hầu như các bạn bắt đầu học về lập trình thuật toán đều đã làm. Đó chính là thuật toán tìm đỉnh Peak Finding.
+Today I will talk about an extremely basic algorithm that I and most of you who are starting to learn about algorithmic programming have done. That is the Peak Finding algorithm.
 
 <!--truncate-->
 
-### 1. Giới thiệu thuật toán
-Trong một mảng, một số được gọi là một "peak" khi và chỉ khi các phần tử liền kề nó nhỏ hơn hoặc bằng phần tử được xét. Tưởng tượng rằng có một dãy núi như sau
+### 1. Introduction to the algorithm
+
+In an array, a number is said to be a "peak" if and only if its adjacent elements are less than or equal to the element in question. Imagine that there is a mountain range like this
 
 ![Peaks](./images/peaks.PNG)
 
-Các mũi tên đỏ ở trên trỏ đến các đỉnh (peak) của một dãy núi, vì các điểm đó cao hơn các điểm lân cận xung quanh nó (các điểm ở sườn núi).
+The red arrows above point to the peaks of a mountain range, because those points are higher than the neighboring points around it (the points on the mountainside).
 
-Để trực quan hơn trong lập trình, ta lấy ví dụ với mảng sau:
+To be more intuitive in programming, let's take an example with the following array:
 ![1D Array](./images/1Darr.PNG)
 
-Xét mảng các kí hiệu như trên, phần tử ở vị trí thứ 3 được gọi là một peak khi và chỉ khi **${c \ge b}$** và **${c \ge d}$**. Phần tử thứ 9 được gọi là một peak khi và chỉ khi **${i \ge h}$**.
+Considering the array of symbols above, the element at position 3 is called a peak if and only if **${c \ge b}$** and **${c \ge d}$**. The 9th element is called a peak if and only if **${i \ge h}$**.
 
-Chú ý rằng: 
-* Trong một mảng, sẽ luôn tồn tại ít nhất một peak.
-* Bài toán này của chúng ta sẽ là tìm một peak chứ không tìm tất cả các peak.
+Notice that:
 
-### 2. Tìm peak trong mảng 1 chiều
-Giả sử ta có một mảng 1 chiều gồm **${n}$** phần tử, tìm một peak của mảng đó.
+- In an array, there will always be at least one peak.
+- This problem of ours will be to find one peak, not all the peaks.
 
-#### 2.1. Cách 1: Duyệt tuyến tính (linear traversing)
-**Ý tưởng:** Duyệt qua từng phần tử của mảng và kiểm tra xem phần tử đang xét có thỏa mãn tính chất là một peak hay không.
+### 2. Finding peak in 1-dimensional array
 
-**Phân tích thuật toán:** Mỗi phần tử đang được duyệt sẽ có các câu lệnh điều kiện để kiểm tra xem phần tử đó có là peak, các câu lệnh điều kiện này tốn constant time ${\Theta(1)}$. Trong trường hợp xấu nhất, ta sẽ phải duyệt hết tất cả **${n}$** phần từ của mảng mới tìm được peak. Do vậy, worst case của thuật toán sẽ có time complexity là ${\Theta(n)}$.
+Suppose we have a 1-dimensional array of **${n}$** elements, find a peak of that array.
 
-#### 2.2. Cách 2: Duyệt nhị phân (binary search)
-**Ý tưởng:** Trong cách này, ta sẽ luôn nhìn vào vị trí ở giữa của mảng được duyệt và quyết định xem ta sẽ duyệt nửa nào tiếp theo của mảng đó để tìm ra peak.
+#### 2.1. Linear Traversing
 
-**Thuật toán:** 
-* Nhìn vào vị trí ${\frac{n}{2}}$.
-* Nếu ${a[\frac{n}{2}] \lt a[\frac{n}{2} - 1]}$, ta nhìn vào nửa trái (các phần tử ${1, 2,...,\frac{n}{2} - 1)}$ của mảng đang xét để tìm peak.
-* Nếu ${a[\frac{n}{2}] \lt a[\frac{n}{2} + 1]}$, ta nhìn vào nửa phải (các phần tử ${\frac{n}{2} + 1, \frac{n}{2} + 2,..., n)}$ của mảng đang xét để tìm peak.
-* Nếu không thỏa mãn cả 2 điều kiện trên, ta trả về phần tử vị trí ${\frac{n}{2}}$ chính là một peak.
+**Idea:** Iterate through each element of the array and check if the element under consideration satisfies the property of being a peak.
 
-Để giải thích cho điều này, mình có một hình vẽ để cho trực quan hơn
+**Algorithm analysis:** Each element being browsed will have conditional statements to check if the element is a peak, these conditional statements take constant time ${\Theta(1)}$. In the worst case, we'll have to go through all **${n}$** elements of the array to find the peak. Therefore, the worst case of the algorithm will have a time complexity of ${\Theta(n)}$.
+
+#### 2.2. Binary Search
+
+**Idea:** In this way, we will always look at the middle of the traversed array and decide which half of the array to traverse to find the peak.
+
+**Algorithm:**
+
+- Look at the location ${\frac{n}{2}}$.
+- If ${a[\frac{n}{2}] \lt a[\frac{n}{2} - 1]}$, we look at the left half (the elements ${1, 2,...,\frac{n}{2} - 1)}$ of the array under consideration to find the peak.
+- If ${a[\frac{n}{2}] \lt a[\frac{n}{2} + 1]}$, we look at the right half (the elements ${\frac{n}{2} + 1, \frac{n}{2} + 2,..., n)}$ of the array under consideration to find the peak.
+- If both conditions are not satisfied, we return the position element ${\frac{n}{2}}$ is a peak.
+
+To explain this, I have a drawing to make it more intuitive
 
 ![1D Expression](./images/1Dexp.PNG)
 
-Mũi tên đỏ trỏ tới vị trí đang xét. Giả sử ta đang đứng trên một vị trí ở dãy núi, để ta có thể trèo lên đỉnh, ta sẽ luôn ngó sang bên mà ta thấy vị trí của nó cao hơn vị trí ta đang đứng, và đó cũng là thuật toán giải quyết cho bài toán này.
+The red arrow points to the current position. Suppose we are standing on a position in the mountains, so that we can climb to the top, we will always look to the side that we see its position higher than where we are standing, and that is also the algorithm to solve for this problem.
 
-**Phân tích thuật toán:** Sử dụng chia để trị (divide and conquer), ta có biểu thức sau
+**Algorithm analysis:** Using divide and conquer, we have the following expression
+
 <p style={{textAlign: "center"}}>
 
 ${T(n) = T(\frac{n}{2}) + \Theta(1)}$
 
 </p>
 
-Time complexity cho các câu điều kiện so sánh ${\Theta(1)}$, base case ở đây là ${T(1) = \Theta(1)}$.
-Từ đó, ${T(n) = \Theta(1) + \Theta(1) +...+ \Theta(1) = \Theta(log{_2}{n})}$.
+Time complexity for comparative conditionals ${\Theta(1)}$, base case here is ${T(1) = \Theta(1)}$.
+From that, ${T(n) = \Theta(1) + \Theta(1) +...+ \Theta(1) = \Theta(log{_2}{n})}$.
 
-**Code Python**
+**Python Code**
+
 ```python
 import math
 ini_arr = [10, 20, 15, 2, 23, 90, 67]
@@ -83,47 +91,56 @@ def peak_finding(arr):
 
 print(peak_finding(ini_arr))
 ```
+
 Output
+
 ```python
 20
 ```
 
-### 3. Tìm peak trong mảng 2 chiều
-Ta hình dung mảng 2 chiều **${m \times n}$** được biểu diễn dưới dạng ma trận m hàng và n cột
+### 3. Finding peak in 2-dimensional array
+
+Suppose we have a 2-dimensional array **${m \times n}$** represented as a matrix of m rows and n columns
 ![2D Matrix](./images/2Dmat.PNG)
 
-Một phần tử được coi là một peak khi và chỉ khi nó lớn hơn hoặc bằng tất cả các phần tử liền kề theo chiều dọc và ngang.
+An element is considered to be a peak if and only if it is greater than or equal to all adjacent elements vertically and horizontally.
 
-#### 3.1. Duyệt trực tiếp
-**Ý tưởng:** Duyệt qua từng phần tử của mảng và kiểm tra xem phần tử đang xét có thỏa mãn tính chất là một peak hay không.
+#### 3.1. Direct traversal
 
-**Phân tích thuật toán:** worst case của thuật toán sẽ có time complexity là ${\Theta(m \times n)}$.
+**Idea:** Iterate through each element of the array and check if the element under consideration satisfies the property of being a peak.
 
-#### 3.2. Thuật toán Greedy Ascent
-**Ý tưởng:** Chúng ta bắt đầu tại một điểm ngẫu nhiên. Với điểm đang xét, chúng ta so sánh nó với 4 điểm liền kề theo các chiều dọc và ngang, nếu có giá trị nào lớn hơn điểm đang xét, ta sẽ xét điểm tiếp theo là điểm đó.
+**Algorithm analysis:** the worst case of the algorithm will have a time complexity of ${\Theta(m \times n)}$.
 
-**Phân tích thuật toán:** Thoạt nghĩ qua thì ta thấy thuật toán có vẻ sẽ hiệu quả hơn, nhưng worst case của nó vẫn là ${\Theta(m \times n)}$ khi mà ta phải duyệt phần lớn các phần tử.
+#### 3.2. Greedy Ascent Algorithm
 
-#### 3.3. Thuật toán Jamming Binary Search
-**Ý tưởng:** Ta dựa trên cách tìm kiếm Binary Search như áp dụng với mảng một chiều ở trên.
+**Idea:** We start at a random point. With the point under consideration, we compare it with 4 adjacent points vertically and horizontally, if any value is greater than the point under consideration, we will consider the next point to be that point.
 
-**Thuật toán:** 
-* Chọn cột ở giữa ${i = \frac{n}{2}}$. Tìm giá trị lớn nhất của cột đó. Giả sử giá trị đó nằm ở vị trí ${(j, i)}$.
-* So sánh các phần tử ở vị trí ${(j, i - 1), (j, i), (j, i + 1)}$.
-* Ta chọn ma trận con phần bên trái nếu ${a[j, i - 1] \gt a[j, i]}$, chọn ma trận con phần bên phải nếu ${a[j, i + 1] \gt a[j, i]}$ để xét bước tiếp theo.
-* Nếu không, ta trả về giá trị ${a[j, i]}$ là một peak.
+**Algorithm analysis:** At first glance, the algorithm seems to be more efficient, but its worst case is still ${\Theta(m \times n)}$ when we have to traverse most of the elements.
 
-**Phân tích thuật toán:** Base case ở đây sẽ là chúng ta chỉ có một cột duy nhất, tìm giá trị lớn nhất của cột đó. Từ đó, ta có biểu thức sau
+#### 3.3. Jamming Binary Search Algorithm
+
+**Idea:** We rely on Binary Search as applied to the 1-dimensional array above.
+
+**Algorithm:**
+
+- Select the column in the middle ${i = \frac{n}{2}}$. Find the maximum value of that column. Assume that value is at position ${(j, i)}$.
+- Compare elements at positions ${(j, i - 1), (j, i), (j, i + 1)}$.
+- We choose the left-part submatrix if ${a[j, i - 1] \gt a[j, i]}$, choose the right-part submatrix if ${a[j, i + 1] \gt a[j, i]}$ to consider the next step.
+- Otherwise, we return the value ${a[j, i]}$ is a peak.
+
+**Algorithm analysis:** The base case here will be that we only have a single column, find the maximum value of that column. From this, we have the following expression
+
 <p style={{textAlign: "center"}}>
 
 ${T(m, n) = T(m, \frac{n}{2}) + \Theta(m) }$
 
 </p>
 
-Với ${T(m, 1) = \Theta(m)}$.
-Do vậy, ${T(m, n) = \Theta(m) + \Theta(m) +...+ \Theta(m) = \Theta(mlog{_2}{n})}$.
+With ${T(m, 1) = \Theta(m)}$.
+Therefore, ${T(m, n) = \Theta(m) + \Theta(m) +...+ \Theta(m) = \Theta(mlog{_2}{n})}$.
 
-**Code Python**
+**Python Code**
+
 ```python
 import numpy as np
 import math
@@ -150,7 +167,9 @@ def peak_finding_2d(matrix):
 
 print(peak_finding_2d(ini_matrix))
 ```
+
 Output
+
 ```python
 92
 ```
