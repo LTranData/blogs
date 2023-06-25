@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkkgajera_blog=self.webpackChunkkgajera_blog||[]).push([[9200],{6023:e=>{e.exports=JSON.parse('{"permalink":"/blogs/blog/tags/machine-learning","page":1,"postsPerPage":10,"totalPages":1,"totalCount":1,"blogDescription":"Blog","blogTitle":"Blog"}')}}]);
