@@ -27,7 +27,7 @@ function Footer(props) {
               }}
             />
             <p style={{ fontSize: "0.8em", marginTop: "1em" }}>
-              Tran Lam
+              Lam Tran
               <br />
               Data Engineer
             </p>

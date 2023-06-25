@@ -4,8 +4,8 @@
 require("dotenv").config();
 const lightCodeTheme = require("prism-react-renderer/themes/github");
 const darkCodeTheme = require("prism-react-renderer/themes/dracula");
-const math = require('remark-math');
-const katex = require('rehype-katex');
+const math = require("remark-math");
+const katex = require("rehype-katex");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -26,10 +26,10 @@ const config = {
   },
 
   i18n: {
-    defaultLocale: 'en',
-    locales: ['en'],
+    defaultLocale: "en",
+    locales: ["en"],
   },
-  
+
   presets: [
     [
       "classic",
@@ -50,14 +50,14 @@ const config = {
 
   stylesheets: [
     {
-      href: 'https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css',
-      type: 'text/css',
+      href: "https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css",
+      type: "text/css",
       integrity:
-        'sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM',
-      crossorigin: 'anonymous',
+        "sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM",
+      crossorigin: "anonymous",
     },
   ],
-  
+
   plugins: [
     [
       "./plugins/blog-plugin",
@@ -67,15 +67,15 @@ const config = {
         path: "./blog",
         remarkPlugins: [math],
         rehypePlugins: [katex],
-        blogSidebarTitle: 'All posts',
-        blogSidebarCount: 'ALL',
+        blogSidebarTitle: "All posts",
+        blogSidebarCount: "ALL",
         editUrl: ({ blogDirPath, blogPath }) => {
           return `${process.env.GITHUB_EDIT}/${blogDirPath}/${blogPath}`;
         },
       },
     ],
   ],
-  
+
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
@@ -94,54 +94,54 @@ const config = {
           src: "/blogs/img/de.svg",
         },
         items: [
-          {to: '/', label: 'About', position: 'right'},
-          {to: '/blog', label: 'Blog', position: 'right'},
+          { to: "/", label: "About", position: "right" },
+          { to: "/blog", label: "Blog", position: "right" },
         ],
       },
       footer: {
         style: "dark",
         links: [
           {
-            title: 'More',
+            title: "More",
             items: [
               {
-                label: 'About',
-                to: '/',
+                label: "About",
+                to: "/",
               },
               {
-                label: 'Blog',
-                to: '/blog',
+                label: "Blog",
+                to: "/blog",
               },
             ],
           },
           {
-            title: 'Contact',
+            title: "Contact",
             items: [
               {
-                label: 'Mail',
+                label: "Mail",
                 href: `mailto:${process.env.INFO_GMAIL}`,
               },
               {
-                label: 'Linkedin',
+                label: "Linkedin",
                 href: `${process.env.INFO_LINKEDIN}`,
               },
               {
-                label: 'Phone',
+                label: "Phone",
                 href: `tel:+${process.env.INFO_TEL}`,
               },
               {
-                label: 'Github',
+                label: "Github",
                 href: `${process.env.INFO_GITHUB}`,
-              }
+              },
             ],
-          }
+          },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Tran Lam. All content is the property of Tran Lam.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Lam Tran. All content is the property of Lam Tran.`,
       },
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
-        additionalLanguages: ['java', 'scala'],
+        additionalLanguages: ["java", "scala"],
       },
       sidebar: {
         hideable: false,
@@ -156,4 +156,3 @@ const config = {
 };
 
 module.exports = config;
-
