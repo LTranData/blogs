@@ -270,3 +270,11 @@ I also use `React.memo()` to memorize the `RootLeft` component to prevent its re
 Now, when we hit the increment/decrement buttons, we can see that event `Root` component rerenders, `RootLeft` and `RootLeftLeft` will not be rerendered.
 
 This is pretty much about state management in React. Hope you enjoy reading it. See you in the next blogs.
+
+### 7. References
+
+[Reconciliation](https://legacy.reactjs.org/docs/reconciliation.html)
+
+[What is Diffing Algorithm ?](https://www.geeksforgeeks.org/what-is-diffing-algorithm/)
+
+[Javascript Event Loop Explained](https://www.webdevolution.com/blog/Javascript-Event-Loop-Explained)
