@@ -231,7 +231,7 @@ When you see the index merge in the EXPLAIN statement, review the query and tabl
 
 #### 3.3. Choose the correct order of columns to index
 
-When our index contains many columns, the order of columns in that index is very important, because in B-tree index, the index will be sorted from the leftmost column to the next columns (some disadvantages of B- tree index **[here](#113-một-số-nhược-điểm-của-b-tree-index)**). Therefore, we often choose the columns with the highest Index Selectivity as the leftmost column, order the columns in descending order of Index Selectivity, so that our overall index has high selectivity.
+When our index contains many columns, the order of columns in that index is very important, because in B-tree index, the index will be sorted from the leftmost column to the next columns (some disadvantages of B- tree index **[here](#113-drawbacks-of-b-tree-index)**). Therefore, we often choose the columns with the highest Index Selectivity as the leftmost column, order the columns in descending order of Index Selectivity, so that our overall index has high selectivity.
 
 ```sql
 select count(distinct productVendor)/count(1),
