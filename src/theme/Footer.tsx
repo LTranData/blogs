@@ -12,11 +12,10 @@ function Footer(props) {
           }}
         >
           <div style={{ maxWidth: 650 }}>
-            I am a highly motivated and passionate data engineer. You'll mostly
-            find me doing some engineering stuff in the big data ecosystem. I
-            often work with Python, Scala, and Java and use the latest big data
-            technologies to solve problems, making tools to improve mine and
-            others work productivity.
+            I am a highly motivated and passionate data engineer. I often work
+            with Python, Scala, and Java and use the latest big data
+            technologies to solve problems, making tools to improve my and
+            others' work productivity.
           </div>
           <div style={{ marginLeft: 30, minWidth: 169 }}>
             <img

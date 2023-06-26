@@ -15,11 +15,10 @@ function Home({ recentPosts }: HomeProps): JSX.Element {
         <div className="container">
           <div className="row">
             <div className="col col--9 col--offset-1">
-              <h1 className="hero__title">
-                👋 I'm Lam, a data engineer.
-              </h1>
+              <h1 className="hero__title">👋 I'm Lam, a data engineer.</h1>
               <p className="hero__subtitle">
-                Welcome to my development playground.
+                I write about data engineering, web development, and other
+                technology stuff...
               </p>
             </div>
           </div>
