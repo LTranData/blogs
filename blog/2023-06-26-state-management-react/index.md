@@ -99,6 +99,8 @@ There are some considerations when using state
 
 - **`setState` function is asynchronous:** consider the below example, whenever we click the button to increase the count, we see the console logs the old value of state before it is updated. Because `setState` function is asynchronous, it will be pulled to an event loop, move to the lifecycle `Call stack -> WebAPIs -> Callback Queue -> Call stack -> being executed -> Pop out the stack` (you can refer to event loop **[here](https://www.webdevolution.com/blog/Javascript-Event-Loop-Explained)**), but basically, in JavaScript, in the same code block, the synchronous code will always run before the asynchronous code, that's why we see the console logs the value of state before it is updated.
 
+Code: `UseStateM1.jsx`, tab `Mistake 1`
+
 <iframe
   style={{
     width: "100%",
@@ -113,6 +115,8 @@ There are some considerations when using state
 ></iframe>
 
 - **Changes to state should be made by `setState` function:** in this example, we can see that the count actually changes in the console log but the UI is not updated. Because we modify the state value directly and it will not cause the rerender of the component. In this case, we need to update state value by `setState` function: `setCount(count + 3)`.
+
+Code: `UseStateM2.jsx`, tab `Mistake 2`
 
 <iframe
   style={{
@@ -129,6 +133,8 @@ There are some considerations when using state
 
 - **State should be treated as immutable:** each time we use `setState` function, we need to pass a brand new value to the function in order to rerender the component. React uses Shallow Comparision to check if the state is changed or not. In JavaScript, with primitive datatypes such as numbers, strings,... SC will compare their values, with object datatypes such as object, array,... SC will compare their references. Consider the example below, when we modify the state object directly, the component will not be rerendered and the UI will not be updated because the state actually holds the reference to the user object, not its value. In order to fix this, we use the spread operator to create a new object to make a new reference, and update properties in that object `{ ...prevUser, name: "No one", age: 30 }`, and our component will work as expected.
 
+Code: `UseStateM3.jsx`, tab `Mistake 3`
+
 <iframe
   style={{
     width: "100%",
@@ -143,6 +149,8 @@ There are some considerations when using state
 ></iframe>
 
 - **Pass function as argument to `setState` whenever the state value depends on its previous value:** in the example below, some might expect the value of `count` will increase 2 at a time, but it actually increases 1 because `setState` is an asynchronous function, it will not be executed immediately but pulled to the event loop, and those two `setState` functions will receive the same value `count = 0`. To fix this, we need to use `setCount((prev) => prev + 1)`, we make the output value depends on the previous value so no matter the order of execution of that two `setState`, the value will be increased by 2 at a time.
+
+Code: `UseStateM4.jsx`, tab `Mistake 4`
 
 <iframe
   style={{
@@ -166,6 +174,8 @@ State is often used within the body of a component and modify information about 
 #### 5.1. Using callback functions
 
 In this approach, we are using callback functions in the child component to update state of the parent component, we also pass the state value from the parent to another child component to update its UI.
+
+Code: `ByCallback.jsx`, tab `By Callback`
 
 <iframe
   style={{
@@ -196,6 +206,8 @@ Cons
 
 By using this approach, we can get rid of the ugly code problem in the first approach.
 
+Code: `ByContext.jsx`, tab `By Context`
+
 <iframe
   style={{
     width: "100%",
@@ -223,6 +235,8 @@ The state is Redux is read-only as we cannot mutate directly, the only way to ch
 
 Changes will be made by pure functions, so reducers are the pure functions, their output will only depend on the inputs and will not cause any side effects.
 
+Code: `ByRedux.jsx`, tab `By Redux`
+
 <iframe
   style={{
     width: "100%",
@@ -249,6 +263,8 @@ There are some useful hooks/functions used to cache/memorize things related to s
 - `useCallback()` for memorizing some callback functions.
 
 I will apply theses to the **[ByContext](#52-using-react-context)** example above.
+
+Code: `Memo.jsx`, tab `Memo`
 
 <iframe
   style={{
