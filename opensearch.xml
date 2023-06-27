@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/"
                        xmlns:moz="http://www.mozilla.org/2006/browser/search/">
-  <ShortName>Tran Lam</ShortName>
-  <Description>Search Tran Lam</Description>
+  <ShortName>Lam Tran</ShortName>
+  <Description>Search Lam Tran</Description>
   <InputEncoding>UTF-8</InputEncoding>
-  <Image width="16" height="16" type="image/x-icon">https://lam1051999.github.io/blogs/blogs/img/de.svg</Image>
+  <Image width="16" height="16" type="image/x-icon">https://lam1051999.github.io/blogs/blogs/img/lt_logo_2.svg</Image>
   <Url type="text/html" method="get" template="https://lam1051999.github.io/blogs/search?q={searchTerms}"/>
   <Url type="application/opensearchdescription+xml" rel="self" template="https://lam1051999.github.io/blogs/opensearch.xml" />
   <moz:SearchForm>https://lam1051999.github.io/blogs/</moz:SearchForm>
