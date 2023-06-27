@@ -15,7 +15,7 @@ const config = {
   baseUrl: `/${process.env.PROJECT_NAME}/`,
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
-  favicon: `/${process.env.PROJECT_NAME}/img/de.svg`,
+  favicon: `/${process.env.PROJECT_NAME}/img/lt_logo_2.svg`,
   organizationName: process.env.ORGANIZATION_NAME,
   projectName: `${process.env.PROJECT_NAME}`,
 
@@ -91,7 +91,7 @@ const config = {
         title: process.env.SITE_TITLE,
         logo: {
           alt: "TL Logo",
-          src: "/blogs/img/de.svg",
+          src: "/blogs/img/lt_logo_2.svg",
         },
         items: [
           { to: "/", label: "About", position: "right" },
