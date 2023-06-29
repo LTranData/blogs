@@ -17,12 +17,12 @@ function Footer(props) {
             technologies to solve problems, making tools to improve my and
             others' work productivity.
           </div>
-          <div style={{ marginLeft: 30, minWidth: 169 }}>
+          <div style={{ marginLeft: 30, minWidth: 162 }}>
             <img
               src="/blogs/img/avatar.jpg"
               style={{
                 height: 154,
-                width: 139,
+                width: 162,
               }}
             />
             <p style={{ fontSize: "0.8em", marginTop: "1em" }}>
