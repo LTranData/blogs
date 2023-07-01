@@ -6,7 +6,7 @@
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://lam1051999.github.io/blogs/blog"/>
     <subtitle>Lam Tran Blog</subtitle>
-    <icon>https://lam1051999.github.io/blogs/blogs/img/lt_logo_2.svg</icon>
+    <icon>https://lam1051999.github.io/blogs/blogs/img/lt_logo.svg</icon>
     <entry>
         <title type="html"><![CDATA[Authorize Spark 3 SQL With Apache Ranger Part 2 - Integrate Spark SQL With Ranger]]></title>
         <id>mini-spark3-authorizer-part-2</id>
