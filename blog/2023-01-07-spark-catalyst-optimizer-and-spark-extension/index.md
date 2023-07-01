@@ -16,7 +16,7 @@ Spark catalyst optimizer is located at the core of Spark SQL with the purpose of
 
 The main components in Catalyst are represented as tree nodes, which are inherited from class `TreeNode`, or its subclasses. Class `TreeNode` has a set of child nodes with the attribute `children`, datatype `Seq[BaseType]`, therefore, one `TreeNode` can have 0 or more child nodes. These objects are immutable and manipulated using functional transformations, making the debug optimizer easier and parallel operations more predictable.
 
-The two important classes are `LogicalPlan` and `SparkPlan` are both subclasses of `QueryPlan`, the class inherits directly from `TreeNode`. In the above Catalyst diagram, the first 3 components are logical plans, the nodes in the logical plan are usually algebraic operators such as `Join`, `Filter`, `Project`,... the two components behind are spark plans (physical plans), nodes are usually low-level operators like `ShuffledHashJoinExec`, `SortMergeJoinExec`, `BroadcastHashJoinExec`, `FileSourceScanExec`,...
+The two important classes are `LogicalPlan` and `SparkPlan` are both subclasses of `QueryPlan`, the class inherits directly from `TreeNode`. In the above Catalyst diagram, the first 3 components are logical plans, the nodes in the logical plan are usually logical operators such as `CreateTableCommand`, `Filter`, `Project`,... the two components behind are spark plans (physical plans), nodes are usually low-level operators like `ShuffledHashJoinExec`, `SortMergeJoinExec`, `BroadcastHashJoinExec`, `FileSourceScanExec`,...
 
 Leaf nodes will read data from sources, storage, memory ,... and the root node of the tree is the outermost operator and returns the result of the calculation.
 
