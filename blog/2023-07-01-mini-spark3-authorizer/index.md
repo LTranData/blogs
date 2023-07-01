@@ -185,4 +185,6 @@ Go to `http://localhost:6083`, you can see the information about your Solr servi
 
 ![solr home](./images/solr_home.PNG)
 
+If you don't want to build the source code yourself then go to this repository, I have included the output file of the build process at **[https://github.com/lam1051999/ranger_build_output](https://github.com/lam1051999/ranger_build_output)**.
+
 This is all about installing Ranger with Solr for auditing. In the next blog, I will talk about how we can customize Spark to get a policy from Ranger and do the authorization on Spark SQL.
