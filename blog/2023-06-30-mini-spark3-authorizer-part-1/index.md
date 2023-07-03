@@ -14,7 +14,7 @@ Spark and Ranger are widely used by many enterprises because of their powerful f
 
 ### 1. Build process
 
-This installation come with these below components
+This installation comes with these below components.
 
 | Component   | Version      |
 | ----------- | ------------ |
@@ -132,7 +132,7 @@ curl -ivk -H "Content-type:application/json" -u admin:YourPassword@123456 -X GET
 
 ### 3. Solr installation for auditing
 
-Currently, Solr and Elasticsearch have supported sources for audit stores with Ranger. I will install Solr as it is built-in supported and does not require a good amount of infrastructure. The is also a standalone Solr which has no dependency on Zookeeper.
+Currently, Solr and Elasticsearch have supported sources for audit stores with Ranger. I will install Solr as it is built-in supported and does not require a good amount of infrastructure. This is also a standalone Solr which has no dependency on Zookeeper.
 
 In the same Ranger build that we had done earlier, we would find an installation setup for enabling Solr audits. We also want to change some installation configurations for our specific use case.
 
