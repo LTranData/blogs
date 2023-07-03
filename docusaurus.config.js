@@ -136,7 +136,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Lam Tran. All content is the property of Lam Tran.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Lam Tran.`,
       },
       prism: {
         theme: lightCodeTheme,
