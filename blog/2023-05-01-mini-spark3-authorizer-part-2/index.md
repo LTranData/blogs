@@ -6,7 +6,7 @@ tags: [Bigdata, Spark, Ranger, Apache]
 image: ./images/banner.PNG
 ---
 
-In the **[previous blog](/blog/2023-06-30-mini-spark3-authorizer-part-1/index.md)**, I have successfully installed a standalone Ranger service. In this article, I show you how we can customize the logical plan phase of **[Spark Catalyst Optimizer](/blog/2023-01-07-spark-catalyst-optimizer-and-spark-extension/index.md)** in order to archive authorization in Spark SQL with Ranger.
+In the **[previous blog](/blog/2023-04-30-mini-spark3-authorizer-part-1/index.md)**, I have successfully installed a standalone Ranger service. In this article, I show you how we can customize the logical plan phase of **[Spark Catalyst Optimizer](/blog/2023-01-07-spark-catalyst-optimizer-and-spark-extension/index.md)** in order to archive authorization in Spark SQL with Ranger.
 
 ![banner](./images/banner.PNG)
 
