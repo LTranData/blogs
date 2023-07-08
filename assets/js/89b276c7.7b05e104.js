@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkkgajera_blog=self.webpackChunkkgajera_blog||[]).push([[9810],{4821:a=>{a.exports=JSON.parse('{"label":"React","permalink":"/blogs/blog/tags/react","allTagsPath":"/blogs/blog/tags","count":1}')}}]);

@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklamtran_blog=self.webpackChunklamtran_blog||[]).push([[9900],{4526:l=>{l.exports=JSON.parse('{"label":"MySQL","permalink":"/blogs/blog/tags/my-sql","allTagsPath":"/blogs/blog/tags","count":4}')}}]);

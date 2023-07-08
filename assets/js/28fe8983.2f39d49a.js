@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkkgajera_blog=self.webpackChunkkgajera_blog||[]).push([[9018],{7186:a=>{a.exports=JSON.parse('{"label":"Data Engineering","permalink":"/blogs/blog/tags/data-engineering","allTagsPath":"/blogs/blog/tags","count":4}')}}]);

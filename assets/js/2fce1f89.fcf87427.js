@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkkgajera_blog=self.webpackChunkkgajera_blog||[]).push([[4320],{3193:a=>{a.exports=JSON.parse('{"label":"Kafka","permalink":"/blogs/blog/tags/kafka","allTagsPath":"/blogs/blog/tags","count":1}')}}]);

@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklamtran_blog=self.webpackChunklamtran_blog||[]).push([[2891],{3508:e=>{e.exports=JSON.parse('{"label":"Web development","permalink":"/blogs/blog/tags/web-development","allTagsPath":"/blogs/blog/tags","count":1}')}}]);

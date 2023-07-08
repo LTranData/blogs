@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklamtran_blog=self.webpackChunklamtran_blog||[]).push([[6945],{6945:(a,l,e)=>{e.r(l)}}]);

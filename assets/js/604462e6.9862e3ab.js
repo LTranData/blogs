@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklamtran_blog=self.webpackChunklamtran_blog||[]).push([[9050],{4975:a=>{a.exports=JSON.parse('{"label":"binary tree","permalink":"/blogs/blog/tags/binary-tree","allTagsPath":"/blogs/blog/tags","count":2}')}}]);
