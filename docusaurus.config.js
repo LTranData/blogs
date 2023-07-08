@@ -10,7 +10,7 @@ const katex = require("rehype-katex");
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: process.env.SITE_TITLE,
-  tagline: process.env.SITE_TITLE,
+  tagline: process.env.TAG_LINE,
   url: process.env.BLOG_URL,
   baseUrl: `/${process.env.PROJECT_NAME}/`,
   onBrokenLinks: "throw",
@@ -88,7 +88,7 @@ const config = {
       },
       navbar: {
         hideOnScroll: true,
-        title: process.env.SITE_TITLE,
+        title: process.env.HEADER_TITLE,
         logo: {
           alt: "TL Logo",
           src: "/blogs/img/lt_logo.svg",
