@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://lam1051999.github.io/blogs/blog</id>
-    <title>Lam Tran Blog</title>
+    <title>Lam Tran - SDE Blog</title>
     <updated>2023-07-01T00:00:00.000Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://lam1051999.github.io/blogs/blog"/>
-    <subtitle>Lam Tran Blog</subtitle>
+    <subtitle>Lam Tran - SDE Blog</subtitle>
     <icon>https://lam1051999.github.io/blogs/blogs/img/lt_logo.svg</icon>
     <entry>
         <title type="html"><![CDATA[Authorize Spark 3 SQL With Apache Ranger Part 2 - Integrate Spark SQL With Ranger]]></title>
