@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
     <channel>
-        <title>Lam Tran - SDE Blog</title>
+        <title>Lam Tran Blog</title>
         <link>https://lam1051999.github.io/blogs/blog</link>
-        <description>Lam Tran - SDE Blog</description>
+        <description>Lam Tran Blog</description>
         <lastBuildDate>Fri, 07 Jul 2023 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
         <generator>https://github.com/jpmonette/feed</generator>
