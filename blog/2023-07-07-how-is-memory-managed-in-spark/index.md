@@ -51,7 +51,7 @@ Usable Memory = On-Heap Memory - Reserved Memory
 
 ##### 2.1.1. Researved memory
 
-Reserved Memory is the memory reserved for the system and is used to store Spark's internal objects. Its size is hardcoded `private val RESERVED_SYSTEM_MEMORY_BYTES = 300 * 1024 * 1024` in `org.apache.spark.memory.UnifiedMemoryManager`. If you want to make any modifications, you need to change the Spark source code and recompile it. Spark will require On-Heap memory greater or equal to 1.5 times of reserved memory or it will fail to initialize Spark session.
+Reserved Memory is the memory reserved for the system and is used to store Spark's internal objects. Its size is hardcoded `private val RESERVED_SYSTEM_MEMORY_BYTES = 300 * 1024 * 1024` in `org.apache.spark.memory.UnifiedMemoryManager`. If you want to make any modifications, you need to change the Spark source code and recompile it. Spark will require On-Heap memory greater or equal to 1.5 times of Reserved Memory or it will fail to initialize Spark session.
 
 ```bash
 spark-shell --conf spark.executor.memory=300m
@@ -94,7 +94,7 @@ Storage Memory = Spark Memory * spark.memory.storageFraction
 - Storage Memory can borrow space from Execution Memory only if blocks are not used in Execution Memory.
 - Execution Memory can also borrow space from Storage Memory if blocks are not used in Storage Memory.
 - If blocks from Execution Memory are used by Storage Memory, and Execution needs more memory, it can forcefully evict the excess blocks occupied by Storage Memory.
-- If blocks from Storage Memory are used by Execution Memory and Storage needs more memory, it cannot forcefully evict the excess blocks occupied by Execution Memory; it will end up having less memory area. It will wait until Spark releases the excess blocks stored by Execution Memory and then occupies them.
+- If blocks from Storage Memory are used by Execution Memory and Storage needs more memory, it cannot forcefully evict the excess blocks occupied by Execution Memory, it will end up having less memory area. It will wait until Spark releases the excess blocks stored by Execution Memory and then occupies them.
 
 #### 2.2. Off-Heap Memory
 
