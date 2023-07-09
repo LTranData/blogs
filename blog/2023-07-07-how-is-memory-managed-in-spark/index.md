@@ -232,7 +232,7 @@ Then go to `http://localhost:4040/executors/`.
 
 We can see that the total amount of Spark memory is exactly like our calculation.
 
-That is how we calculate the memory in Spark. The source code can be found at: [https://github.com/lam1051999/calculate_spark_memory](https://github.com/lam1051999/calculate_spark_memory). See you in the next blogs.
+That is how we calculate the memory in Spark. The source code can be found at: [https://github.com/lam1051999/spark_memory_calculator](https://github.com/lam1051999/spark_memory_calculator). See you in the next blogs.
 
 ### 4. References
 
