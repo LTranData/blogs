@@ -192,7 +192,12 @@ The cost-based approach is chosen if we set `spark.sql.cbo.enabled=true`. Beside
 
 ![spark codegen](./images/catalyst-pipeline-codegen.PNG)
 
-After selecting the right physical plan to run, Catalyst will compile a tree of plans that support codegen into a single Java function, to Java bytecode to run on drivers and executors. This codegen greatly improves running speed when Spark SQL often works on in-memory datasets, data processing is often tied to the CPU. Catalyst relies on a Scala feature, quasiquotes, to simplify this part of the codegen (quasiquotes allow building abstract syntax trees (ASTs), which then input the Scala compiler to generate bytecode).
+After selecting the right physical plan to run, Catalyst will compile a tree of plans that support codegen into a single Java function, to Java bytecode to run on drivers and executors. This codegen greatly improves running speed when Spark SQL often works on in-memory datasets, data processing is often tied to the CPU.
+
+- Eliminates virtual function calls and thus, reduces the number of CPU instructions.
+- Leverages CPU registers for intermediate data.
+
+Catalyst relies on a Scala feature, quasiquotes, to simplify this part of the codegen (quasiquotes allow building abstract syntax trees (ASTs), which then input the Scala compiler to generate bytecode).
 
 ### 4. Spark session extension
 
