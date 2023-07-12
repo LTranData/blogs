@@ -166,6 +166,7 @@ pyenv local 2.7.18
 
 # After updating the required properties, run setup.sh
 sudo ./setup.sh
+sudo chown -R <your_mac_user>:<your_mac_group> ~/ranger-2.0.0-admin/contrib
 ```
 
 Once the setup scripts are completed, we can start the Solr service.
