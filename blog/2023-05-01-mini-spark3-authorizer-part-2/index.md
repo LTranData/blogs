@@ -67,6 +67,7 @@ After we have all the additional jars in Spark, we start to configure some prope
 # Get the template configuration file
 cd $SPARK_HOME/conf
 cp ~/mini_spark3_authorizer/spark3-conf/conf/ranger-spark-security.xml .
+cp ~/mini_spark3_authorizer/spark3-conf/conf/ranger-spark-audit.xml .
 
 # Modify the downloaded policy directory
 vi ranger-spark-security.xml
