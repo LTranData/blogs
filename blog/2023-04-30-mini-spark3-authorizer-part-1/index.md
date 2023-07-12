@@ -24,7 +24,7 @@ This installation comes with these below components.
 | Python      | 2.7.18       |
 | Maven       | 3.6.3        |
 | Ranger      | 2.0.0        |
-| Solr        | 5.2.1        |
+| Solr        | 7.7.1        |
 
 I install the framework on MacOS, but it is similar when it comes to any other Unix or Linux distributions.
 
@@ -147,7 +147,7 @@ SOLR_GROUP=<your_mac_group>
 SOLR_INSTALL=true
 
 JAVA_HOME=<your_java_home>
-SOLR_DOWNLOAD_URL=http://archive.apache.org/dist/lucene/solr/5.2.1/solr-5.2.1.tgz
+SOLR_DOWNLOAD_URL=http://archive.apache.org/dist/lucene/solr/7.7.1/solr-7.7.1.tgz
 
 SOLR_INSTALL_FOLDER=<your_prefix_folder>/data/solr
 SOLR_RANGER_HOME=<your_prefix_folder>/data/solr/ranger_audit_server
