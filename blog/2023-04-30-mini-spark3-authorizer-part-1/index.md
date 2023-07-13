@@ -171,7 +171,7 @@ sudo ./setup.sh
 sudo chown -R <your_mac_user>:<your_mac_group> ~/ranger-2.0.0-admin/contrib
 
 # Add write permission to Solr schema
-chmod +x ~/ranger-2.0.0-admin/contrib/solr_for_audit_setup/data/solr/ranger_audit_server/ranger_audits/conf/managed-schema
+chmod +w ~/ranger-2.0.0-admin/contrib/solr_for_audit_setup/data/solr/ranger_audit_server/ranger_audits/conf/managed-schema
 ```
 
 Once the setup scripts are completed, we can start the Solr service.
