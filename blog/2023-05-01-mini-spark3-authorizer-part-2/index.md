@@ -233,7 +233,7 @@ To check if it is pushed in Solr or not, go to `http://localhost:6083/solr/#/ran
 
 ### 3. Room for improvement
 
-In this blog, we integrate a standalone Spark 3 with a standalone Ranger, but in production, Spark is often used in corporate with a Hadoop data cluster with Kerberos authentication enabled. Ranger will also sit in that Hadoop and do the authorization for many frameworks in Hadoop. Thus, there are a few more things that we need to implement.
+In this blog, we integrate a local Spark 3 with a standalone Ranger, but in production, Spark is often used in corporate with a Hadoop data cluster with Kerberos authentication enabled. Ranger will also sit in that Hadoop and do the authorization for many frameworks in Hadoop. Thus, there are a few more things that we need to implement.
 
 - Config Spark and Ranger to work with Hadoop, and run Spark job in cluster mode.
 - Policy refresher needs to be secure and use SPNego protocol (which use Kerberos keytab to generate token) to make RESTful API calls to Ranger service.
