@@ -223,6 +223,14 @@ ls -lh
 
 We will see this is the new policy file and its content is refreshed every 10 seconds when the extension is in use.
 
+Now, we can check the Ranger audit logs at `http://localhost:6080/index.html#!/reports/audit/bigData`.
+
+![ranger audit](./images/ranger_audit.PNG)
+
+To check if it is pushed in Solr or not, go to `http://localhost:6083/solr/#/ranger_audits/query` and click **Execute Query**.
+
+![solr audit](./images/solr_audit.PNG)
+
 ### 3. Room for improvement
 
 In this blog, we integrate a standalone Spark 3 with a standalone Ranger, but in production, Spark is often used in corporate with a Hadoop data cluster with Kerberos authentication enabled. Ranger will also sit in that Hadoop and do the authorization for many frameworks in Hadoop. Thus, there are a few more things that we need to implement.
