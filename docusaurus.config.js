@@ -19,6 +19,14 @@ const config = {
   organizationName: process.env.ORGANIZATION_NAME,
   projectName: `${process.env.PROJECT_NAME}`,
 
+  scripts: [
+    {
+      src: process.env.GOOGLE_ADS_SCRIPT,
+      async: true,
+      crossorigin: "anonymous"
+    },
+  ],
+
   customFields: {
     projectId: process.env.PROJECTID,
     discussionCategory: process.env.DISCUSSION_CATEGORY,
