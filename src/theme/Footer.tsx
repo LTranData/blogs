@@ -16,6 +16,14 @@ function Footer(props) {
             with Python, Scala, and Java and use the latest big data
             technologies to solve problems, making tools to improve my and
             others' work productivity.
+              <a target="_blank" rel="noreferrer noopener" href="https://www.buymeacoffee.com/lamtran" style={{
+                display: "block",
+                height: 50,
+                width: 50,
+                marginTop: 10
+              }}>
+                <img src="/img/donate.jpg" />
+              </a>
           </div>
           <div style={{ marginLeft: 30, minWidth: 162 }}>
             <img
