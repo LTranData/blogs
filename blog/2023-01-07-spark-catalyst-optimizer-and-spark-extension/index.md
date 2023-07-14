@@ -13,7 +13,7 @@ Spark catalyst optimizer is located at the core of Spark SQL with the purpose of
 
 <!--truncate-->
 
-### 1. TreeNode
+## 1. TreeNode
 
 The main components in Catalyst are represented as tree nodes, which are inherited from class `TreeNode`, or its subclasses. Class `TreeNode` has a set of child nodes with the attribute `children`, datatype `Seq[BaseType]`, therefore, one `TreeNode` can have 0 or more child nodes. These objects are immutable and manipulated using functional transformations, making the debug optimizer easier and parallel operations more predictable.
 
@@ -21,7 +21,7 @@ The two important classes are `LogicalPlan` and `SparkPlan` are both subclasses 
 
 Leaf nodes will read data from sources, storage, memory ,... and the root node of the tree is the outermost operator and returns the result of the calculation.
 
-### 2. Rules
+## 2. Rules
 
 To manipulate the TreeNode we use rules, rules are actually components that transforms the tree, from one tree to another. In the rule, we implement the logic that transforms the TreeNode, which often uses the pattern matching in Scala to find the corresponding matches in its subtree and replace it with other constructs. Trees provide transformation functions that can apply this pattern matching to transform trees like `transform`, `transformDown`, `transformUp`,...
 
@@ -120,11 +120,11 @@ object TestTransform {
 
 In the above example, the transformDown function is used, which traverses the nodes of a tree and uses pattern matching to return a different result. If the node is a binary operator like Multiply, Subtract, it will convert to Add. If node is an integer constant greater than 5, it will change to 1, constant less than 5 will change to 0, a constant of 5 will keep the same value.
 
-### 3. Catalyst Operations in Spark SQL
+## 3. Catalyst Operations in Spark SQL
 
 Spark Catalyst uses tree transformations in four main phases: (1) logical plan analysis to traverse the relations in that plan, (2) logical plan optimization, (3) physical planning, (4) code generation to compile the query into Java bytecode.
 
-#### 3.1. Parsing and Analyzing
+### 3.1. Parsing and Analyzing
 
 ![spark catalyst parseing analyzing](./images/catalyst-pipeline-parsing-analyzing.PNG)
 
@@ -158,7 +158,7 @@ Relation test.describe_abc[id#5833,name#5834] parquet
 +- FileScan parquet test.describe_abc[id#5833,name#5834] Batched: true, DataFilters: [], Format: Parquet, Location: InMemoryFileIndex(1 paths)[hdfs://bigdataha/user/hive/warehouse/test.db/describe_abc], PartitionFilters: [], PushedFilters: [], ReadSchema: struct<id:int,name:string>
 ```
 
-#### 3.2. Logical plan optimizations
+### 3.2. Logical plan optimizations
 
 ![spark LP optimization](./images/catalyst-pipeline-LP-optimization.PNG)
 
@@ -172,7 +172,7 @@ Catalyst applies standard optimization rules to the logical plan analyzed in the
 
 Spark's Catalyst optimizer will include batches of rules, some of which can exist in multiple batches. Usually these batch rules will be run once on that plan, however, there are some batches that will run repeatedly until a certain number of passes.
 
-#### 3.3. Physical planning
+### 3.3. Physical planning
 
 ![spark PP planning](./images/catalyst-pipeline-PP-planning.PNG)
 
@@ -189,7 +189,7 @@ Some Spark SQL approaches to this cost model
 
 The cost-based approach is chosen if we set `spark.sql.cbo.enabled=true`. Besides, table and column statistics also need to be collected so that Spark can calculate based on it, by running **[ANALYZE](https://spark.apache.org/docs/latest/sql-ref-syntax-aux-analyze-table.html)**
 
-#### 3.4. Code generation
+### 3.4. Code generation
 
 ![spark codegen](./images/catalyst-pipeline-codegen.PNG)
 
@@ -200,11 +200,11 @@ After selecting the right physical plan to run, Catalyst will compile a tree of 
 
 Catalyst relies on a Scala feature, quasiquotes, to simplify this part of the codegen (quasiquotes allow building abstract syntax trees (ASTs), which then input the Scala compiler to generate bytecode).
 
-### 4. Spark session extension
+## 4. Spark session extension
 
 Spark session extension is an extension of Spark that allows us to customize parts of the Catalyst optimizer so that it works in each of our contexts.
 
-#### 4.1. Custom parser rule
+### 4.1. Custom parser rule
 
 As shown above, initially our query will have to go through the parsing set to check the validity of the query. Spark provides an interface that we can implement at this stage `ParserInterface`
 
@@ -251,7 +251,7 @@ val customerParserRuleFunc: SparkSessionExtensions => Unit = (extensionBuilder: 
 }
 ```
 
-#### 4.2. Custom analyzer rule
+### 4.2. Custom analyzer rule
 
 Analyzer rule includes several types of rules such as resolution rule, check rule. These rules are injected through functions
 
@@ -287,7 +287,7 @@ val customAnalyzerCheckRuleFunc: SparkSessionExtensions => Unit = (extensionBuil
 }
 ```
 
-#### 4.3. Custom optimization
+### 4.3. Custom optimization
 
 To customize the logical plan optimization phase, we will inherit the abstract class `Rule[LogicalPlan]`
 
@@ -303,7 +303,7 @@ val customOptimizerFunc: SparkSessionExtensions => Unit = (extensionBuilder: Spa
 }
 ```
 
-#### 4.4. Custom physical planning
+### 4.4. Custom physical planning
 
 To configure the running strategy for Spark Catalyst optimizer, we inherit the abstract class `SparkStrategy` and implement the method `apply` of that class
 
@@ -319,7 +319,7 @@ val customStrategyFunc: SparkSessionExtensions => Unit = (extensionBuilder: Spar
 }
 ```
 
-#### 4.5. Example code to configuree logical plan optimization phase in Catalyst optimizer
+### 4.5. Example code to configuree logical plan optimization phase in Catalyst optimizer
 
 In this section, I will make an example of changing logical plan optimization phase with Spark extension. A simple extension with code as below
 
@@ -360,7 +360,7 @@ Compile project
 mvn clean package && mvn dependency:copy-dependencies
 ```
 
-##### 4.5.1. When not applying extension
+#### 4.5.1. When not applying extension
 
 We initialize `spark-shell` without passing extension
 
@@ -404,7 +404,7 @@ Project [hotel#0, is_canceled#1L]
 
 We see that `Optimized Logical Plan` there are both Project and Filter operations, because we filter `WHERE hotel='Resort Hotel'` and project `SELECT hotel, is_canceled`. Therefore, in the physical plan, it only scans 2 columns `FileScan parquet test.hotel_bookings[hotel#0,is_canceled#1L]`.
 
-##### 4.5.2. When applying extension
+#### 4.5.2. When applying extension
 
 ```bash
 # initialize spark-shell with extension
@@ -447,7 +447,7 @@ At this point, `Optimized Logical Plan` there is no longer Project operator, but
 
 Above, I have specifically presented the components of Spark Catalyst optimizer and how to write spark session extensions to intervene to change Catalyst's plans, there are also specific code examples to demonstrate this. In the next article, I will present one more part that is a new feature in Spark 3.0, which is Spark Adaptive Query Execution, a feature that improves Spark job speed at runtime.
 
-### 5. References
+## 5. References
 
 [Deep Dive into Spark SQL's Catalyst Optimizer](https://www.databricks.com/blog/2015/04/13/deep-dive-into-spark-sqls-catalyst-optimizer.html)
 

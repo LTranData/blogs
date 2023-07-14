@@ -13,7 +13,7 @@ Spark and Ranger are widely used by many enterprises because of their powerful f
 
 <!--truncate-->
 
-### 1. Build process
+## 1. Build process
 
 This installation comes with these below components.
 
@@ -43,7 +43,7 @@ cd apache-ranger-2.0.0
 mvn clean compile package install assembly:assembly -Dmaven.test.skip=true -Drat.skip=true -Dpmd.skip=true -Dfindbugs.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true
 ```
 
-### 2. Ranger Admin installation
+## 2. Ranger Admin installation
 
 After the build process, you will have the `ranger-2.0.0-admin.tar.gz` file in the `target/` folder, you can go to the installation step of Ranger Admin. Our target is running a standalone Ranger with Solr for auditing then `ranger-2.0.0-admin.tar.gz` is enough in this case.
 
@@ -131,7 +131,7 @@ curl -ivk -H "Content-type:application/json" -u admin:YourPassword@123456 -X GET
 ~/ranger-2.0.0-admin/ews/ranger-admin-services.sh stop 
 ```
 
-### 3. Solr installation for auditing
+## 3. Solr installation for auditing
 
 Currently, Solr and Elasticsearch have supported sources for audit stores with Ranger. I will install Solr as it is built-in supported and does not require a good amount of infrastructure. This is also a standalone Solr which has no dependency on Zookeeper.
 

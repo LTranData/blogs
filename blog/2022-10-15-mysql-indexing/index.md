@@ -13,11 +13,11 @@ Indexing is a method to make queries faster, which is a very important part of i
 
 <!--truncate-->
 
-### 1. Types of index
+## 1. Types of index
 
 There are many types of indexes designed for different purposes. Remember, indexes are implemented at the storage engine layer, not at the server layer, so they behave differently in different storage engines. The types of indexes in this article are mainly about indexes in InnoDB.
 
-#### 1.1. B-tree index
+### 1.1. B-tree index
 
 B-tree index uses a balanced tree to store its data, almost all MySQL storage engines support this type of index (or its variant), for example, the NDB Cluster storage engine uses the data structure T-tree for indexing, InnoDB uses B+ tree,...
 
@@ -29,11 +29,11 @@ B-trees provide the ability to search, access sequential data, insert and delete
 
 In the image above, we only see a node page and leaf pages. In fact, the B-tree has many layers of node pages between the root node and the leaf nodes, the size of the tree depends on the size of the indexed table.
 
-##### 1.1.1. Adaptive hash index
+#### 1.1.1. Adaptive hash index
 
 When index values ​​are accessed with high frequency, InnoDB will build a hash index for them in memory on top of the B-tree index, making it possible to find this hash value very quickly and efficiently. This mode is automatic by InnoDB, however, you can still disable adaptive hash index if you want.
 
-##### 1.1.2. Types of query that are efficient with B-tree index
+#### 1.1.2. Types of query that are efficient with B-tree index
 
 B-tree indexes work well with exact-value, range, or value-prefix query types. These queries are best when we use them on the leftmost column in the indexed set of columns.
 
@@ -52,7 +52,7 @@ CREATE TABLE People (
 - Match a range of values: when we need to get the set of people whose last_name is between 'anh' and 'lam'.
 - Match the leftmost column and a range of the next column values: for example, when we need information about people last_name is 'lam' and first_name starts with 't'.
 
-##### 1.1.3. Drawbacks of B-tree index
+#### 1.1.3. Drawbacks of B-tree index
 
 - It won't really help when the query condition doesn't start with the leftmost column, nor is it good when the query finds people whose last_name ends with a specific letter.
 - Queries that skip some columns also don't take full advantage of the index. For example when looking for people `last_name = 'lam' AND dob = '1999-05-10'` with no condition on first_name.
@@ -60,7 +60,7 @@ CREATE TABLE People (
 
 Thus, the order of the columns in the index is really important, you need to consider the query goal of the application before indexing the columns.
 
-#### 1.2. Full-text index
+### 1.2. Full-text index
 
 The full-text index searches for keywords in the text string instead of comparing the field's value directly. It aids in searching rather than judging what type the data matches. When a column has a full-text index, we can still type a B-tree index on that column.
 
@@ -75,7 +75,7 @@ CREATE TABLE tutorial (
 
 The full-text index is used by syntax `MATCH() AGAINST()` with the parameter of `MATCH()` are columns to search, separated by commas. The parameter of `AGAINST()` is a string to search and type of search to perform.
 
-##### 1.2.1. Types of full-text index
+#### 1.2.1. Types of full-text index
 
 - Natural language search: this mode will interpret the search string as a phrase in natural human language. This mode does not count stopwords as well as words shorter than the minimum number of characters (default is 3 characters with InnoDB).
 - Boolean search: interprets the search string using special query language rules. The string contains all the words to be searched, it can also contain special operators for advanced searches, such as a word that needs to appear in the string, or a word that is weighted heavier or lighter. Stop words will be ignored in this mode.
@@ -83,7 +83,7 @@ The full-text index is used by syntax `MATCH() AGAINST()` with the parameter of 
 
 I won't go into each type in detail, because I rarely use the full-text index.
 
-### 2. Benefits of indexing
+## 2. Benefits of indexing
 
 Some benefits of indexing
 
@@ -97,11 +97,11 @@ Some criteria to evaluate index
 - The sorted rows should be exactly what your application queries need.
 - Index needs to contain all the columns that your application query filters.
 
-### 3. Indexing strategies
+## 3. Indexing strategies
 
 Creating the right indexes will greatly improve your query speed, which in turn makes your application more responsive to users.
 
-#### 3.1. Prefix index for text field
+### 3.1. Prefix index for text field
 
 Consider Index Selectivity is the ratio between the number of different column values ​​/ total records of the table. For columns with high Index Selectivity, indexing on these fields is very effective because MySQL will remove more records when filtering on those columns. For long text fields, we cannot index the whole column length because MySQL won't allow that, so we need to find a good enough prefix of that field to index and it will give us a good enough performance.
 
@@ -183,7 +183,7 @@ We see that the selectivity prefix 11 is very close to the column selectivity va
 ALTER TABLE `classicmodels`.`products_index` ADD KEY (productVendor(11));
 ```
 
-#### 3.2. Index on multiple columns
+### 3.2. Index on multiple columns
 
 Some mistakes when indexing is indexing each column separately, and creating indexes for all columns in the WHERE statement.
 
@@ -230,7 +230,7 @@ Some considerations when query encounters index merge
 
 When you see the index merge in the EXPLAIN statement, review the query and table structure to check if the current design is optimal.
 
-#### 3.3. Choose the correct order of columns to index
+### 3.3. Choose the correct order of columns to index
 
 When our index contains many columns, the order of columns in that index is very important, because in B-tree index, the index will be sorted from the leftmost column to the next columns (some disadvantages of B- tree index **[here](#113-drawbacks-of-b-tree-index)**). Therefore, we often choose the columns with the highest Index Selectivity as the leftmost column, order the columns in descending order of Index Selectivity, so that our overall index has high selectivity.
 

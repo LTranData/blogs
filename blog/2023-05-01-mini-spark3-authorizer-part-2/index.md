@@ -13,7 +13,7 @@ In the **[previous blog](/blog/2023-04-30-mini-spark3-authorizer-part-1/index.md
 
 <!--truncate-->
 
-### 1. Spark installation
+## 1. Spark installation
 
 Firstly, I will install Apache Spark 3.3.0 on my local machine. It is pretty easy with a few below steps.
 
@@ -32,7 +32,7 @@ export PATH=$PATH:$SPARK_HOME/bin
 spark-shell
 ```
 
-### 2. Build a mini Spark Session Extension for Ranger authorization
+## 2. Build a mini Spark Session Extension for Ranger authorization
 
 The idea to make the authorizer is first inspired by [this GitHub repository](https://github.com/yaooqinn/spark-ranger). Currently, this repository has been archived and it is only compatible with Spark 2.4 and below, which does not help our use case (we use Spark 3.3.0). After weeks of trying multiple solutions but not having a result, I end up customizing the repository to work with Spark 3.3.0 myself.
 
@@ -232,7 +232,7 @@ To check if it is pushed in Solr or not, go to `http://localhost:6083/solr/#/ran
 
 ![solr audit](./images/solr_audit.PNG)
 
-### 3. Room for improvement
+## 3. Room for improvement
 
 In this blog, we integrate a local Spark 3 with a standalone Ranger, but in production, Spark is often used in corporate with a Hadoop data cluster with Kerberos authentication enabled. Ranger will also sit in that Hadoop and do the authorization for many frameworks in Hadoop. Thus, there are a few more things that we need to implement.
 

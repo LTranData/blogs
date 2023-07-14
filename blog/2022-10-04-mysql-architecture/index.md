@@ -11,7 +11,7 @@ Hello everyone, recently, I did some research in MySQL because I think whoever d
 
 <!--truncate-->
 
-### 1. MySQL architecture components
+## 1. MySQL architecture components
 
 MySQL is widely used not only in small applications but also in large enterprises, thanks to the features of its flexible architecture.
 
@@ -23,13 +23,13 @@ The second layer is the layer that contains the code for query analysis, optimiz
 
 The third layer is storage engines, which are responsible for storing and retrieving data in MySQL. Each storage engine has its own good and bad sides. The MySQL server interacts with them by the storage engine API, which contains many low-level functions, operations such as starting a transaction, finding records with the corresponding primary key. Storage engines only respond to requests from the server, while parsing queries are made at the second layer.
 
-### 2. Connection and security management
+## 2. Connection and security management
 
 With the default configuration, each connection from the client will occupy one thread, and queries will run in that thread. The server will have a cache of threads ready to use, so they won't need to be created and destroyed every time there is a new connection from the client.
 
 When the client connects, the server will need to authenticate that connection based on the host, username, and password. After connecting, the server will check whether the client has permissions to specific database resources (eg, SELECT permission on which table on which database,…).
 
-### 3. MySQL optimizer
+## 3. MySQL optimizer
 
 ![Overall](./images/overall.PNG)
 

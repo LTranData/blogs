@@ -13,7 +13,7 @@ The next article in the MySQL series is about transactions. A very common operat
 
 <!--truncate-->
 
-### 1. What is transaction?
+## 1. What is transaction?
 
 A transaction is a set of SQL statements put together as a unit of work. If the database successfully runs all SQL statements in that group, it is considered successful. If one of the SQL commands fails, all the SQL commands that have been run or not run will have no effect on the database. An example of a set of SQL statements wrapped in a transaction follows
 
@@ -27,7 +27,7 @@ A transaction is a set of SQL statements put together as a unit of work. If the 
 
 Transactions are started by START TRANSACTION and are usually closed by COMMIT (confirm transaction) or ROLLBACK (return to pre-transaction state). If the ${4^{th}}$ statement fails, the ${3^{rd}}$ statement will be rolledback and nothing will happen to affect the old data.
 
-### 2. Four data preservation properties in relational database
+## 2. Four data preservation properties in relational database
 
 ![ACID](./images/acid.PNG)
 
@@ -49,7 +49,7 @@ The result of this transaction will be invisible to other transactions when this
 
 Once committed, the changes made by the transaction will be permanent, the changes need to be recorded to ensure that the data is not lost if the system fails.
 
-### 3. Four isolation level in highly concurrent read and write environments
+## 3. Four isolation level in highly concurrent read and write environments
 
 There are 4 isolation levels related to transactions
 
@@ -71,7 +71,7 @@ This mode solves the problem of reading a range of values ​​above by running
 
 ![Isolation Level](./images/isolation_levels.PNG)
 
-### 4. Transaction deadlock
+## 4. Transaction deadlock
 
 Deadlock occurs when two or more transactions lock the same resources, creating a cycle of dependency
 
@@ -92,13 +92,13 @@ After these two transactions finish running the first command, when running the 
 
 ![Deadlock](./images/deadlock.JPEG)
 
-### 5. Transaction logging
+## 5. Transaction logging
 
 Transaction logging makes transaction execution more efficient. Instead of updating directly to the disk table every time there is a change, it updates to the copy of the data in memory. Then the transaction log will be written to disk with append mode, this operation is very fast because only sequential I/O is required in disk, more cost-effective, after a while these changes will be applied to the actual data on disk. Because this log is written on disk, it will be durable, if the system fails after writing the transaction log to disk but before updating the changes to the main data, the storage engine can still recover those changes.
 
 ![Transaction Log](./images/transaction_log.PNG)
 
-### 6. Autocommit
+## 6. Autocommit
 
 By default, INSERT, UPDATE, and DELETE statements are wrapped in temporary transactions and committed as soon as they run, this is AUTOCOMMIT mode. To enable this mode run the sentence SET AUTOCOMMIT = 1; otherwise, SET AUTOCOMMIT = 0. Some special commands can commit a transaction while in an open transaction, such as DDL statements. We can set the isolation level for MySQL by running the SET TRANSACTION ISOLATION LEVEL command, after running this isolation level will take effect in subsequent transactions. You can set it in the configuration file for the whole server, or just set it in your session
 
