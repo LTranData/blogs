@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
     <channel>
         <title>Lam Tran Blog</title>
-        <link>https://lam1051999.github.io/blog</link>
+        <link>https://lam-tran.dev/blog</link>
         <description>Lam Tran Blog</description>
         <lastBuildDate>Fri, 07 Jul 2023 00:00:00 GMT</lastBuildDate>
         <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
@@ -10,7 +10,7 @@
         <language>en</language>
         <item>
             <title><![CDATA[How Is Memory Managed In Spark?]]></title>
-            <link>https://lam1051999.github.io/blog/how-is-memory-managed-in-spark</link>
+            <link>https://lam-tran.dev/blog/how-is-memory-managed-in-spark</link>
             <guid>how-is-memory-managed-in-spark</guid>
             <pubDate>Fri, 07 Jul 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[Spark is an in-memory data processing framework that can quickly perform processing tasks on very large data sets, and can also distribute tasks across multiple computers. Spark applications are memory heavy, hence, it is obvious that memory management plays a very important role in the whole system.]]></description>
@@ -21,7 +21,7 @@
         </item>
         <item>
             <title><![CDATA[State Management In React]]></title>
-            <link>https://lam1051999.github.io/blog/state-management-react</link>
+            <link>https://lam-tran.dev/blog/state-management-react</link>
             <guid>state-management-react</guid>
             <pubDate>Mon, 26 Jun 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[State is a very crucial part of React applications which will help update the information of the React components to change UI accordingly and make our application interactive with clients. In this article, I will walk you through the usage of state, its characteristic, and how we can use state in an efficient way.]]></description>
@@ -33,7 +33,7 @@
         </item>
         <item>
             <title><![CDATA[Authorize Spark 3 SQL With Apache Ranger Part 2 - Integrate Spark SQL With Ranger]]></title>
-            <link>https://lam1051999.github.io/blog/mini-spark3-authorizer-part-2</link>
+            <link>https://lam-tran.dev/blog/mini-spark3-authorizer-part-2</link>
             <guid>mini-spark3-authorizer-part-2</guid>
             <pubDate>Mon, 01 May 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[In the previous blog, I have successfully installed a standalone Ranger service. In this article, I show you how we can customize the logical plan phase of Spark Catalyst Optimizer in order to archive authorization in Spark SQL with Ranger.]]></description>
@@ -45,7 +45,7 @@
         </item>
         <item>
             <title><![CDATA[Authorize Spark 3 SQL With Apache Ranger Part 1 - Ranger installation]]></title>
-            <link>https://lam1051999.github.io/blog/mini-spark3-authorizer-part-1</link>
+            <link>https://lam-tran.dev/blog/mini-spark3-authorizer-part-1</link>
             <guid>mini-spark3-authorizer-part-1</guid>
             <pubDate>Sun, 30 Apr 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[Spark and Ranger are widely used by many enterprises because of their powerful features. Spark is an in-memory data processing framework and Ranger is a framework to enable, monitor and manage comprehensive data security across the Hadoop platform. Thus, Ranger can be used to do authorization for Spark SQL and this blog will walk you through the integration of those two frameworks. This is the first part of the series, where we install the Ranger framework on our machine, and additionally, Apache Solr for auditing.]]></description>
@@ -57,7 +57,7 @@
         </item>
         <item>
             <title><![CDATA[Spark Catalyst Optimizer And Spark Session Extension]]></title>
-            <link>https://lam1051999.github.io/blog/spark-catalyst-optimizer-and-spark-session-extension</link>
+            <link>https://lam-tran.dev/blog/spark-catalyst-optimizer-and-spark-session-extension</link>
             <guid>spark-catalyst-optimizer-and-spark-session-extension</guid>
             <pubDate>Sat, 07 Jan 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[Spark catalyst optimizer is located at the core of Spark SQL with the purpose of optimizing structured queries expressed in SQL or through DataFrame/Dataset APIs, minimizing application running time and costs. When using Spark, often people see the catalyst optimizer as a black box, when we assume that it works mysteriously without really caring what happens inside it. In this article, I will go in depth of its logic, its components, and how the Spark session extension participates to change the Catalyst's plans.]]></description>
@@ -68,7 +68,7 @@
         </item>
         <item>
             <title><![CDATA[MySQL series - Indexing]]></title>
-            <link>https://lam1051999.github.io/blog/mysql-series-mysql-indexing</link>
+            <link>https://lam-tran.dev/blog/mysql-series-mysql-indexing</link>
             <guid>mysql-series-mysql-indexing</guid>
             <pubDate>Sat, 15 Oct 2022 00:00:00 GMT</pubDate>
             <description><![CDATA[Indexing is a method to make queries faster, which is a very important part of improving performance. For large data tables, precise indexing will increase the query speed as a whole, however, this is often not taken into account in the table design process. This article talks about the types of indexes and how to properly index them.]]></description>
@@ -81,7 +81,7 @@
         </item>
         <item>
             <title><![CDATA[MySQL series - Multiversion concurrency control]]></title>
-            <link>https://lam1051999.github.io/blog/mysql-series-mysql-mvcc</link>
+            <link>https://lam-tran.dev/blog/mysql-series-mysql-mvcc</link>
             <guid>mysql-series-mysql-mvcc</guid>
             <pubDate>Fri, 07 Oct 2022 00:00:00 GMT</pubDate>
             <description><![CDATA[Usually storage engines do not use a simple row lock mechanism, to achieve good performance in a highly concurrent read and write environment, storage engines implement row locking with a certain complexity, the method is often used, is multiversion concurrency control (MVCC).]]></description>
@@ -94,7 +94,7 @@
         </item>
         <item>
             <title><![CDATA[MySQL series - Transaction In MySQL]]></title>
-            <link>https://lam1051999.github.io/blog/mysql-series-mysql-transaction</link>
+            <link>https://lam-tran.dev/blog/mysql-series-mysql-transaction</link>
             <guid>mysql-series-mysql-transaction</guid>
             <pubDate>Thu, 06 Oct 2022 00:00:00 GMT</pubDate>
             <description><![CDATA[Poster]]></description>
@@ -107,7 +107,7 @@
         </item>
         <item>
             <title><![CDATA[MySQL series - MySQL Architecture Overview]]></title>
-            <link>https://lam1051999.github.io/blog/mysql-series-mysql-architecture</link>
+            <link>https://lam-tran.dev/blog/mysql-series-mysql-architecture</link>
             <guid>mysql-series-mysql-architecture</guid>
             <pubDate>Tue, 04 Oct 2022 00:00:00 GMT</pubDate>
             <description><![CDATA[Hello everyone, recently, I did some research in MySQL because I think whoever doing data engineering should go in-depth with a certain relational database. Once you get a deep understanding of one RDBMS, you can easily learn the other RDBMS since they have many similarities. For the next few blogs, I will have a series about MySQL, and this is the first article.]]></description>
@@ -119,7 +119,7 @@
         </item>
         <item>
             <title><![CDATA[Create A Data Streaming Pipeline With Spark Streaming, Kafka And Docker]]></title>
-            <link>https://lam1051999.github.io/blog/spark-kafka-docker</link>
+            <link>https://lam-tran.dev/blog/spark-kafka-docker</link>
             <guid>spark-kafka-docker</guid>
             <pubDate>Sun, 11 Sep 2022 00:00:00 GMT</pubDate>
             <description><![CDATA[Architecture]]></description>
@@ -132,7 +132,7 @@
         </item>
         <item>
             <title><![CDATA[Create A Standalone Spark Cluster With Docker]]></title>
-            <link>https://lam1051999.github.io/blog/spark-cluster-docker</link>
+            <link>https://lam-tran.dev/blog/spark-cluster-docker</link>
             <guid>spark-cluster-docker</guid>
             <pubDate>Sat, 01 Jan 2022 00:00:00 GMT</pubDate>
             <description><![CDATA[Cluster Overview]]></description>
@@ -144,7 +144,7 @@
         </item>
         <item>
             <title><![CDATA[AVL Tree, AVL Sorting Algorithm]]></title>
-            <link>https://lam1051999.github.io/blog/avl-tree</link>
+            <link>https://lam-tran.dev/blog/avl-tree</link>
             <guid>avl-tree</guid>
             <pubDate>Wed, 24 Feb 2021 00:00:00 GMT</pubDate>
             <description><![CDATA[Intuition]]></description>
@@ -178,7 +178,7 @@ M834 80h400000v40h-400000z"></path></svg></span></span></span><span class="vlist
         </item>
         <item>
             <title><![CDATA[Binary Search Tree]]></title>
-            <link>https://lam1051999.github.io/blog/binarysearch-tree</link>
+            <link>https://lam-tran.dev/blog/binarysearch-tree</link>
             <guid>binarysearch-tree</guid>
             <pubDate>Mon, 22 Feb 2021 00:00:00 GMT</pubDate>
             <description><![CDATA[Intro]]></description>
@@ -192,7 +192,7 @@ We traverse all the nodes in the tree, so the time complexity is <span class="ma
         </item>
         <item>
             <title><![CDATA[Fundamental Sorting Algorithms]]></title>
-            <link>https://lam1051999.github.io/blog/sorting-algorithms</link>
+            <link>https://lam-tran.dev/blog/sorting-algorithms</link>
             <guid>sorting-algorithms</guid>
             <pubDate>Sat, 20 Feb 2021 00:00:00 GMT</pubDate>
             <description><![CDATA[Intro]]></description>
@@ -208,7 +208,7 @@ However, the heap sort algorithm has an advantage over merge sort in that it onl
         </item>
         <item>
             <title><![CDATA[Peak Finding Algorithm]]></title>
-            <link>https://lam1051999.github.io/blog/peak-finding</link>
+            <link>https://lam-tran.dev/blog/peak-finding</link>
             <guid>peak-finding</guid>
             <pubDate>Thu, 18 Feb 2021 00:00:00 GMT</pubDate>
             <description><![CDATA[Intro]]></description>
