@@ -20,14 +20,17 @@ function Footer(props) {
                 display: "block",
                 marginTop: 10
               }}>
-                <img style={{
-                  height: 50,
-                  width: 50,
-                }} src="/img/donate.jpg" />
+                <img
+                  loading="lazy"
+                  style={{
+                    height: 50,
+                    width: 50,
+                  }} src="/img/donate.jpg" />
               </a>
           </div>
           <div style={{ marginLeft: 30, minWidth: 162 }}>
             <img
+              loading="lazy"
               src="/img/avatar.jpg"
               style={{
                 height: 130,

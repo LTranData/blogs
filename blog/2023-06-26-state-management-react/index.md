@@ -102,6 +102,7 @@ There are some considerations when using state
 Code: `UseStateM1.jsx`, tab `Mistake 1`
 
 <iframe
+  loading="lazy"
   style={{
     width: "100%",
     height: 900,
@@ -119,6 +120,7 @@ Code: `UseStateM1.jsx`, tab `Mistake 1`
 Code: `UseStateM2.jsx`, tab `Mistake 2`
 
 <iframe
+  loading="lazy"
   style={{
     width: "100%",
     height: 900,
@@ -136,6 +138,7 @@ Code: `UseStateM2.jsx`, tab `Mistake 2`
 Code: `UseStateM3.jsx`, tab `Mistake 3`
 
 <iframe
+  loading="lazy"
   style={{
     width: "100%",
     height: 900,
@@ -153,6 +156,7 @@ Code: `UseStateM3.jsx`, tab `Mistake 3`
 Code: `UseStateM4.jsx`, tab `Mistake 4`
 
 <iframe
+  loading="lazy"
   style={{
     width: "100%",
     height: 900,
@@ -178,6 +182,7 @@ In this approach, we are using callback functions in the child component to upda
 Code: `ByCallback.jsx`, tab `By Callback`
 
 <iframe
+  loading="lazy"
   style={{
     width: "100%",
     height: 900,
@@ -209,6 +214,7 @@ By using this approach, we can get rid of the ugly code problem in the first app
 Code: `ByContext.jsx`, tab `By Context`
 
 <iframe
+  loading="lazy"
   style={{
     width: "100%",
     height: 900,
@@ -238,6 +244,7 @@ Changes will be made by pure functions, so reducers are the pure functions, thei
 Code: `ByRedux.jsx`, tab `By Redux`
 
 <iframe
+  loading="lazy"
   style={{
     width: "100%",
     height: 900,
@@ -267,6 +274,7 @@ I will apply theses to the **[ByContext](#52-using-react-context)** example abov
 Code: `Memo.jsx`, tab `Memo`
 
 <iframe
+  loading="lazy"
   style={{
     width: "100%",
     height: 900,
