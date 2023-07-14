@@ -12,7 +12,7 @@ const config = {
   title: process.env.SITE_TITLE,
   tagline: process.env.TAG_LINE,
   url: process.env.BLOG_URL,
-  baseUrl: `/${process.env.PROJECT_NAME}/`,
+  baseUrl: `/`,
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
   favicon: `/${process.env.PROJECT_NAME}/img/lt_logo.svg`,
