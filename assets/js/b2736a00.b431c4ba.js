@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklamtran_blog=self.webpackChunklamtran_blog||[]).push([[117],{9998:a=>{a.exports=JSON.parse('{"label":"sorting","permalink":"/blog/tags/sorting","allTagsPath":"/blog/tags","count":1}')}}]);

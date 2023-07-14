@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklamtran_blog=self.webpackChunklamtran_blog||[]).push([[3467],{3925:a=>{a.exports=JSON.parse('{"label":"Spark","permalink":"/blog/tags/spark","allTagsPath":"/blog/tags","count":6}')}}]);
