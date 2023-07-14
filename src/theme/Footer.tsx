@@ -29,8 +29,8 @@ function Footer(props) {
             <img
               src="/img/avatar.jpg"
               style={{
-                height: 154,
-                width: 162,
+                height: 130,
+                width: 136,
               }}
             />
             <p style={{ fontSize: "0.8em", marginTop: "1em" }}>
