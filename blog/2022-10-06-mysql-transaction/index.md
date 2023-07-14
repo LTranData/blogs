@@ -1,6 +1,7 @@
 ---
 slug: mysql-series-mysql-transaction
 title: MySQL series - Transaction In MySQL
+description: MySQL series - Transaction In MySQL
 authors: tranlam
 tags: [Bigdata, MySQL, Database, Data Engineering, Transaction]
 image: ./images/transaction.JPEG

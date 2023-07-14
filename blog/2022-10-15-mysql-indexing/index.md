@@ -1,6 +1,7 @@
 ---
 slug: mysql-series-mysql-indexing
 title: MySQL series - Indexing
+description: MySQL series - Indexing
 authors: tranlam
 tags: [Bigdata, MySQL, Database, Data Engineering, Indexing]
 image: ./images/indexing.PNG

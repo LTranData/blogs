@@ -1,6 +1,7 @@
 ---
 slug: sorting-algorithms
 title: Fundamental Sorting Algorithms
+description: Fundamental Sorting Algorithms
 authors: tranlam
 tags: [algorithms, sorting]
 image: ./images/intro.JPEG

@@ -1,6 +1,7 @@
 ---
 slug: mysql-series-mysql-mvcc
 title: MySQL series - Multiversion concurrency control
+description: MySQL series - Multiversion concurrency control
 authors: tranlam
 tags: [Bigdata, MySQL, Database, Data Engineering, Transaction]
 image: ./images/overall.PNG

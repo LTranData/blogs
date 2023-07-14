@@ -1,6 +1,7 @@
 ---
 slug: state-management-react
 title: State Management In React
+description: State Management In React
 authors: tranlam
 tags: [Web development, React, Html, Css]
 image: ./images/showcase.PNG

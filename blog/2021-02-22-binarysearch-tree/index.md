@@ -1,6 +1,7 @@
 ---
 slug: binarysearch-tree
 title: Binary Search Tree
+description: Binary Search Tree
 authors: tranlam
 tags: [tree, binary tree, algorithms, search]
 image: ./images/intro.PNG

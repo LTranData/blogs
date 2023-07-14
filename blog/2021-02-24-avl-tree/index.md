@@ -1,6 +1,7 @@
 ---
 slug: avl-tree
 title: AVL Tree, AVL Sorting Algorithm
+description: AVL Tree, AVL Sorting Algorithm
 authors: tranlam
 tags: [tree, avl, binary tree, algorithms]
 image: ./images/intuition.PNG

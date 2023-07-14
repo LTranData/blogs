@@ -1,6 +1,7 @@
 ---
 slug: mini-spark3-authorizer-part-1
 title: Authorize Spark 3 SQL With Apache Ranger Part 1 - Ranger installation
+description: Authorize Spark 3 SQL With Apache Ranger Part 1 - Ranger installation
 authors: tranlam
 tags: [Bigdata, Spark, Ranger, Apache]
 image: ./images/banner.PNG

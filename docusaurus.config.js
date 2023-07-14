@@ -87,6 +87,11 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      metadata: [
+        {name: 'keywords', content: 'Data Engineering, Web Development, Blog'},
+        {name: 'description', content: 'This is a data engineering, web development blog by Lam Tran'},
+        {name: 'title', content: 'Lam Tran'},
+      ],
       tableOfContents: {
         minHeadingLevel: 2,
         maxHeadingLevel: 5,

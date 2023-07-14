@@ -1,6 +1,7 @@
 ---
 slug: spark-kafka-docker
 title: Create A Data Streaming Pipeline With Spark Streaming, Kafka And Docker
+description: Create A Data Streaming Pipeline With Spark Streaming, Kafka And Docker
 authors: tranlam
 tags: [Bigdata, Spark, Apache, Kafka, Docker]
 image: ./images/architecture.PNG
