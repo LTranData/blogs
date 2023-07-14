@@ -18,11 +18,12 @@ function Footer(props) {
             others' work productivity.
               <a target="_blank" rel="noreferrer noopener" href="https://www.buymeacoffee.com/lamtran" style={{
                 display: "block",
-                height: 50,
-                width: 50,
                 marginTop: 10
               }}>
-                <img src="/img/donate.jpg" />
+                <img style={{
+                  height: 50,
+                  width: 50,
+                }} src="/img/donate.jpg" />
               </a>
           </div>
           <div style={{ marginLeft: 30, minWidth: 162 }}>
