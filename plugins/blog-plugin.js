@@ -17,7 +17,7 @@ async function blogPluginExtended(...pluginArgs) {
 
       data.actions.addRoute({
         // Add route for the home page
-        path: "/blogs/",
+        path: "/",
         exact: true,
 
         // The component to use for the "Home" page route

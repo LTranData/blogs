@@ -19,7 +19,7 @@ function Footer(props) {
           </div>
           <div style={{ marginLeft: 30, minWidth: 162 }}>
             <img
-              src="/blogs/img/avatar.jpg"
+              src="/img/avatar.jpg"
               style={{
                 height: 154,
                 width: 162,

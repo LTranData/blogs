@@ -91,7 +91,7 @@ const config = {
         title: process.env.HEADER_TITLE,
         logo: {
           alt: "TL Logo",
-          src: "/blogs/img/lt_logo.svg",
+          src: "/img/lt_logo.svg",
         },
         items: [
           { to: "/", label: "About", position: "right" },
