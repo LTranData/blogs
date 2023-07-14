@@ -149,7 +149,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Lam Tran. Powered by <a target="_blank" rel="noreferrer noopener" style="color:white;font-weight:bold;" href="https://docusaurus.io/">Docusaurus 2</a>`,
+        copyright: `Copyright © ${new Date().getFullYear()} Lam Tran. Powered by <a aria-label="Docusaurus" target="_blank" rel="noreferrer noopener" style="color:white;font-weight:bold;" href="https://docusaurus.io/">Docusaurus 2</a>`,
       },
       prism: {
         theme: lightCodeTheme,

@@ -16,11 +16,14 @@ function Footer(props) {
             with Python, Scala, and Java and use the latest big data
             technologies to solve problems, making tools to improve my and
             others' work productivity.
-              <a target="_blank" rel="noreferrer noopener" href="https://www.buymeacoffee.com/lamtran" style={{
+              <a
+                aria-label="buymeacoffee" 
+                target="_blank" rel="noreferrer noopener" href="https://www.buymeacoffee.com/lamtran" style={{
                 display: "block",
                 marginTop: 10
               }}>
                 <img
+                  alt="Buy me a coffee"
                   loading="lazy"
                   style={{
                     height: 50,
@@ -30,6 +33,7 @@ function Footer(props) {
           </div>
           <div style={{ marginLeft: 30, minWidth: 162 }}>
             <img
+              alt="avatar"
               loading="lazy"
               src="/img/avatar.jpg"
               style={{

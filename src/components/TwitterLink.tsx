@@ -8,6 +8,7 @@ interface TwitterLinkProps {
 function TwitterLink({ href, title }: TwitterLinkProps) {
   return (
     <a
+      aria-label="Twitter"
       className="button button--link"
       href={href}
       target="_blank"
