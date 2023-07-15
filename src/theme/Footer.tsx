@@ -21,7 +21,7 @@ function Footer(props) {
                 aria-label="buymeacoffee" 
                 target="_blank" 
                 rel="noreferrer noopener" 
-                href="https://www.buymeacoffee.com/lamtran">
+                href="https://www.buymeacoffee.com/lamtran/">
                 <img
                   alt="Buy me a coffee"
                   loading="lazy"

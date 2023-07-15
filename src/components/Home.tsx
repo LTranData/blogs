@@ -41,7 +41,7 @@ function Home({ recentPosts }: HomeProps): JSX.Element {
           </div>
         </div>
         <div className="button-container margin-bottom--lg">
-          <Link to={"/blog"} aria-label="Read more about blogs">
+          <Link to={"/blog/"} aria-label="Read more about blogs">
             <button className="read-more-button">Read More</button>
           </Link>
         </div>
