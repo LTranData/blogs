@@ -51,7 +51,7 @@ Inserting an element into a linked list will take ${O(1)}$. But finding the inse
 Insertion into min-heap or max-heap
 
 - Finding the insertion location will takes ${O(n)}$ when we may have to traverse all elements.
-- Insertion into the min/max heap tree is unstable, because maybe after inserting in a certain position, we break the properties of the min/max heap tree and have to rerun **min/max-heapify** (refer to this article [Fundamental Sorting Algorithms](/blog/2021-02-20-sorting-algorithms/index.md) for **max-heapify** implementation) to get the right tree. Rerunning **min/max-heapify** will not able to guarantee the binding condition ${(1)}$.
+- Insertion into the min/max heap tree is unstable, because maybe after inserting in a certain position, we break the properties of the min/max heap tree and have to rerun **min/max-heapify** (refer to this article **[Fundamental Sorting Algorithms](/blog/2021-02-20-sorting-algorithms/index.md)** for **max-heapify** implementation) to get the right tree. Rerunning **min/max-heapify** will not able to guarantee the binding condition ${(1)}$.
 
 _We need a better data structure to be able to do locating and inserting element in ${O(logn)}$._
 

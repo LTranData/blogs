@@ -118,7 +118,7 @@ schema-registry:
     SCHEMA_REGISTRY_HOST_NAME: schema-registry
 ```
 
-To sum up, we have a complete docker-compose.yml file like **[this](https://github.com/lam1051999/spark_kafka_docker/blob/main/spark_ex/docker-compose.yml)**. Then we start the containers with
+To sum up, we have a complete **[docker-compose.yml](https://github.com/lam1051999/spark_kafka_docker/blob/main/spark_ex/docker-compose.yml)** file. Then we start the containers with
 
 ```bash
 docker-compose up -d
@@ -161,7 +161,7 @@ Next, we create a Kafka Producer to fire dummy data in Java. First, we need to c
 }
 ```
 
-First, to POST this schema to the Schema Registry, we must convert this schema to escaped json, visit **[this website](https://www.freeformatter.com/json-escape.html)**. Then use the POST method to push the schema as follows
+First, to POST this schema to the Schema Registry, we must convert this schema to escaped json, visit **[this json escape website](https://www.freeformatter.com/json-escape.html)** and get the string version. Then use the POST method to push the schema as follows
 
 ```bash
 curl -X POST -H "Content-Type: application/vnd.schemaregistry.v1+json" \
