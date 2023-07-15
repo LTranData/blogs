@@ -1,5 +1,5 @@
 ---
-slug: mysql-series-mysql-transaction
+slug: mysql-series-mysql-transaction/
 title: MySQL series - Transaction In MySQL
 description: MySQL series - Transaction In MySQL
 authors: tranlam

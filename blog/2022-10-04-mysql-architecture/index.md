@@ -1,5 +1,5 @@
 ---
-slug: mysql-series-mysql-architecture
+slug: mysql-series-mysql-architecture/
 title: MySQL series - MySQL Architecture Overview
 description: MySQL series - MySQL Architecture Overview
 authors: tranlam

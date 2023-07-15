@@ -1,5 +1,5 @@
 ---
-slug: how-is-memory-managed-in-spark
+slug: how-is-memory-managed-in-spark/
 title: How Is Memory Managed In Spark?
 description: How Is Memory Managed In Spark?
 authors: tranlam

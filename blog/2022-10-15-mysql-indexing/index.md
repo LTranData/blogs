@@ -1,5 +1,5 @@
 ---
-slug: mysql-series-mysql-indexing
+slug: mysql-series-mysql-indexing/
 title: MySQL series - Indexing
 description: MySQL series - Indexing
 authors: tranlam

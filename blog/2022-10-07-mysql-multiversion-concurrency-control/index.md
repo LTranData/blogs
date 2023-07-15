@@ -1,5 +1,5 @@
 ---
-slug: mysql-series-mysql-mvcc
+slug: mysql-series-mysql-mvcc/
 title: MySQL series - Multiversion concurrency control
 description: MySQL series - Multiversion concurrency control
 authors: tranlam

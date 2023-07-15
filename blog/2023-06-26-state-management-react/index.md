@@ -1,5 +1,5 @@
 ---
-slug: state-management-react
+slug: state-management-react/
 title: State Management In React
 description: State Management In React
 authors: tranlam

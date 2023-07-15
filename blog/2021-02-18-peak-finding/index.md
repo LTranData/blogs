@@ -1,5 +1,5 @@
 ---
-slug: peak-finding
+slug: peak-finding/
 title: Peak Finding Algorithm
 description: Peak Finding Algorithm
 authors: tranlam

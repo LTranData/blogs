@@ -1,5 +1,5 @@
 ---
-slug: spark-cluster-docker
+slug: spark-cluster-docker/
 title: Create A Standalone Spark Cluster With Docker
 description: Create A Standalone Spark Cluster With Docker
 authors: tranlam

@@ -1,5 +1,5 @@
 ---
-slug: probability
+slug: probability/
 title: Xác suất thống kê cơ bản
 authors: tranlam
 tags: [Probability, Math]

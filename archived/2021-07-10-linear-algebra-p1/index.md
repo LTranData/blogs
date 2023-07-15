@@ -1,5 +1,5 @@
 ---
-slug: linear-algebra-part-1
+slug: linear-algebra-part-1/
 title: Đại số tuyến tính cơ bản - Phần 1
 authors: tranlam
 tags: [Math, Linear Algebra]

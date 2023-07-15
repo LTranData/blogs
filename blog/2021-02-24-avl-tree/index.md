@@ -1,5 +1,5 @@
 ---
-slug: avl-tree
+slug: avl-tree/
 title: AVL Tree, AVL Sorting Algorithm
 description: AVL Tree, AVL Sorting Algorithm
 authors: tranlam

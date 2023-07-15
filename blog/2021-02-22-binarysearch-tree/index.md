@@ -1,5 +1,5 @@
 ---
-slug: binarysearch-tree
+slug: binarysearch-tree/
 title: Binary Search Tree
 description: Binary Search Tree
 authors: tranlam

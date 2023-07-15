@@ -1,5 +1,5 @@
 ---
-slug: receptive-field
+slug: receptive-field/
 title: Receptive field trong thị giác máy tính
 authors: tranlam
 tags: [Computer Vision, Receptive Field, Artificial Intelligence, AI]

@@ -1,5 +1,5 @@
 ---
-slug: spark-catalyst-optimizer-and-spark-session-extension
+slug: spark-catalyst-optimizer-and-spark-session-extension/
 title: Spark Catalyst Optimizer And Spark Session Extension
 description: Spark Catalyst Optimizer And Spark Session Extension
 authors: tranlam

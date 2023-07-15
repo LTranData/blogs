@@ -1,5 +1,5 @@
 ---
-slug: mini-spark3-authorizer-part-2
+slug: mini-spark3-authorizer-part-2/
 title: Authorize Spark 3 SQL With Apache Ranger Part 2 - Integrate Spark SQL With Ranger
 description: Authorize Spark 3 SQL With Apache Ranger Part 2 - Integrate Spark SQL With Ranger
 authors: tranlam
