@@ -27,7 +27,7 @@ The model is containerized by Docker. Includes the following components
 
 ### 2.1. Create a Spark cluster
 
-As in the **[previous article](/blog/2022-01-01-spark-cluster-docker/index.md)** I wrote about how to build a Spark cluster on Docker, in this article I take advantage of that cluster. However, there is a slight change, leaving out some things to fit this article. You can find the build image script **[here](https://github.com/lam1051999/spark_kafka_docker/tree/main/spark_cluster)**. So we have the necessary images for the Spark cluster. Here is the container configuration in docker-compose.yml
+As in the **[previous article](/blog/2022-01-01-spark-cluster-docker/index.md)** I wrote about how to build a Spark cluster on Docker, in this article I take advantage of that cluster. However, there is a slight change, leaving out some things to fit this article. You can find the build image script **[at my repository](https://github.com/lam1051999/spark_kafka_docker/tree/main/spark_cluster)**. So we have the necessary images for the Spark cluster. Here is the container configuration in docker-compose.yml
 
 ```yml
 spark-master:
@@ -176,7 +176,7 @@ curl -X GET http://localhost:8081/subjects/personinformation-value/versions/ // 
 curl -X GET http://localhost:8081/subjects/personinformation-value/versions/1 // check schema version 1
 ```
 
-Now that Kafka is up, the schema is on the Schema Registry, the rest is to push the message to that topic. Write a class as follows (see full code **[here](https://github.com/lam1051999/spark_kafka_docker/tree/main/KafkaClient)**), and run, then the data will be uploaded to Kafka with the above chema.
+Now that Kafka is up, the schema is on the Schema Registry, the rest is to push the message to that topic. Write a **[kafka producer](https://github.com/lam1051999/spark_kafka_docker/tree/main/KafkaClient)** class as follows, and run, then the data will be uploaded to Kafka with the above chema.
 
 ```java
 package kafkaclient;
@@ -389,7 +389,7 @@ create table personinformation (
 
 ### 4.2. Spark application configuration
 
-The full Spark Streaming Code you can find **[here](https://github.com/lam1051999/spark_kafka_docker/tree/main/spark_ex)**. Compile the project by running
+You can find the full source code at **[my Spark Streaming example repository](https://github.com/lam1051999/spark_kafka_docker/tree/main/spark_ex)**. Compile the project by running
 
 ```bash
 sh run.sh

@@ -508,7 +508,7 @@ Output
 
 ## 9. Additional notes
 
-Sorting algorithms are quite interesting. One of the things that makes people feel the most comfortable is seeing their bedrooms organized and clean, the same is true when we look at other things arranged. The website about animations of sorting algorithms that give you a sense of satisfaction and relaxation can be found **[here](https://www.toptal.com/developers/sorting-algorithms)**.
+Sorting algorithms are quite interesting. One of the things that makes people feel the most comfortable is seeing their bedrooms organized and clean, the same is true when we look at other things arranged. **[The website about animations of sorting algorithms](https://www.toptal.com/developers/sorting-algorithms)** that give you a sense of satisfaction and relaxation.
 
 ## 10. References
 

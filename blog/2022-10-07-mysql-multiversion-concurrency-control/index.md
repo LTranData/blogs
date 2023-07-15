@@ -31,4 +31,4 @@ While the benefit is that we are never locked when reading, the storage engine n
 
 ## 3. Isolation level with MVCC
 
-MVCC is only available with REPEATABLE READ and READ COMMITTED modes. MVCC is not compatible with READ UNCOMMITTED because queries will not read records whose version does not match the transaction's version. MVCC is not compatible with SERIALIZABLE because of its read locking (For isolation level modes, you can find them **[here](/blog/2022-10-06-mysql-transaction/index.md#3-4-isolation-level-trong-môi-trường-có-nhiều-đọc-ghi-đồng-thời)**).
+MVCC is only available with REPEATABLE READ and READ COMMITTED modes. MVCC is not compatible with READ UNCOMMITTED because queries will not read records whose version does not match the transaction's version. MVCC is not compatible with SERIALIZABLE because of its read locking (you can find **[four isolation levels](/blog/2022-10-06-mysql-transaction/index.md#3-four-isolation-level-in-highly-concurrent-read-and-write-environments)** in my previous blog).

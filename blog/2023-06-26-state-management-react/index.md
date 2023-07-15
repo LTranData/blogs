@@ -98,7 +98,7 @@ setCount((prevCount) => prevCount + 1);
 
 There are some considerations when using state
 
-- **`setState` function is asynchronous:** consider the below example, whenever we click the button to increase the count, we see the console logs the old value of state before it is updated. Because `setState` function is asynchronous, it will be pulled to an event loop, move to the lifecycle `Call stack -> WebAPIs -> Callback Queue -> Call stack -> being executed -> Pop out the stack` (you can refer to event loop **[here](https://www.webdevolution.com/blog/Javascript-Event-Loop-Explained)**), but basically, in JavaScript, in the same code block, the synchronous code will always run before the asynchronous code, that's why we see the console logs the value of state before it is updated.
+- **`setState` function is asynchronous:** consider the below example, whenever we click the button to increase the count, we see the console logs the old value of state before it is updated. Because `setState` function is asynchronous, it will be pulled to an event loop, move to the lifecycle `Call stack -> WebAPIs -> Callback Queue -> Call stack -> being executed -> Pop out the stack` (you can refer to **[Javascript event loop](https://www.webdevolution.com/blog/Javascript-Event-Loop-Explained)**), but basically, in JavaScript, in the same code block, the synchronous code will always run before the asynchronous code, that's why we see the console logs the value of state before it is updated.
 
 Code: `UseStateM1.jsx`, tab `Mistake 1`
 

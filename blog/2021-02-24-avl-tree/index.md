@@ -9,7 +9,7 @@ image: ./images/intuition.PNG
 
 ![Intuition](./images/intuition.PNG)
 
-In the previous post, I talked about the binary search tree, if you haven't read it yet, you can find it **[here](/blog/2021-02-22-binarysearch-tree/index.md)**. With efficiency in search, insert, delete,... binary search tree can be done in logrithmic time (${\Theta(logn)}$) in the average case. In this article, I will talk about AVL tree, which is a type of binary search tree, ensuring that in all cases, the time complexity of the above operations is the same ${\Theta(logn)}$.
+In the previous post, I talked about the **[binary search tree](/blog/2021-02-22-binarysearch-tree/index.md)**. With efficiency in search, insert, delete,... binary search tree can be done in logrithmic time (${\Theta(logn)}$) in the average case. In this article, I will talk about AVL tree, which is a type of binary search tree, ensuring that in all cases, the time complexity of the above operations is the same ${\Theta(logn)}$.
 
 <!--truncate-->
 
@@ -287,11 +287,11 @@ Given an array of ${n}$ elements, the AVL sorting algorithm is done through the 
 - Perform inserts ${n}$ elements into AVL tree. Each inserted operation costs ${O(logn)}$ time (as in a binary search tree). We need to insert ${n}$ elements, so the time complexity of the process will be ${O(nlogn)}$.
 - We perform inorder traversal (as in a binary search tree). This causes us to go through all the elements, so the time complexity of the process is ${O(n)}$.
 
-Therefore, the total time complexity is ${O(n + nlogn) = O(nlogn)}$. However, because of the extra ${O(n)}$ makes this AVL sorting algorithm inefficient and less practical than the other sorting algorithms that I have listed, which readers can access **[here](/blog/2021-02-20-sorting-algorithms/index.md)**.
+Therefore, the total time complexity is ${O(n + nlogn) = O(nlogn)}$. However, because of the extra ${O(n)}$ makes this AVL sorting algorithm inefficient and less practical than the other **[sorting algorithms](/blog/2021-02-20-sorting-algorithms/index.md)** that I have listed.
 
 ## 6. Additional notes
 
-Readers can find visualizations for AVL tree operations **[here](https://www.cs.usfca.edu/~galles/visualization/AVLtree.html)**.
+Readers can find visualizations for AVL tree operations at **[USFCA website](https://www.cs.usfca.edu/~galles/visualization/AVLtree.html)**.
 
 ## 7. References
 

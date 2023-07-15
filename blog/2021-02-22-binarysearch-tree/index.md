@@ -15,7 +15,7 @@ In the process of learning programming, you will encounter many types of data st
 
 ## 1. Highlight the main problem
 
-The real problems that we or businesses solve are often divided into small problems and then applying algorithms, as well as appropriate data structures to come up with a way to do it, effectively, efficiently and least costly. For the following problem, I would like to take an example from MIT's course 6.006, which you can access **[here](https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-006-introduction-to-algorithms-fall-2011/lecture-videos/lecture-5-binary-search-trees-bst-sort/)**.
+The real problems that we or businesses solve are often divided into small problems and then applying algorithms, as well as appropriate data structures to come up with a way to do it, effectively, efficiently and least costly. For the following problem, I would like to take an example from MIT's course 6.006, this is **[the link of the course](https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-006-introduction-to-algorithms-fall-2011/lecture-videos/lecture-5-binary-search-trees-bst-sort/)**.
 
 Suppose an airline has a route management program. Each flight when it arrives at the airport must request a schedule to land at a certain time. In order not to have any conflicts, the landing times must be at least separated ${k}$ minutes ${(1)}$. The list of landing times is ${R}$ including ${n}$ elements. How to add a landing time ${t}$ to satisfy the constraint ${(1)}$ above.
 
@@ -299,7 +299,7 @@ We traverse all the nodes in the tree, so the time complexity is ${O(n)}$.
 
 ## 4. Additional notes
 
-Binary search trees are interesting and efficient data structures. Readers can find visualizations of binary search tree operations **[here](https://www.cs.usfca.edu/~galles/visualization/BST.html)**.
+Binary search trees are interesting and efficient data structures. Readers can find **[visualizations of binary search tree operations](https://www.cs.usfca.edu/~galles/visualization/BST.html)**.
 
 ## 5. References
 
