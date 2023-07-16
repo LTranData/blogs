@@ -15,7 +15,7 @@ const config = {
   baseUrl: `/`,
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
-  favicon: `/img/lt_logo.svg`,
+  favicon: `/img/lt_logo.ico`,
   organizationName: process.env.ORGANIZATION_NAME,
   projectName: `${process.env.PROJECT_NAME}`,
 
