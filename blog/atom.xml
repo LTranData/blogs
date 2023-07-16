@@ -6,7 +6,7 @@
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://lam-tran.dev/blog"/>
     <subtitle>Lam Tran Blog</subtitle>
-    <icon>https://lam-tran.dev/img/lt_logo.svg</icon>
+    <icon>https://lam-tran.dev/img/lt_logo.ico</icon>
     <entry>
         <title type="html"><![CDATA[How Is Memory Managed In Spark?]]></title>
         <id>how-is-memory-managed-in-spark/</id>

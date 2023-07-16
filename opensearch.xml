@@ -4,7 +4,7 @@
   <ShortName>Lam Tran</ShortName>
   <Description>Search Lam Tran</Description>
   <InputEncoding>UTF-8</InputEncoding>
-  <Image width="16" height="16" type="image/x-icon">https://lam-tran.dev/img/lt_logo.svg</Image>
+  <Image width="16" height="16" type="image/x-icon">https://lam-tran.dev/img/lt_logo.ico</Image>
   <Url type="text/html" method="get" template="https://lam-tran.dev/search?q={searchTerms}"/>
   <Url type="application/opensearchdescription+xml" rel="self" template="https://lam-tran.dev/opensearch.xml" />
   <moz:SearchForm>https://lam-tran.dev/</moz:SearchForm>
