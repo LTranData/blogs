@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklamtran_blog=self.webpackChunklamtran_blog||[]).push([[2463],{7085:a=>{a.exports=JSON.parse('{"name":"docusaurus-theme-search-algolia","id":"default"}')}}]);
