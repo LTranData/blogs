@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklamtran_blog=self.webpackChunklamtran_blog||[]).push([[6430],{9419:l=>{l.exports=JSON.parse('{"label":"Cloud","permalink":"/blog/tags/cloud","allTagsPath":"/blog/tags","count":1}')}}]);
