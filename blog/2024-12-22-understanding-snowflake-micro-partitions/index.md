@@ -93,7 +93,7 @@ In above case, try adding `DATE(INSERTED_TIME)` filter in every of your queries 
 
 ## 5. Clustered key and tips​
 
-To overcome the problem that a certain set of columns of the table have bad clustering information, Snowflake introduces the Clustering key concept. Normally, it is similar to indexes in an operational database. The clustering key in Snowflake is a subset of columns in a table (or expressions on a table) that are explicitly designated to co-locate the data in the table in the same micro-partitions​
+To overcome the problem that a certain set of columns of the table have bad clustering information, Snowflake introduces the Clustering key concept. Normally, it is similar to indexes in an operational database. The clustering key in Snowflake is a subset of columns in a table (or expressions on a table) that are explicitly designated to co-locate the data in the table in the same micro-partitions​.
 
 Clustering key often provides the most benefits when​
 - Applied on the table that has infrequent DML (less re-clustering operation needed)​
