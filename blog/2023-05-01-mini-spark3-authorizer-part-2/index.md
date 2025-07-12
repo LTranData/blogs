@@ -40,12 +40,12 @@ Spark makes a huge update to migrate from 2.4 to 3.0 (see detail **[migration gu
 
 The idea is to create a Spark Session Extension to customize the logical plan optimization phase of Spark Catalyst Optimizer, and since the logical plan is represented as **[TreeNode](/blog/2023-01-07-spark-catalyst-optimizer-and-spark-extension/index.md#1-treenode)**, it can be logical commands such as `CreateTableCommand`, `DropTableCommand`, `InsertIntoHiveTable`,... In these commands, we can extract the name of the database, table, and columns,... out of them, we collect them and check if the current user has proper access to those resources by Ranger-provided APIs.
 
-The extension code can be found at: **[https://github.com/lam1051999/mini_spark3_authorizer](https://github.com/lam1051999/mini_spark3_authorizer)**.
+The extension code can be found at: **[https://github.com/LTranData/mini_spark3_authorizer](https://github.com/LTranData/mini_spark3_authorizer)**.
 
 ```bash
 # Build the project
 cd ~
-git clone https://github.com/lam1051999/mini_spark3_authorizer
+git clone https://github.com/LTranData/mini_spark3_authorizer
 cd mini_spark3_authorizer/spark3-ranger-custom
 mvn clean package
 

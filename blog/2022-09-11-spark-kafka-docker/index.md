@@ -27,7 +27,7 @@ The model is containerized by Docker. Includes the following components
 
 ### 2.1. Create a Spark cluster
 
-As in the **[previous article](/blog/2022-01-01-spark-cluster-docker/index.md)** I wrote about how to build a Spark cluster on Docker, in this article I take advantage of that cluster. However, there is a slight change, leaving out some things to fit this article. You can find the build image script **[at my repository](https://github.com/lam1051999/spark_kafka_docker/tree/main/spark_cluster)**. So we have the necessary images for the Spark cluster. Here is the container configuration in docker-compose.yml
+As in the **[previous article](/blog/2022-01-01-spark-cluster-docker/index.md)** I wrote about how to build a Spark cluster on Docker, in this article I take advantage of that cluster. However, there is a slight change, leaving out some things to fit this article. You can find the build image script **[at my repository](https://github.com/LTranData/spark_kafka_docker/tree/main/spark_cluster)**. So we have the necessary images for the Spark cluster. Here is the container configuration in docker-compose.yml
 
 ```yml
 spark-master:
@@ -118,7 +118,7 @@ schema-registry:
     SCHEMA_REGISTRY_HOST_NAME: schema-registry
 ```
 
-To sum up, we have a complete **[docker-compose.yml](https://github.com/lam1051999/spark_kafka_docker/blob/main/spark_ex/docker-compose.yml)** file. Then we start the containers with
+To sum up, we have a complete **[docker-compose.yml](https://github.com/LTranData/spark_kafka_docker/blob/main/spark_ex/docker-compose.yml)** file. Then we start the containers with
 
 ```bash
 docker-compose up -d
@@ -176,7 +176,7 @@ curl -X GET http://localhost:8081/subjects/personinformation-value/versions/ // 
 curl -X GET http://localhost:8081/subjects/personinformation-value/versions/1 // check schema version 1
 ```
 
-Now that Kafka is up, the schema is on the Schema Registry, the rest is to push the message to that topic. Write a **[kafka producer](https://github.com/lam1051999/spark_kafka_docker/tree/main/KafkaClient)** class as follows, and run, then the data will be uploaded to Kafka with the above chema.
+Now that Kafka is up, the schema is on the Schema Registry, the rest is to push the message to that topic. Write a **[kafka producer](https://github.com/LTranData/spark_kafka_docker/tree/main/KafkaClient)** class as follows, and run, then the data will be uploaded to Kafka with the above chema.
 
 ```java
 package kafkaclient;
@@ -389,7 +389,7 @@ create table personinformation (
 
 ### 4.2. Spark application configuration
 
-You can find the full source code at **[my Spark Streaming example repository](https://github.com/lam1051999/spark_kafka_docker/tree/main/spark_ex)**. Compile the project by running
+You can find the full source code at **[my Spark Streaming example repository](https://github.com/LTranData/spark_kafka_docker/tree/main/spark_ex)**. Compile the project by running
 
 ```bash
 sh run.sh
@@ -417,4 +417,4 @@ In Postgres, query the table `personinformation` we get the data as desired
 
 Above is the steps for building a basic Spark streaming pipeline to stream data from Kafka. Another thing to note is that instead of committing the offset of the consumptions to a Kafka topic like in above code, you can manually commit it to a path in Zookeeper for more proactive control.
 
-The code of the whole article you read can be found at: **[https://github.com/lam1051999/spark_kafka_docker](https://github.com/lam1051999/spark_kafka_docker)**
+The code of the whole article you read can be found at: **[https://github.com/LTranData/spark_kafka_docker](https://github.com/LTranData/spark_kafka_docker)**
