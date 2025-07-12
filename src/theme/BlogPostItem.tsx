@@ -50,7 +50,7 @@ function BlogPostItem(props: Props) {
           href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
             `${siteConfig.url}${props.metadata.permalink}`
           )}&text=${encodeURIComponent(
-            `I just read "${props.metadata.title}" by @lamtt1005`
+            `I just read "${props.metadata.title}" by @ltrandata`
           )}`}
           title="Share on Twitter"
         />
