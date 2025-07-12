@@ -240,4 +240,4 @@ In this blog, we integrate a local Spark 3 with a standalone Ranger, but in prod
 - Policy refresher needs to be secure and use SPNego protocol (which use Kerberos keytab to generate token) to make RESTful API calls to Ranger service.
 - The user of the Spark application and the user for authorizing Ranger need to be the keytab principal user.
 
-I have also successfully implemented all the above functionalities in the production environment. If you need them, contact me on **[Linkedin](https://www.linkedin.com/in/lamtt1005)**.
+I have also successfully implemented all the above functionalities in the production environment. If you need them, contact me on **[Linkedin](https://www.linkedin.com/in/ltrandata/)**.
