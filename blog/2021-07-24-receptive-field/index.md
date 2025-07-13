@@ -12,10 +12,10 @@ Trong bài viết này, mình muốn nói về receptive field, một khái ni�
 
 <!--truncate-->
 
-### 1. Thế nào là receptive field?
+### Thế nào là receptive field?
 Receptive field là kích thước của một vùng của đầu vào mà có ảnh hưởng lên một neuron tại một layer nào đó. Nó có thể được miêu tả bằng điểm trung tâm và kích thước. Tuy vậy thì không phải pixel nào trong receptive field đều có độ quan trọng như nhau đối với neuron mà nó ảnh hưởng tới. Các pixel gần trung tâm của receptive field sẽ đóng góp nhiều vai trò trong việc tính toán neuron tham chiều tới hơn là các pixel ở rìa receptive field.
 
-### 2. Cách tính toán receptive field
+### Cách tính toán receptive field
 Giả sử, ta có ảnh đầu vào có kích thước chiều dài, chiều rộng là ${n = W = H}$.
 
 Ta có hai cách để mô tả feature map ở các layer trong mạng, với kích thước cửa sổ tích chập là ${3 \times 3}$, padding là ${1 \times 1}$, bước nhảy là ${2 \times 2}$ như sau
@@ -30,7 +30,7 @@ Dưới đây là minh họa về áp dụng cách tính toán receptive field k
 
 ![Math](./images/math.PNG)
 
-### 3. Một số nhận xét
+### Một số nhận xét
 Về cách tính toán receptive field ở trên, mình có một số nhận xét sau
 - 2 lớp cửa sổ tích chập với kích thước ${3 \times 3}$ sẽ có receptive field tương đương với lớp cửa sổ tích chập kích thước ${5 \times 5}$.
 - 3 lớp cửa sổ tích chập với kích thước ${3 \times 3}$ sẽ có receptive field tương đương với lớp cửa sổ tích chập kích thước ${7 \times 7}$.
@@ -40,6 +40,6 @@ Và tương tự như vậy, ta có thể thay thế các lớp cửa sổ tích
 - Tăng độ phi tuyến cho mạng, bởi vì khi chúng ta càng sử dụng nhiều lớp cửa sổ tích chập, ta càng sử dụng nhiều hơn các hàm kích hoạt cho các lớp đó.
 - Giảm thiểu lượng biến số mô hình cần học. Ví dụ: ${N}$ bộ lọc tích chập ${5 \times 5 \times D}$ sẽ tạo ra ${5 \times 5 \times D \times N = 25 \times D \times N}$ biến số cần học, trong khi đó, ${2N}$ bộ lọc tích chập kích thước ${3 \times 3 \times D}$ sẽ tạo ra ${3 \times 3 \times D \times 2N = 18 \times D \times N}$ biến số. Điều này tượng tự với các trường hợp khác, càng nhiều cửa sổ tích chập nhỏ được dùng để thay thế các cửa sổ kích thước lớn hơn thì lượng biến số càng giảm xuống.
 
-### 4. Tài liệu tham khảo
+### Tài liệu tham khảo
 
 [A guide to receptive field arithmetic for Convolutional Neural Networks](https://blog.mlreview.com/a-guide-to-receptive-field-arithmetic-for-convolutional-neural-networks-e0f514068807)

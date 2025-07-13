@@ -13,7 +13,7 @@ Lately, I've spent a lot of time teaching myself how to build Hadoop clusters, S
 
 <!--truncate-->
 
-## 1. Overview of a Spark cluster
+## Overview of a Spark cluster
 
 Apache Spark is a data processing framework that can quickly perform processing tasks on very large data sets, and can also distribute tasks across multiple computers. It was design for fast computing and use RAM for caching and processing data.
 
@@ -34,7 +34,7 @@ There are 2 Spark running modes
 - **Running locally:** running all the tasks in the same machine which is your local machine, utilize the number of cores in that machine to perform parallelism
 - **Running in a cluster:** Spark distribute the tasks to all the machine in the cluster. There are 2 deploy modes which are client mode and cluster mode, with 4 options of cluster resource manager, which are Spark standalone cluster manager, Apache Mesos, Hadoop Yarn, or Kubernetes.
 
-## 2. Create a base image for the cluster
+## Create a base image for the cluster
 
 Because the images of the nodes in a cluster need to install the same software, we will build a base image for the whole cluster first, then the following images will import from this image and add the following images. other necessary dependencies.
 
@@ -57,7 +57,7 @@ VOLUME ${shared_workspace}
 
 Here, since Spark requires java version 8 or 11, we will create an image running jdk 8, we will take the variable `shared_workspace` as the Jupyterlab working environment path (later). In addition, we will install `python3` for running Jupyterlab.
 
-## 3. Create a spark base image
+## Create a spark base image
 
 We come to create a spark base image with common packages for master node and worker node.
 
@@ -89,7 +89,7 @@ First, we will import the image from the base image above (that is `spark-cluste
 
 Then it will be to download and extract Spark, along with creating the necessary environment variables to support running the command line later. Here, `SPARK_MASTER_HOST` and `SPARK_MASTER_PORT` used by worker nodes to register with the corresponding master node address.
 
-## 4. Create a master node image
+## Create a master node image
 
 Having a spark base image, we start creating the master node by importing that base image and adding the appropriate variables to the master node as the port of the web ui interface so we can interact with spark on the interface later.
 
@@ -104,7 +104,7 @@ CMD bin/spark-class org.apache.spark.deploy.master.Master >> logs/spark-master.o
 
 The above command is to run master node.
 
-## 5. Create a worker node image
+## Create a worker node image
 
 Next is to create worker node
 
@@ -119,7 +119,7 @@ CMD bin/spark-class org.apache.spark.deploy.worker.Worker spark://${SPARK_MASTER
 
 The above command is to run the worker node and point to the address of the master node to register.
 
-## 6. Create a Jupyterlab image for testing
+## Create a Jupyterlab image for testing
 
 Finally, to test the spark cluster working, we will install Jupyterlab and use pyspark to run the code.
 
@@ -140,7 +140,7 @@ CMD jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp
 
 Along with that is to list the command to run Jupyter on port 8888.
 
-## 7. Combine images and create containers
+## Combine images and create containers
 
 After creating all the Dockerfiles, we proceed to build the appropriate images.
 
@@ -251,7 +251,7 @@ services:
 
 Include the volume in which we will save data so that when deleting containers, data will not be lost, along with the necessary containers (services). To each container the appropriate environment variables are added, the ports to map to the host machine, and the order in which the containers are run. Here, the master node has to run first to get the hostname, so the worker node will depend on the master node container. After that, we run `docker-compose up`, so we have launched all the necessary containers.
 
-## 8. Running Jupyterlab to check the cluster
+## Running Jupyterlab to check the cluster
 
 After running `docker-compose up` and seeing in the terminal the logs showing that the master node and worker node have been successfully started, along with the successful register status of the nodes, we go to `localhost:8080` to access spark ui.
 

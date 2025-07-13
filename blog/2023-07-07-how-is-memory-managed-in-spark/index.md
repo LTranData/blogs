@@ -13,7 +13,7 @@ Spark is an in-memory data processing framework that can quickly perform process
 
 <!--truncate-->
 
-## 1. Spark executor
+## Spark executor
 
 ![cluster overview](./images/cluster-overview.PNG)
 
@@ -24,7 +24,7 @@ Spark sends application code (defined by JAR or Python files passed to SparkCont
 
 The Off-Heap store is used to avoid the overhead of GC on a heap that is several Megabytes or Gigabytes large. It is slightly slower than the On-Heap memory, but still faster than the disk store.
 
-## 2. Spark memory manager
+## Spark memory manager
 
 Before Spark 1.6, a simple scheme for memory management was adopted, which is Static Memory Manager (SMM). The size of Storage Memory and Execution Memory and other memory is fixed during application execution and it has been deprecated because of the lack of flexibility.
 
@@ -35,7 +35,7 @@ From Spark 1.6+, Spark came up with Unified Memory Manager (UMM) with dynamic me
 - The application will be able to spend a minimum amount for Storage Memory for cached data and let the execution borrow the remaining.
 - Dynamically improve performance without requiring the user to configure the memory portion for each manually.
 
-### 2.1. On-Heap Memory
+### On-Heap Memory
 
 The size of the On-Heap memory can be configured either by passing `--executor-memory` to command lines or setting `spark.executor.memory` to the Spark application, in the same format as JVM memory strings with a size unit suffix ("k", "m", "g" or "t") (e.g. 512m, 2g). This amount of memory can be breakdown into the below types.
 
@@ -50,7 +50,7 @@ spark.memory.storageFraction=0.5
 Usable Memory = On-Heap Memory - Reserved Memory
 ```
 
-#### 2.1.1. Researved memory
+#### Researved memory
 
 Reserved Memory is the memory reserved for the system and is used to store Spark's internal objects. Its size is hardcoded `private val RESERVED_SYSTEM_MEMORY_BYTES = 300 * 1024 * 1024` in `org.apache.spark.memory.UnifiedMemoryManager`. If you want to make any modifications, you need to change the Spark source code and recompile it. Spark will require On-Heap memory greater or equal to 1.5 times of Reserved Memory or it will fail to initialize Spark session.
 
@@ -62,7 +62,7 @@ java.lang.IllegalArgumentException: Executor memory 314572800 must be at least 4
     ...
 ```
 
-#### 2.1.2. User memory
+#### User memory
 
 User Memory is the memory used to store user-defined data structures, any UDFs created by the user, the data needed for RDD conversion operations, etc. This memory segment is not managed by Spark and Spark will not be aware of/maintain it.
 
@@ -70,7 +70,7 @@ User Memory is the memory used to store user-defined data structures, any UDFs c
 User Memory = Usable Memory * (1 - spark.memory.fraction)
 ```
 
-#### 2.1.3. Spark memory
+#### Spark memory
 
 ```bash
 Spark Memory = Usable Memory * spark.memory.fraction
@@ -90,14 +90,14 @@ Storage Memory = Spark Memory * (1 - spark.memory.storageFraction)
 Storage Memory = Spark Memory * spark.memory.storageFraction
 ```
 
-#### 2.1.3. Dynamic memory allocation between Storage Memory and Execution Memory
+#### Dynamic memory allocation between Storage Memory and Execution Memory
 
 - Storage Memory can borrow space from Execution Memory only if blocks are not used in Execution Memory.
 - Execution Memory can also borrow space from Storage Memory if blocks are not used in Storage Memory.
 - If blocks from Execution Memory are used by Storage Memory, and Execution needs more memory, it can forcefully evict the excess blocks occupied by Storage Memory.
 - If blocks from Storage Memory are used by Execution Memory and Storage needs more memory, it cannot forcefully evict the excess blocks occupied by Execution Memory, it will end up having less memory area. It will wait until Spark releases the excess blocks stored by Execution Memory and then occupies them.
 
-### 2.2. Off-Heap Memory
+### Off-Heap Memory
 
 Most Spark operations happened entirely in On-Heap memory and utilize the mighty help of GC that sometimes can cause GC overhead. To minimize this effect, Spark introduces the Off-Heap memory for certain operations, which will reduce the impact of GC in the application.
 
@@ -118,7 +118,7 @@ Off-Heap memory includes only Storage Memory and Execution Memory, which will be
 
 Therefore, the total memory of Storage Memory or Execution Memory will be the sum of each in both On-Heap and Off-Heap memories.
 
-## 3. Spark memory calculation example
+## Spark memory calculation example
 
 Despite we pass `spark.executor.memory` to On-Heap memory, the maximum amount of memory that the JVM will attempt to use will be slightly smaller than `spark.executor.memory`, which will be calculated with the below Java program.
 
@@ -235,7 +235,7 @@ We can see that the total amount of Spark memory is exactly like our calculation
 
 That is how we calculate the memory in Spark. The source code can be found at: **[https://github.com/LTranData/spark_memory_calculator](https://github.com/LTranData/spark_memory_calculator)**. See you in the next blogs.
 
-## 4. References
+## References
 
 [Spark Memory Management](https://community.cloudera.com/t5/Community-Articles/Spark-Memory-Management/ta-p/317794)
 

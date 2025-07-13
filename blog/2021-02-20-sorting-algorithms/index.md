@@ -13,7 +13,7 @@ In these early blogs, I will only write about the most basic algorithms when I'm
 
 <!--truncate-->
 
-## 1. Why do we need sorting algorithms?
+## Why do we need sorting algorithms?
 
 **Firstly**, simply to pass exams at university, learn some Programming Languages, Data Structures and Algorithms, etc., it's easy to be asked these sorts of questions when taking the exam.
 
@@ -39,7 +39,7 @@ a, b = b, a
 
 During the analysis of algorithms, we assume that the above operations take only constant time ${\Theta(1)}$.
 
-## 2. Bubble sort
+## Bubble sort
 
 Bubble sort is a simple and inefficient sort that is taught in almost all algorithm courses because it is quite intuitive. Bubble sort compares each pair of numbers in an array and swaps places if they're out of order. The largest elements will be pushed to the bottom of the array, while the smaller elements will gradually "float" to the top of the array.
 
@@ -83,7 +83,7 @@ Output
 [1, 2, 2, 5, 8, 12, 26, 32, 45, 55, 77]
 ```
 
-## 3. Insertion sort
+## Insertion sort
 
 Imagine you play card game, when you have the deck in your hand, you have many ways to arrange it depending on your personality. For me, I usually arrange the cards in order from smallest to largest. When I want to arrange a new card into the deck of cards in my hand that is in order, I just insert the card into the appropriate position, and that is also the idea of ​​insertion sort.
 
@@ -125,7 +125,7 @@ Output
 [1, 2, 2, 5, 8, 12, 26, 32, 45, 55, 77]
 ```
 
-## 4. Selection sort
+## Selection sort
 
 The idea is that we will **assume** to split our array into 2 parts: sorted subarray ${arr{_1}}$ and unsorted subarray ${arr{_2}}$. At this moment, ${arr = (arr{_1})(arr{_2})}$.
 We will in turn find the smallest element of ${arr{_2}}$, detach and push the element to ${arr{_1}}$. The **assumption** here, that we are not actually creating 2 new sub-arrays, but the operations are performed on the original array.
@@ -169,7 +169,7 @@ Output
 [1, 2, 2, 5, 8, 12, 26, 32, 45, 55, 77]
 ```
 
-## 5. Merge sort
+## Merge sort
 
 Merge sort is one of the most efficient algorithms. The algorithm works on the principle of divide and conquer, separating the arrays into 2 sub-arrays, respectively, until the sub-arrays have only 1 element left. Then the algorithm "merge" those sub-arrays into a fully sorted array.
 
@@ -259,7 +259,7 @@ Output
 [1, 2, 2, 5, 8, 12, 26, 32, 45, 55, 77]
 ```
 
-## 6. Heap sort
+## Heap sort
 
 The heap sort is based on the binary heap data structure.
 
@@ -352,7 +352,7 @@ Output
 [1, 2, 2, 5, 8, 12, 26, 32, 45, 55, 77]
 ```
 
-## 7. Quick sort
+## Quick sort
 
 The quick sort algorithm, developed by a British computer scientist Tony Hoare in 1959, uses the principle of divide and conquer to sort an array.
 
@@ -433,7 +433,7 @@ Output
 [1, 2, 2, 5, 8, 12, 26, 32, 45, 55, 77]
 ```
 
-## 8. Counting sort
+## Counting sort
 
 An interesting algorithm I learned that even runs at linear time is counting sort. This algorithm is applied almost exclusively to integers, it is difficult or impossible to apply to real numbers.
 
@@ -506,11 +506,11 @@ Output
 
 ![Counting Sort 2](./images/counting_2.PNG)
 
-## 9. Additional notes
+## Additional notes
 
 Sorting algorithms are quite interesting. One of the things that makes people feel the most comfortable is seeing their bedrooms organized and clean, the same is true when we look at other things arranged. **[The website about animations of sorting algorithms](https://www.toptal.com/developers/sorting-algorithms)** that give you a sense of satisfaction and relaxation.
 
-## 10. References
+## References
 
 [Sorting Algorithms](https://www.interviewbit.com/tutorial/sorting-algorithms/#sorting-algorithms)
 

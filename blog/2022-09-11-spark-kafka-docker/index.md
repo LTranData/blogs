@@ -13,7 +13,7 @@ Hi guys, I'm back after a long time without writing anything. Today, I want to s
 
 <!--truncate-->
 
-## 1. Design overview
+## Design overview
 
 The model is containerized by Docker. Includes the following components
 
@@ -23,9 +23,9 @@ The model is containerized by Docker. Includes the following components
 - Schema Registry: provides a restful interface to store and retrieve schemas, helping Kafka producers and consumers work together according to standards. Since the two ends of producing and consuming messages from two Kafka ends are independent, the consumer does not need to know how the producer sends the message with the format, the Schema Registry acts as an intermediary for the two parties to register the message format with each other, avoiding system errors.
 - Postgres: is the database to provide configurations for the Spark Streaming application and in this article is also the place to store the streaming data after processing by Spark.
 
-## 2. Build necessary Docker images and containers
+## Build necessary Docker images and containers
 
-### 2.1. Create a Spark cluster
+### Create a Spark cluster
 
 As in the **[previous article](/blog/2022-01-01-spark-cluster-docker/index.md)** I wrote about how to build a Spark cluster on Docker, in this article I take advantage of that cluster. However, there is a slight change, leaving out some things to fit this article. You can find the build image script **[at my repository](https://github.com/LTranData/spark_kafka_docker/tree/main/spark_cluster)**. So we have the necessary images for the Spark cluster. Here is the container configuration in docker-compose.yml
 
@@ -65,7 +65,7 @@ spark-worker-2:
     - spark-master
 ```
 
-### 2.2. Add Zookeeper, Kafka, Postgres, Schema Registry containers
+### Add Zookeeper, Kafka, Postgres, Schema Registry containers
 
 Next will be on Zookeeper, Kafka, Postgres and Schema Registry containers
 
@@ -126,7 +126,7 @@ docker-compose up -d
 
 Note, this starts all containers at once, some Kafka and Schema Registry instances will fail because it depends on Zookeeper. Wait for the Zookeeper container to finish up and then restart the Kafka container and the Schema Registry (you can also check the Zookeeper service by implementing some healthcheck techniques).
 
-## 3. Create a Kafka Producer that produce fake data using Java Faker
+## Create a Kafka Producer that produce fake data using Java Faker
 
 Next, we create a Kafka Producer to fire dummy data in Java. First, we need to create a schema on the Schema Registry. Because the Schema Registry provides a restful interface, we can easily interact with it by calling GET, POST,... The schema we use in this article will have the following form.
 
@@ -282,9 +282,9 @@ public class KafkaProducerExample {
 
 Above, every 2 seconds we will push 1 message to Kafka, pushing a total of 1000 messages.
 
-## 4. Submit Spark job
+## Submit Spark job
 
-### 4.1. Configure the Postgres database
+### Configure the Postgres database
 
 Before we can run the job, we need to configure Postgres with the following tables
 
@@ -387,7 +387,7 @@ create table personinformation (
 );
 ```
 
-### 4.2. Spark application configuration
+### Spark application configuration
 
 You can find the full source code at **[my Spark Streaming example repository](https://github.com/LTranData/spark_kafka_docker/tree/main/spark_ex)**. Compile the project by running
 

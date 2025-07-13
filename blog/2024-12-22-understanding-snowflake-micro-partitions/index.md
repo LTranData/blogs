@@ -13,7 +13,7 @@ Snowflake is one of the most popular data warehouse solutions nowaday because of
 
 <!--truncate-->
 
-## 1. Partitioning in traditional Data Lake
+## Partitioning in traditional Data Lake
 
 When working with traditional Data Lake solution such as Hadoop, we often organized partitions of tables in hierarchical folder structure with partition column as subfolders, data stored in files​.
 
@@ -35,7 +35,7 @@ CREATE TABLE company_revenue (
 - Suffer from the data skewness problem leading to low performance query even with partitioned data​
 - Not having the best query pushdown and pruning​ since there are likely only partition columns that can be pruned
 
-## 2. Snowflake micro-partitions overview
+## Snowflake micro-partitions overview
 
 Snowflake Data Platform implements a powerful and unique form of partitioning, called micro-partitioning. Unlike traditional static partitioning schemes that require manual partition key definition, Snowflake's micro-partitions are automatically created during data ingestion based on natural sort order and file size optimization. This approach enables partition pruning, data clustering, and autonomous optimization without the overhead of partition management or the risk of partition skew.
 
@@ -58,7 +58,7 @@ Snowflake stored metadata of each micro partition​
 
 This information can help the query optimizer calculate the cost of each query plan and choose the best plan for processing the work units submitted to the virtual warehouse cluster.
 
-## 3. How do Snowflake perform table updates?​
+## How do Snowflake perform table updates?​
 
 Snowflake micro partitions are immutable, they will not be modified once it is created. Data updates on the table will result in new micro partition creation, not modifying existing ones, with the changes applied compared with the old ones. The old micro partitions will either be destroyed immediately or remain for a certain amount of time based on the `DATA_RETENTION_TIME_IN_DAYS` parameter set on the table.
 
@@ -69,7 +69,7 @@ The immutable characteristic of micro partitions is also the reason that makes T
 - If we insert new records into the table, new micro partitions will be created
 - If we update or delete certain records of the table, old micro partitions will be obsoleted and new micro partitions will be created with the changes applied
 
-## 4. Clustering information of micro partitions
+## Clustering information of micro partitions
 
 During data ingestion into Snowflake tables, the platform automatically generates and maintains clustering metadata at the micro-partition level. This metadata contains statistical information about value distributions and data boundaries for each column within each micro-partition. 
 
@@ -91,7 +91,7 @@ For checking the clustering information, use [SYSTEM$CLUSTERING_INFORMATION](htt
 
 In above case, try adding `DATE(INSERTED_TIME)` filter in every of your queries will boost the performance of READ query as a whole.
 
-## 5. Clustered key and tips​
+## Clustered key and tips​
 
 To overcome the problem that a certain set of columns of the table have bad clustering information, Snowflake introduces the Clustering key concept. Normally, it is similar to indexes in an operational database. The clustering key in Snowflake is a subset of columns in a table (or expressions on a table) that are explicitly designated to co-locate the data in the table in the same micro-partitions​.
 
@@ -105,7 +105,7 @@ For the `SEGMENT_CODE` column of the previous section table, we can put the clus
 
 Be mindful that [Clustering key cost = 2 credits = 8$​](https://www.snowflake.com/legal-files/CreditConsumptionTable.pdf).
 
-## 6. Real life use case
+## Real life use case
 
 Imagine you have a very large table in Snowflake with billions of records, you are required to remove 90% of the records from the table as part of the data archival process
 - Easy 😝 just `DELETE FROM <table> WHERE <dead_condition>;​`
@@ -122,7 +122,7 @@ DROP TABLE <table_backup>;​
 
 With the above approach, 1st query will be much faster when it scans only 10% of the data​. 2nd, 3rd, 4th are metadata queries so they are also fast​. Using the trick, you will save a lot of time and Snowflake credits. Depending on the size of your data, the cost saving can be tens of times.
 
-## 7. References
+## References
 
 [Micro-partitions & Data Clustering](https://docs.snowflake.com/en/user-guide/tables-clustering-micropartitions)
 

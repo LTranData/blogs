@@ -10,7 +10,7 @@ image: ./images/intro.JPEG
 
 Gần đây, AI/ML là một cái trend, người người AI, nhà nhà AI. Sinh viên đổ xô đi học AI hết, các trường đại học cũng dần mở các môn về học máy, trí tuệ nhân tạo, rồi thị giác máy tính để "bắt kịp". <!--truncate-->Dưới đây, mình sẽ trình bày về các câu hỏi phỏng vấn cơ bản, dành cho các bạn muốn tìm các vị trí thực tập trong lĩnh vực này.
 
-### 1. Bias, variance
+### Bias, variance
 **Các câu hỏi mục này sẽ xung quanh các thông số trên là gì, nó cao nó thấp thì ảnh hưởng như nào, xử lý thế nào?**
 - Bias là sai số giữa kết quả dự đoán của model và các nhãn thực sự của chúng ta. Bias thể hiện năng lực của model trong việc dự đoán. Bias cao nói lên rằng model của chúng ta không quan tâm đến dữ liệu, model quá đơn giản để mà có thể học được các đặc trưng từ dữ liệu. Bias cao thường cho kết quả lỗi cao trên cả tập huấn luyện và tập kiểm thử. Hiện tượng này gọi là underfitting.
 - Variance là độ phân tán của kết quả dự đoán của model chúng ta. Variance cao nói lên rằng model của chúng ta quá tập trung vào tập dữ liệu huấn luyện, có thể phân loại các điểm dữ liệu huấn luyện tốt mà không tổng quát tốt, thích ứng tốt với các điểm dữ liệu mới, model của chúng ta quá phức tạp nhưng lượng dữ liệu của chúng ta lại không đủ lớn. Hiện tượng này gọi là overfitting.
@@ -30,7 +30,7 @@ Các phương pháp giảm thiểu underfitting
 - Xây mạng to hơn, tăng số đặc trưng đầu vào lên.
 - Loại bỏ các điểm dữ liệu gây nhiễu.
 
-### 2. Batch normalization
+### Batch normalization
 Là một kỹ thuật giúp mô hình ổn định hơn trong quá trình huấn luyện (ở đây mình sẽ không trình bày về toán của batch normalization). Một số tính chất của batch normalization như sau
 - Batchnorm khiến quá trình huấn luyện ổn định hơn, mạng hội tụ nhanh hơn.
 - Batchnorm cho phép ta sử dụng learning rate lớn hơn.
@@ -49,11 +49,11 @@ Khi train, Batchnorm có thể được áp dụng trên các minibatch, 1 mini-
 
 Ví dụ: Trong quá trình train, tại layer $L$, nó cho $\mu$ và $\sigma$ nhất định, ta lưu nó,… Khi hoàn tất quá trình train, mỗi layer $L$ đều số cặp $\mu$ và $\sigma$ bằng số mini-batch. Và ta sử dụng kỹ thuật Exponentially Weighted Average để tính $\mu$ và $\sigma$ cho layer $L$ cho điểm dữ liệu ở test time đó.
 
-### 3. Mini-batch nhỏ hay lớn ảnh hưởng thế nào?
+### Mini-batch nhỏ hay lớn ảnh hưởng thế nào?
 - Mini-batch nhỏ thì trên đồ thị hàm loss, đường đi từ 1 điểm bất kỳ đến 1 điểm cực trị local minimum sẽ rất gồ ghề và có thể cần nhiều epoch hơn để có được 1 local minimum tốt. Nhưng việc tính toán sẽ nhanh hơn, bộ nhớ nạp dữ liệu tốn ít hơn.
 - Mini-batch lớn thì đường đi thẳng về đích hơn nhưng việc tính toán đắt đỏ hơn sẽ làm quá trình huấn luyện chạy lâu hơn.
 
-### 4. Hiện tượng Imbalanced Data
+### Hiện tượng Imbalanced Data
 Là hiện tượng mà tập dữ liệu của ta có các lớp phân loại có sự sai khác lớn về số lượng dữ liệu.
 Ví dụ: trong chuẩn đoán bệnh ung thư, tập dữ liệu cho thấy, có $95\%$ được đánh nhãn là không có dấu hiệu bị ung thư, $5\%$ còn lại là có dấu hiệu bị ung thư. Khi đó mô hình của ta sẽ rất khó khăn để đưa ra dự đoán, thậm chí trong trường hợp đưa ra dự đoán âm tính hết thì cũng đã có accuracy là $\sim95\%$. Khi này accuracy không còn là 1 metric tốt để mà đánh giá mô hình nữa, ta sẽ dùng precision, recall, hay F2-score.
 
@@ -63,7 +63,7 @@ Ví dụ: trong chuẩn đoán bệnh ung thư, tập dữ liệu cho thấy, c�
 - Oversampling và Undersampling.
 - Thay đổi hàm mất mát của ta, bằng việc tăng trọng số cho phần hàm mất mát tại các điểm ở lớp phân loại có lượng dữ liệu thấp, trừng phạt nặng nếu mô hình dự đoán sai các điểm dữ liệu đó.
 
-### 5. Gradient vanishing/exploding
+### Gradient vanishing/exploding
 Theo lý thuyết, mạng của ta càng sâu, thì độ chính xác trong quá trình dự đoán càng cao hơn, bởi vì khi đó mạng của ta sẽ học được nhiều đặc trưng phức tạp. Nhưng thực tế, độ chính xác của mạng sẽ bão hòa đến một mức sâu nào đó của mạng, thậm chí còn giảm khi mạng ta quá sâu. Nguyên nhân là bởi các hiện tượng gradient vanishing/exploding.
 
 **Hiện tượng Gradient vanishing/exploding là gì?**

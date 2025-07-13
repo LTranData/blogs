@@ -10,7 +10,7 @@ image: ./images/probability.JPEG
 
 Bài viết này nhằm ôn lại một số khái niệm trong toán xác suất cơ bản, sẽ không có những phần toán rất phức tạp và dồn dập như trong lúc học trên trường lớp. Thay vào đó, nội dung sẽ tập trung vào các kiến thức xác suất phụ trợ cho trí tuệ nhận tạo hay là thống kê dữ liệu. <!--truncate-->Bài viết này tham chiếu rất nhiều đến một bài trong blog của anh Phạm Đình Khánh, cảm ơn anh Khánh với một series xác suất rất chi tiết.
 
-### 1. Đôi chút về đánh giá dữ liệu
+### Đôi chút về đánh giá dữ liệu
 Khi đánh giá dữ liệu, ta thường quan tâm đến các tiêu chí để đo đạc độ tập trung (measure of central tendency) cũng như độ phân tán (dispersion) của dữ liệu.
 
 Về độ tập trung của dữ liệu, có 3 thông số cần quan tâm
@@ -107,7 +107,7 @@ Ta có một vài nhận xét như sau
 - Khi ${\rho_{xy} < 0}$, chúng nghịch biến, biến đầu tiên tăng thì biến thứ hai giảm.
 - Khi ${\rho_{xy}}$ bằng ${-1}$ hoặc ${1}$, hai biến hoàn toàn tương quan tuyến tính. 
 
-### 2. Các kiểu dữ liệu
+### Các kiểu dữ liệu
 Có nhiều loại kiểu dữ liệu mà một biến ngẫu nhiên có thể nhận, tùy vào bài toán nhất định, ta có thể giữ nguyên giá trị các biến trong tính toán, hoặc mã hóa nó.
 - Kiểu dữ liệu định tính (quanlitative data): là các kiểu dữ liệu mang thông tin mô tả đặc trưng của sự vật, hiện tượng.
     - Các kiểu dữ liệu định tính không có thứ tự (nominal data): màu sắc, giới tính,... Với loại dữ liệu này, ta thường dùng mode để đánh giá chúng. Ví dụ như: đánh giá màu xe con nào xuất hiện nhiều nhất,...
@@ -118,10 +118,10 @@ Có nhiều loại kiểu dữ liệu mà một biến ngẫu nhiên có thể n
 - Kiểu dữ liệu kèm theo yếu tố thời gian (temporal data): ví dụ như giá cổ phiếu, khi báo cáo cần phải đi kèm với thông tin là ngày nào, thời điểm nào,...
 - Kiểu dữ liệu kèm theo yếu tố không gian (spartial data): ví dụ như vị trí địa lý trên bản đồ, giá trị tọa độ của một điểm trên trục tọa độ,...
 
-### 3. Các hàm xác suất
+### Các hàm xác suất
 Các hàm xác suất các bạn có thể xem **[tại đây](https://phamdinhkhanh.github.io/deepai-book/ch_probability/appendix_probability.html#ham-mat-do-pdf-va-ham-khoi-xac-suat-pmf)**, cảm ơn anh Phạm Đình Khánh đã viết rất chi tiết về các hàm này.
 
-### 4. Các loại biểu đồ thống kê
+### Các loại biểu đồ thống kê
 Tùy theo mục đích thông tin ta cần trích xuất từ dữ liệu mà ta sẽ sử dụng các loại biểu đồ phù hợp cho bài toán
 <table id="t01">
   <tr>
@@ -202,7 +202,7 @@ Tùy theo mục đích thông tin ta cần trích xuất từ dữ liệu mà ta
   </tr>
 </table> 
 
-### 5. Độ lệch dương, độ lệch âm
+### Độ lệch dương, độ lệch âm
 - Độ lệch dương có giá trị trung bình (mean) lớn hơn giá trị trung vị (median) và phân bố có phía không đối xứng mở rộng đến nhiều các giá trị dương hơn.
 
 ![Positive Skewness](./images/positiveskewness.PNG)
@@ -213,7 +213,7 @@ Tùy theo mục đích thông tin ta cần trích xuất từ dữ liệu mà ta
 
 Độ lệch kết hợp với độ nhọn đánh giá khả năng các biến cố rơi vào đuôi của phân phối xác suất tốt hơn.
 
-### 6. Quy luật số lớn
+### Quy luật số lớn
 Phần này các bạn hãy tham khảo **[tại đây](https://phamdinhkhanh.github.io/deepai-book/ch_probability/appendix_probability.html#qui-luat-so-lon)** của anh Phạm Đình Khánh.
 
 - Khoảng tin cậy (confidence interval)
@@ -239,12 +239,12 @@ Với phân phối chuẩn
 - ${z = 1.96}$ ứng với mức tin cậy ${95\%}$.
 - ${z = 2.576}$ ứng với mức tin cậy ${99\%}$.
 
-### 7. Các phân phối xác suất
+### Các phân phối xác suất
 Các phân phối xác suất các bạn có thể xem **[tại đây](https://phamdinhkhanh.github.io/deepai-book/ch_probability/appendix_probability.html#phan-phoi-xac-suat)**.
 
-### 8. Xác suất đồng thời, xác suất biên, xác suất có điều kiện và định lỹ Bayes
+### Xác suất đồng thời, xác suất biên, xác suất có điều kiện và định lỹ Bayes
 Các bạn có thể tìm thấy thông tin mục này **[tại đây](https://phamdinhkhanh.github.io/deepai-book/ch_probability/appendix_probability.html#xac-suat-dong-thoi-join-distribution)**, một lần nữa cảm ơn anh Phạm Đình Khánh đã trình bày chi tiết về phần này.
 
-### 9. Tài liệu tham khảo
+### Tài liệu tham khảo
 
 [https://phamdinhkhanh.github.io/deepai-book/ch_probability/appendix_probability.html#phan-phoi-xac-suat](https://phamdinhkhanh.github.io/deepai-book/ch_probability/appendix_probability.html#)

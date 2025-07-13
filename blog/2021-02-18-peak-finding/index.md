@@ -13,7 +13,7 @@ Today I will talk about an extremely basic algorithm that I and most of you who 
 
 <!--truncate-->
 
-## 1. Introduction to the algorithm
+## Introduction to the algorithm
 
 In an array, a number is said to be a "peak" if and only if its adjacent elements are less than or equal to the element in question. Imagine that there is a mountain range like this
 
@@ -31,17 +31,17 @@ Notice that:
 - In an array, there will always be at least one peak.
 - This problem of ours will be to find one peak, not all the peaks.
 
-## 2. Finding peak in 1-dimensional array
+## Finding peak in 1-dimensional array
 
 Suppose we have a 1-dimensional array of **${n}$** elements, find a peak of that array.
 
-### 2.1. Linear Traversing
+### Linear Traversing
 
 **Idea:** Iterate through each element of the array and check if the element under consideration satisfies the property of being a peak.
 
 **Algorithm analysis:** Each element being browsed will have conditional statements to check if the element is a peak, these conditional statements take constant time ${\Theta(1)}$. In the worst case, we'll have to go through all **${n}$** elements of the array to find the peak. Therefore, the worst case of the algorithm will have a time complexity of ${\Theta(n)}$.
 
-### 2.2. Binary Search
+### Binary Search
 
 **Idea:** In this way, we will always look at the middle of the traversed array and decide which half of the array to traverse to find the peak.
 
@@ -99,26 +99,26 @@ Output
 20
 ```
 
-## 3. Finding peak in 2-dimensional array
+## Finding peak in 2-dimensional array
 
 Suppose we have a 2-dimensional array **${m \times n}$** represented as a matrix of m rows and n columns
 ![2D Matrix](./images/2Dmat.PNG)
 
 An element is considered to be a peak if and only if it is greater than or equal to all adjacent elements vertically and horizontally.
 
-### 3.1. Direct traversal
+### Direct traversal
 
 **Idea:** Iterate through each element of the array and check if the element under consideration satisfies the property of being a peak.
 
 **Algorithm analysis:** the worst case of the algorithm will have a time complexity of ${\Theta(m \times n)}$.
 
-### 3.2. Greedy Ascent Algorithm
+### Greedy Ascent Algorithm
 
 **Idea:** We start at a random point. With the point under consideration, we compare it with 4 adjacent points vertically and horizontally, if any value is greater than the point under consideration, we will consider the next point to be that point.
 
 **Algorithm analysis:** At first glance, the algorithm seems to be more efficient, but its worst case is still ${\Theta(m \times n)}$ when we have to traverse most of the elements.
 
-### 3.3. Jamming Binary Search Algorithm
+### Jamming Binary Search Algorithm
 
 **Idea:** We rely on Binary Search as applied to the 1-dimensional array above.
 

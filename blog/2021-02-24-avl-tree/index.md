@@ -13,11 +13,11 @@ In the previous post, I talked about the **[binary search tree](/blog/2021-02-22
 
 <!--truncate-->
 
-## 1. AVL tree
+## AVL tree
 
 An AVL tree is a balanced binary search tree in which the heights of the left and right subtrees differ by at most 1 ${(1)}$. In the process of performing operations on the tree that make the tree unbalanced, we need to rebalance the tree to ensure the nature of the tree ${(1)}$.
 
-## 2. Tree height assessment
+## Tree height assessment
 
 The height of the tree
 
@@ -43,7 +43,7 @@ ${N{_ {O(1)}} = O(1)}$ và ${N{_ h} = 1 + N{_ {h-1}} + N{_{h-2}}}$
 
 </p>
 
-### 2.1. First approach
+### First approach
 
 The above expression reminds us of the fibonacci sequence, we have ${N{_h} > F{_h}}$ với ${F{_h}}$ is the ${h^{th}}$ fibonacci. We have ${F{_h} = \frac{\gamma^h}{\sqrt{5}}}$, with ${\gamma = 1.61803398875...}$, (golden ratio).
 
@@ -55,7 +55,7 @@ ${ n > \frac{\gamma^h}{\sqrt{5}} => h < log{_\gamma}n => h < 1.440log{_2}n }$.
 
 </p>
 
-### 2.2. Second approach
+### Second approach
 
 <p style={{textAlign: "center"}}>
 
@@ -71,13 +71,13 @@ ${=> h < 2log{_2}n}$
 
 Therefore, ${h = O(logn)}$.
 
-## 3. AVL tree operations
+## AVL tree operations
 
-### 3.1. Node insertion, node deletion, search node
+### Node insertion, node deletion, search node
 
 The above operations in an AVL tree are the same as in a binary search tree, with ${h = O(logn)}$. The difference in node insertion and deletion is that after performing those operations, we need to do an extra step of tree balancing to ensure the integrity of the tree ${(1)}$.
 
-### 3.2. Tree balancing activities
+### Tree balancing activities
 
 The following example demonstrates the need for tree rebalancing
 
@@ -89,7 +89,7 @@ We want to insert ${23}$ into the tree, perform the insertion as in a binary sea
 
 ![Insert2](./images/insert_2.JPG)
 
-#### 3.2.1. Balance factor
+#### Balance factor
 
 In a binary tree, the balance factor is defined as follows:
 
@@ -97,21 +97,21 @@ ${BF(x)}$ = height of left subtree if ${x}$ ${-}$ height of right subtree of ${x
 
 Thus, in the AVL tree, we have ${BF(x) \in \\{-1, 0, 1\\} }$.
 
-#### 3.2.2. Tree balancing operations
+#### Tree balancing operations
 
 When the BF of a certain node has a value that is not in the above set of values, then we need to re-balancing the tree. We have two basic types of balancing operations of AVL trees: **right rotation** and **left rotation**
 
 ![Rotation](./images/rotation.PNG)
 
-### 3.3. Tree balancing in specific cases
+### Tree balancing in specific cases
 
-#### 3.3.1. Left left case
+#### Left left case
 
 This case occurs when a node has BF = 2 and its left subtree has BF = 1. Then, we only need 1 **right rotation** at the node to be considered, then the tree is balanced.
 
 ![Left Left](./images/left_left.PNG)
 
-#### 3.3.2. Left right case
+#### Left right case
 
 This case occurs when a node has BF = 2 and its left subtree has BF = -1. Then, we need to do the following 2 steps in turn
 
@@ -120,13 +120,13 @@ This case occurs when a node has BF = 2 and its left subtree has BF = -1. Then, 
 
 ![Left Right](./images/left_right.PNG)
 
-#### 3.3.3. Right right case
+#### Right right case
 
 This case occurs when a node has BF = -2 and its right subtree has BF = -1. Then, we only need 1 **left rotation** at the node to be considered, then the tree is balanced.
 
 ![Right Right](./images/right_right.PNG)
 
-#### 3.3.4. Right left case
+#### Right left case
 
 This case occurs when a node has BF = -2 and its left subtree has BF = 1. Then, we need to do the following 2 steps in turn
 
@@ -135,7 +135,7 @@ This case occurs when a node has BF = -2 and its left subtree has BF = 1. Then, 
 
 ![Right Left](./images/right_left.PNG)
 
-## 4. Python code for tree balancing activities
+## Python code for tree balancing activities
 
 ```python
 # ---------------------------METHOD TO HELP BALANCE THE TREE---------------------------
@@ -280,7 +280,7 @@ root = avl_tree.insert(root, 55)
 avl_tree.inorder(root)
 ```
 
-## 5. AVL sorting algorithm
+## AVL sorting algorithm
 
 Given an array of ${n}$ elements, the AVL sorting algorithm is done through the following steps
 
@@ -289,11 +289,11 @@ Given an array of ${n}$ elements, the AVL sorting algorithm is done through the 
 
 Therefore, the total time complexity is ${O(n + nlogn) = O(nlogn)}$. However, because of the extra ${O(n)}$ makes this AVL sorting algorithm inefficient and less practical than the other **[sorting algorithms](/blog/2021-02-20-sorting-algorithms/index.md)** that I have listed.
 
-## 6. Additional notes
+## Additional notes
 
 Readers can find visualizations for AVL tree operations at **[USFCA website](https://www.cs.usfca.edu/~galles/visualization/AVLtree.html)**.
 
-## 7. References
+## References
 
 [AVL tree](https://en.wikipedia.org/wiki/AVL_tree)
 

@@ -13,7 +13,7 @@ In the process of learning programming, you will encounter many types of data st
 
 <!--truncate-->
 
-## 1. Highlight the main problem
+## Highlight the main problem
 
 The real problems that we or businesses solve are often divided into small problems and then applying algorithms, as well as appropriate data structures to come up with a way to do it, effectively, efficiently and least costly. For the following problem, I would like to take an example from MIT's course 6.006, this is **[the link of the course](https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-006-introduction-to-algorithms-fall-2011/lecture-videos/lecture-5-binary-search-trees-bst-sort/)**.
 
@@ -25,14 +25,14 @@ I have an image to make the problem more intuitive
 
 With the number of elements ${n}$, we want to perform a suitable position finding and insert new landing times in effective time complexity, like ${O(logn)}$. And the following will be the evaluations for the problem with some specific data structures.
 
-### 1.1. Unsorted array
+### Unsorted array
 
 Procedure for inserting elements into an unsorted array, regardless of the constraint condition ${(1)}$, will cost ${O(1)}$.
 Procedure for inserting elements into an unsorted array, taking care of the constraint condition ${(1)}$, will cost ${O(n)}$.
 
 Time complexity: ${O(n)}$.
 
-### 1.2. Sorted array
+### Sorted array
 
 - Find the right index will costs ${O(logn)}$ (using binary search).
 - Compare with the element on either side of the element cost ${O(1)}$.
@@ -40,13 +40,13 @@ Time complexity: ${O(n)}$.
 
 Time complexity: ${O(n)}$.
 
-### 1.3. Sorted linked list
+### Sorted linked list
 
 Inserting an element into a linked list will take ${O(1)}$. But finding the inserted position will takes ${O(n)}$ when we have to traverse from head to that position.
 
 ![Linked List](./images/linked_list.PNG)
 
-### 1.4. Heap tree
+### Heap tree
 
 Insertion into min-heap or max-heap
 
@@ -55,7 +55,7 @@ Insertion into min-heap or max-heap
 
 _We need a better data structure to be able to do locating and inserting element in ${O(logn)}$._
 
-## 2. Binary Search Tree
+## Binary Search Tree
 
 Binary Search Tree is a data structure that satisfy below conditions ${(2)}$
 
@@ -90,11 +90,11 @@ Here is an illustration
 
 ![Types](./images/types.PNG)
 
-## 3. Operations on binary search treee
+## Operations on binary search treee
 
 Consider a tree with ${n}$ nodes, height is ${h}$.
 
-### 3.1. Search - Finding a value in the tree
+### Search - Finding a value in the tree
 
 For searching for a key on the tree, we do it by recursive method. Starting at the root, we compare the value of the root node with the key. If the root node value is less than the key, we have to find it on the left subtree, if the root node value is greater than the key, we find that key on the right subtree. We do this with every node we go to. If the node value is equal to the key, we return that node. If the node value is null, we conclude that the key was not found in the tree.
 
@@ -123,7 +123,7 @@ def search(root, key):
 - **Average case:** tree height ${h = \Theta(logn)}$, so the time complexity will be ${O(logn)}$.
 - **Worst case:** when the tree is a degenerate binary tree, tree height ${h = n}$ so time complexity is ${O(n)}$.
 
-### 3.2. Insert - Add a node to the tree
+### Insert - Add a node to the tree
 
 The process of inserting a node with a certain value in the tree is quite similar to search. We search until we encounter an empty node, then we insert the node we want to insert at that position. During searching, we find a node with a value equal to the key, and we return that node.
 
@@ -161,7 +161,7 @@ def insert(root, key):
 
 As with the tree above, with constraint value ${k = 3}$. We want to insert ${45}$. At the node ${40}$, we have ${45 - 40 > 3}$, so the next step is to insert ${45}$ into the tree, without losing the properties of the tree. If we want to insert ${42}$, we check ${42 - 40 < 3}$, so we do not perform node insertion.
 
-### 3.3. Delete - Remove a node from the tree
+### Delete - Remove a node from the tree
 
 The process of deleting a node in a binary search tree occurs in 3 cases
 
@@ -246,7 +246,7 @@ Consider the following tree ${(3)}$
 
 ![Order](./images/order.PNG)
 
-#### 3.4.1. Pre-order traversal
+#### Pre-order traversal
 
 We traverse the parent node first, to the left child node, and then to the right child node.
 
@@ -262,7 +262,7 @@ def preorder(root):
         preorder(root.right)
 ```
 
-#### 3.4.2. In-order traversal
+#### In-order traversal
 
 We traverse the left child node first, to the parent node, and then to the right child node.
 
@@ -278,7 +278,7 @@ def inorder(root):
         inorder(root.right)
 ```
 
-#### 3.4.3. Post-order traversal
+#### Post-order traversal
 
 We traverse the left child node first, the right child node, and then the parent node.
 
@@ -297,11 +297,11 @@ def postorder(root):
 **Algorithm analysis:**
 We traverse all the nodes in the tree, so the time complexity is ${O(n)}$.
 
-## 4. Additional notes
+## Additional notes
 
 Binary search trees are interesting and efficient data structures. Readers can find **[visualizations of binary search tree operations](https://www.cs.usfca.edu/~galles/visualization/BST.html)**.
 
-## 5. References
+## References
 
 [Binary Search Tree | Set 1 (Search and Insertion)](https://www.geeksforgeeks.org/binary-search-tree-set-1-search-and-insertion/)
 

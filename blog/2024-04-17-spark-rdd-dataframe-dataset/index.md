@@ -13,7 +13,7 @@ I have participated in fews technical interviews and have discussed with people 
 
 <!--truncate-->
 
-## 1. The overview
+## The overview
 
 <table class="tg">
 <thead>
@@ -97,7 +97,7 @@ I have participated in fews technical interviews and have discussed with people 
 
 **Dataset is not available in PySpark since Python is dynamically typed programming language.*
 
-## 2. More about the performance comparision
+## More about the performance comparision
 
 When PySpark interact with RDD, at the driver, `SparkContext` will use `Py4J` to launch a JVM and initiate `JavaSparkContext` and each transformed RDD will associate with `PythonRDD` objects in Java. When the tasks is distributed to worker nodes, `PythonRDD` objects run Python subprocesses using pipes, send both code and data to be processed within Python. While this approach allows PySpark to distribute the processing of the data to multiple Python subprocesses on multiple workers, the overall operation will cause a lot of context switches and communications between Java and Python, so there are more overhead to run the code and therefore it is slow when interact with RDD in Python.
 
@@ -109,7 +109,7 @@ Before any computations are performed on a DataFrame, the Catalyst Optimizer ana
 
 ![performance rdd dataframe](./images/performance-RDD-Dataframe.png)
 
-## 3. References
+## References
 
 [A Tale of Three Apache Spark APIs: RDDs vs DataFrames and Datasets](https://www.databricks.com/blog/2016/07/14/a-tale-of-three-apache-spark-apis-rdds-dataframes-and-datasets.html)
 

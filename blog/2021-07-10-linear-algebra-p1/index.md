@@ -12,7 +12,7 @@ Tiếp đây sẽ là loạt bài viết về đại số tuyến tính mình đ
 
 <!--truncate-->
 
-### 1. Giải hệ phương trình tuyến tính
+### Giải hệ phương trình tuyến tính
 Hệ phương trình tuyến tính là tập các phương trình tuyến tính với cùng những biến số, cấp 2 chúng ta đã giải chán chê phương trình này, thậm chí còn phải làm các hệ phương trình khó nhằn hơn chứa cả biến bậc 2, bậc 3,... Giờ đây, trở lại với đại số tuyến tính, ta có thể mô hình hệ phương trình tuyến tính bậc một với tích của ma trận và véc-tơ tương ứng.
 Ví dụ ta có một hệ phương trình đơn giản sau
 <p style={{textAlign: "center"}}>
@@ -36,7 +36,7 @@ ${
 
 </p>
 
-#### 1.1. Nghiệm chung và nghiệm riêng của phương trình
+#### Nghiệm chung và nghiệm riêng của phương trình
 Nhìn vào biểu thức bên trên ${(1)}$, ta có
 - Một nghiệm riêng của hệ phương trình là ${\begin{bmatrix} 42 & 8 & 0 & 0 \end{bmatrix}^T}$.
 - Để có thể thu được tất cả nghiệm thỏa mãn, ta cần phải đi giải phương trình ${\boldsymbol{Ax} = \boldsymbol{0}}$ nữa. Ta tiến hành phân tích phương trình ${(1)}$ ra như sau
@@ -62,8 +62,8 @@ ${
 
 </p>
 
-#### 1.2. Biến đổi ma trận
-##### 1.2.1. Ví dụ
+#### Biến đổi ma trận
+##### Ví dụ
 Mình sẽ đem một ví dụ cho phương pháp này
 <p style={{textAlign: "center"}}>
 
@@ -136,7 +136,7 @@ ${
 </p>
 
 
-##### 1.2.2. Ma trận bậc thang
+##### Ma trận bậc thang
 Một ma trận ở dạng bậc thang nếu
 - Những hàng chỉ chứa 0 sẽ ở đáy ma trận. Những hàng chứa ít nhất 1 số khác không sẽ nằm trên các hàng chứa toàn 0.
 - Các phần tử pivot của mỗi hàng luôn ở phía bên phải của các phần tử pivot ở các hàng bên trên.
@@ -152,7 +152,7 @@ Một ma trận ở dạng bậc thang tối giản nếu
 
 Việc tính toán nghiệm ${\boldsymbol{Ax} = \boldsymbol{0}}$ sẽ dễ dàng hơn rất nhiều nếu ma trận biểu diễn hệ phương trình tuyến tính ở dạng bậc thang tối giản 
 
-##### 1.2.3. Phép khử Gaussian
+##### Phép khử Gaussian
 Là một thuật toán biểu diễn các phép biến đổi triệt tiêu giữa các hàng để đưa ma trận biểu diễn hệ phương trình tuyến tính về dạng ma trận bậc thang tối giản.
 
 Để tính toán nghiệm của ${\boldsymbol{Ax} = \boldsymbol{0}}$ trong ma trận bậc thang tối giản, ta biểu diễn các pivot column bằng tổng các cấp số của các pivot columns ở bên trái của chúng.
@@ -181,7 +181,7 @@ ${
 
 </p>
 
-#### 1.3. The -1 trick
+#### The -1 trick
 Với ma trận ${\boldsymbol{A}}$ ở trên, ta sẽ chêm các hàng gồm toàn ${0}$ và chỉ một số ${-1}$ vào giữa các hàng của ma trận bậc thang tối giản, để tạo nên ma trận mới có đường chéo chính gồm toàn ${-1}$ và ${1}$ như dưới đây.
 
 <p style={{textAlign: "center"}}>
@@ -202,7 +202,7 @@ ${
 Từ đó, các cột chứa giá trị ${-1}$ tại các vị trí trên đường chéo chính của ma trận sẽ là nghiệm của phương trình ${\boldsymbol{Ax} = \boldsymbol{0}}$.
 
 
-#### 1.4. Một số thuật toán để giải hệ phương trình này
+#### Một số thuật toán để giải hệ phương trình này
 Có một số thuật toán thông dụng để giải hệ phương trình tuyến tính phức tạp
 - Sử dụng thuật toán hồi quy tuyến tính (linear regression), thuật toán này thường áp dụng vào các bài toán mà ta chỉ có thể tính xấp xỉ nghiệm của phương trình.
 - Normal equation, thuật toán này tính chính xác nghiệm của hệ phương trình, nhưng số lượng tính toán rất nhiều nên không thể sử dụng với các trường hợp số lượng biến nhiều. Phương pháp này được thể hiện dưới đây
@@ -217,9 +217,9 @@ ${
 
 Việc phải nhân ma trận và tính toán nghịch đảo khiến phương pháp này có độ phức tập là ${\Theta(n^3)}$.
 
-### 2. Không gian véc-tơ
+### Không gian véc-tơ
 
-#### 2.1. Nhóm
+#### Nhóm
 Cho một tập ${\mathcal{G}}$ với phép toán ${\otimes: \mathcal{G} \times \mathcal{G} \to \mathcal{G}}$ được định nghĩa trên ${\mathcal{G}}$ thì ${\mathcal{G} := (\mathcal{G}, \otimes)}$ được gọi là một nhóm nếu thỏa mãn các tính chất
 - Tính đóng gói của ${\mathcal{G}}$ trong phép ${\otimes}$: ${\forall x, y \in \mathcal{G}}$ thì ${x \otimes y \in \mathcal{G}}$.
 - Tính kết hợp: ${\forall x, y, z \in \mathcal{G}}$ thì ${(x \otimes y) \otimes z = x \otimes (y \otimes z)}$.
@@ -230,7 +230,7 @@ Nếu nhóm có thêm tính chất giao hoán ${\forall x, y \in \mathcal{G}: x 
 
 Một nhóm các ma trận khả nghịch ${A \in \Bbb R^{n \times n}}$ với phép toán nhân ma trận được gọi là một General Linear Group. Tuy nhiên, phép nhân ma trận không có tính chất giao hoán nên nhóm này không phải là một nhóm Abelian. 
 
-#### 2.2. Không gian véc-tơ
+#### Không gian véc-tơ
 Một không gian véc-tơ thực ${V = (\mathcal{V}, + , \cdot)}$ là một tập ${V}$ với 2 phép toán
 <p style={{textAlign: "center"}}>
 
@@ -249,16 +249,16 @@ Thỏa mãn
 - Tính chất kết hơp ${\forall \lambda, \psi \in \Bbb R, x \in \mathcal{V}: \lambda \cdot(\psi \cdot x) = (\lambda \cdot \psi)\cdot x}$
 - Tồn tại phần tử đơn vị ${\forall x \in \mathcal{V}: 1 \cdot x = x}$
 
-#### 2.3. Không gian véc-tơ con
+#### Không gian véc-tơ con
 Với ${V = (\mathcal{V}, + , \cdot)}$ là một không gian véc-tơ và ${\mathcal{U} \subseteq \mathcal{V}, \mathcal{U} \ne \emptyset}$ thì ${U = (\mathcal{U}, + , \cdot)}$ được gọi là không gian véc-tơ con của ${V}$ nếu ${U}$ là một không gian véc-tơ cùng với các phép toán ${+}$ và ${\cdot}$ ứng với ${\mathcal{U} \times \mathcal{U}}$ và ${\Bbb R \times \mathcal{U}}$. Kí hiệu ${U \subseteq V}$ thể hiện ${U}$ là một không gian véc-tơ con của ${V}$.
 
 Nếu ${U}$ là một không gian véc-tơ con của ${V}$, ${U}$ sẽ thừa hưởng tất cả các tính chất của ${V}$. Để chứng minh ${U}$ là một không gian véc-tơ con của ${V}$, chúng ta vẫn phải chỉ ra được
 - ${\mathcal{U} \ne \emptyset}$ hay ${0 \in \mathcal{U}}$.
 - Tính đóng gói của ${U}$: ${\forall \lambda \in \Bbb R, \forall x \in \mathcal{U}: \lambda x \in \mathcal{U}}$ và ${\forall x, y \in \mathcal{U}: x + y \in \mathcal{U}}$.
 
-### 3. Phụ thuộc tuyến tính
+### Phụ thuộc tuyến tính
 
-#### 3.1. Tổ hợp tuyến tính
+#### Tổ hợp tuyến tính
 Cho một không gian véc-tơ ${V}$ và một số hữu hạn các véc-tơ ${\boldsymbol{x_{1}}, \boldsymbol{x_{2}},..., \boldsymbol{x_{k}} \in V}$, mỗi ${\boldsymbol{v} \in V}$ được biểu diễn dưới dạng
 
 <p style={{textAlign: "center"}}>
@@ -273,7 +273,7 @@ với ${\lambda_{1}, \lambda_{2},..., \lambda_{k} \in \Bbb R}$, là một tổ h
 
 Véc-tơ ${\boldsymbol{0}}$ có thể được viết dưới dạng ${\boldsymbol{0} = \sum_{i=1}^{k}0\boldsymbol{x_{i}}}$ nhưng chúng ta quan tâm nhiều hơn đến các tổ hợp tuyến tính không tầm thường hơn.
 
-#### 3.2. Phụ thuộc tuyến tính
+#### Phụ thuộc tuyến tính
 Nếu có một tổ hợp tuyến tính không tầm thường thỏa mãn ${0 = \sum_{i=1}^{k} = \lambda_{i}\boldsymbol{x_{i}}}$ với ít nhất một giá trị ${\lambda_{i} \ne 0}$ thì các véc-tơ ${\boldsymbol{x_{1}}, \boldsymbol{x_{2}},..., \boldsymbol{x_{k}}}$ được gọi là ***phụ thuộc*** tuyến tính.
 
 Nếu mà biểu thức trên chỉ tồn tại nghiệm tầm thường ${\lambda_{1} = \lambda_{2} = ... = \lambda_{k} = 0}$ thì các véc-tơ ${\boldsymbol{x_{1}}, \boldsymbol{x_{2}},..., \boldsymbol{x_{k}}}$ là ***độc lập*** tuyến tính.
@@ -284,12 +284,12 @@ Một số tính chất cho các véc-tơ kiểu này là
 - Tập các véc-tơ trên là phụ thuộc tuyến tính nếu như một trong số các véc-tơ đó có thể được biểu diễn dưới dạng tổ hợp tuyến tính của các véc-tơ còn lại.
 - Ta viết tất cả véc-tơ thành các cột của một ma trận ${\boldsymbol{A}}$, sau đó biểu diễn phép khử Gaussian, ta được các pivot columns sẽ độc lập tuyến tính với các véc-tơ ở bên trái của véc-tơ đó, còn các cột không phải pivot columns sẽ có thể được biểu diễn dưới dạng một tổ hợp tuyến tính của các pivot columns ở bên trái của nó. Nếu tất cả các cột đều là pivot columns thì tất cả các véc-tơ đó là độc lập tuyến tính, còn không thì chúng sẽ là phụ thuộc tuyến tính.
 
-### 4. Cơ sở và rank
+### Cơ sở và rank
 
-#### 4.1. Hệ sinh của một không gian véc-tơ
+#### Hệ sinh của một không gian véc-tơ
 Cho một không gian véc-tơ ${V = (\mathcal{V}, + , \cdot)}$ và một tập các véc-tơ ${\mathcal{A} = \\{\boldsymbol{x_{1}}, \boldsymbol{x_{2}},..., \boldsymbol{x_{k}}\\} \subseteq \mathcal{V}}$ . Nếu mỗi véc-tơ ${\boldsymbol{v} \in \mathcal{V}}$ đều có thể biểu diễn là một tổ hợp tuyến tính của ${\boldsymbol{x_{1}}, \boldsymbol{x_{2}},..., \boldsymbol{x_{k}}}$, thì ${\mathcal{A}}$ được gọi là hệ sinh của ${V}$. Tập tất cả tổ hợp tuyến tính của ${\mathcal{A}}$ được gọi là một span của ${\mathcal{A}}$. Nếu ${\mathcal{A}}$ span không gian véc-tơ ${V}$, chúng ta viết ${V = span[\mathcal{A}]}$ hoặc ${V = span[\boldsymbol{x_{1}}, \boldsymbol{x_{2}},..., \boldsymbol{x_{k}}]}$.
 
-#### 4.2. Cơ sở của một không gian véc-tơ
+#### Cơ sở của một không gian véc-tơ
 Cho một không gian véc-tơ ${V = (\mathcal{V}, + , \cdot)}$ và hệ sinh ${\mathcal{A} \subseteq \mathcal{V}}$, ${\mathcal{A}}$ được gọi là hệ sinh nhỏ nhất nếu không tồn tại một hệ sinh nhỏ hơn nào khác mà ${\tilde{\mathcal{A}} \subsetneq \mathcal{A} \subseteq \mathcal{V}}$ span không gian véc-tơ ${V}$. Tất cả hệ sinh độc lập tuyến tính của không gian véc-tơ ${V}$ là nhỏ nhất và được gọi là cơ sở của ${V}$.
 
 Với ${V = (\mathcal{V}, + , \cdot)}$ là một không gian véc-tơ và ${\mathcal{B} \subseteq \mathcal{V}}$ và ${\mathcal{B} \ne \emptyset}$. Tất cả mệnh đề sau là tương đương
@@ -331,7 +331,7 @@ Một số kết luận được rút ra như sau
   - Biến đổi ${\boldsymbol{A}}$ về dạng ma trận bậc thang tối giản.
   - Các véc-tơ liên kết với các pivot columns là cơ sở của không gian véc-tơ con ${U}$.
 
-#### 4.3. Rank của một ma trận
+#### Rank của một ma trận
 Hạng của một ma trận ${\boldsymbol{A}}$ ${=}$ số véc-tơ cột độc lập tuyến tính của ma trận ${\boldsymbol{A}}$ ${=}$ số véc-tơ hàng độc lập tuyến tính của ma trận ${\boldsymbol{A}}$ ${=}$ rank(${\boldsymbol{A}}$) ${=}$ rk(${\boldsymbol{A}}$).
 
 Do vậy, ta có một số nhận xét sau
@@ -343,7 +343,7 @@ Do vậy, ta có một số nhận xét sau
 - Với ${\boldsymbol{A \in \Bbb R^{m \times n}}}$, không gian véc-tơ con của bộ nghiệm phương trình ${\boldsymbol{Ax} = \boldsymbol{0}}$ có dim ${= n - }$ rk(${\boldsymbol{A}}$).
 - Một ma trận ${\boldsymbol{A \in \Bbb R^{m \times n}}}$ được gọi là ma trận hạng đầy đủ nếu rk(${\boldsymbol{A}}$) ${= min(m, n)}$.
 
-### 5. Ánh xạ tuyến tính
+### Ánh xạ tuyến tính
 Hai không gian véc-tơ thực ${V, W}$, một ánh xạ ${\Phi: V \to W}$ bảo toàn cấu trúc các không gian véc-tơ nếu
 <p style={{textAlign: "center"}}>
 
@@ -365,7 +365,7 @@ Ta có một số tính chất của ánh xạ tuyến tính
 - Nếu ${\Phi: V \to W}$ là một đẳng cấu thì ${\Phi^{-1}: W \to V}$ cũng là một đẳng cấu.
 - Nếu ${\Phi: V \to W}$, ${\psi: V \to W}$ là ánh xạ tuyến tính thì ${\Phi + \psi, \lambda \Phi}$ với ${\lambda \in \Bbb R}$ cũng là các ánh xạ tuyến tính.
 
-#### 5.1. Biểu diễn ánh xạ tuyến tính dưới dạng ma trận
+#### Biểu diễn ánh xạ tuyến tính dưới dạng ma trận
 Xét một không gian véc-tơ ${V}$ với cơ sở là  ${B = (\boldsymbol{b_{1}}, \boldsymbol{b_{2}},..., \boldsymbol{b_{n}})}$. Với mọi véc-tơ ${\boldsymbol{x} \in V}$, ta có một tổ hợp tuyến tính duy nhất là 
 <p style={{textAlign: "center"}}>
 
@@ -406,7 +406,7 @@ ${
 
 </p>
 
-#### 5.2. Chuyển đổi cơ sở
+#### Chuyển đổi cơ sở
 Một ánh xạ tuyến tính ${\Phi: V \to W}$, xét 2 cơ sở sau
 <p style={{textAlign: "center"}}>
 
@@ -477,7 +477,7 @@ ${
 
 </p>
 
-#### 5.3. Image và kernel
+#### Image và kernel
 Cho ${\Phi: V \to W}$, chúng ta định nghĩa kernel/null space là
 <p style={{textAlign: "center"}}> 
 
@@ -524,9 +524,9 @@ dim(${Ker(\Phi)}$) + dim(${Im(\Phi)}$) = dim(${V}$)
 - Nếu ${\boldsymbol{A_{\Phi}}}$ và dim(${Im(\Phi)}$) < dim(${V}$), thì ${\boldsymbol{A_{\Phi}x} = 0}$ có vô số nghiệm.
 - Nếu dim(${V}$) = dim(${W}$) thì ${\Phi}$ là đơn ánh, toàn ánh, song ánh, ${Im(\Phi) \subseteq W}$.
 
-### 6. Không gian véc-tơ Affine
+### Không gian véc-tơ Affine
 
-#### 6.1. Không gian véc-tơ Affine con
+#### Không gian véc-tơ Affine con
 Với V là một không gian véc-tơ, ${\boldsymbol{x_{0}} \in V}$ và ${U \subseteq V}$ là một không gian véc-tơ. Nếu tập con
 <p style={{textAlign: "center"}}> 
 
@@ -552,7 +552,7 @@ ${
 
 Biểu diễn này được gọi là phương trình tham số của ${L}$ với các véc-tơ hướng ${\boldsymbol{b_{1}}, \boldsymbol{b_{2}},..., \boldsymbol{b_{k}}}$ và các tham số ${\lambda_{1}, \lambda_{2},..., \lambda_{k}}$.
 
-#### 6.2. Ánh xạ Affine
+#### Ánh xạ Affine
 Với các không gian véc-tơ ${V, W}$, một ánh xạ tuyến tính ${\Phi: V \to W}$ và ${\lambda \in W}$, các ánh xạ
 <p style={{textAlign: "center"}}> 
 

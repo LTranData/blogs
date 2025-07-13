@@ -13,7 +13,7 @@ State is a very crucial part of React applications which will help update the in
 
 <!--truncate-->
 
-## 1. Virtual DOM
+## Virtual DOM
 
 If you ever work with `React` or `Vue`, you probably know about a concept called Virtual DOM which those libraries/frameworks used to update the real DOM tree in the browser. Virtual DOM in React is a programming concept where the representation of a UI is kept in memory and synced with the real DOM.
 
@@ -23,7 +23,7 @@ In the picture above, whenever we have a UI in the browser on the left, we can i
 
 Thus, the Virtual DOM is a lightweight version of the real DOM, it provides a mechanism that abstracts manual DOM manipulations away from the developers, helping us to write more predictable code to interact with the real DOM.
 
-## 2. React state
+## React state
 
 State is a plain JavaScript object used by React to represent a piece of information about the component's current situation. We modify state to manipulate the Virtual DOM.
 
@@ -31,13 +31,13 @@ State is a plain JavaScript object used by React to represent a piece of informa
 
 Whenever state changes, it will modify some properties of the Virtual DOM. React will compare the new Virtual DOM with the old one to detect those changes and will synchronize them to the real DOM. The interesting thing here is that update is only applied at the node where there is an actual change. So, how can React do the diffing algorithm in an efficient way?
 
-## 3. Diffing algorithm
+## Diffing algorithm
 
 Diffing is the algorithm that React uses in order to find differences between two Virtual DOM trees and update efficiently the real DOM. In this section, I will just explain very high-level rules used by this algorithm.
 
 When diffing two trees, React will first compare the two root elements.
 
-### 3.1. Rule #1
+### Rule #1
 
 Two elements of different types will produce different trees.
 
@@ -45,7 +45,7 @@ Two elements of different types will produce different trees.
 
 As shown in the picture, going from `<div>` to `<span>` will lead to full rebuild, its children will get unmounted and have their state destroyed.
 
-### 3.2. Rule #2
+### Rule #2
 
 With the DOM elements of the same type, but different attributes, React knows to only modify the attribute that have been changed.
 
@@ -57,7 +57,7 @@ With object value attribute, React updates only the properties that have been ch
 
 ![rule 2 2](./images/rule_2_2.PNG)
 
-### 3.3. Rule #3
+### Rule #3
 
 This rule is about detecting the differences while recursing on children elements.
 
@@ -71,7 +71,7 @@ So what if we prepend the list element instead of append? Because of iterating t
 
 In order to get rid of the above case, we come to the `rule #4`
 
-### 3.4. Rule #4
+### Rule #4
 
 Developers can hint at which elements may be stable across different renders with a `key` prop, so that elements with the same key will be compared with each other
 
@@ -79,7 +79,7 @@ Developers can hint at which elements may be stable across different renders wit
 
 In the picture above, we add a `key` property to each `li` element so React will know to pair check the elements with the `key="item-1"` and `key="item-2"` and only add the element with `key="item-3"` to the new DOM
 
-## 4. State usage with useState hook
+## State usage with useState hook
 
 The `useState` hook is a built-in React hook that allows you to manage state in a functional component.
 
@@ -170,13 +170,13 @@ Code: `UseStateM4.jsx`, tab `Mistake 4`
   src="https://codesandbox.io/s/state-management-24xt26?file=/src/components/UseStateM4.jsx"
 ></iframe>
 
-## 5. Update components in different DOM tree branches
+## Update components in different DOM tree branches
 
 State is often used within the body of a component and modify information about the component or its children, so, how can we sit in a component and modify the UI of other components that are in different scope?
 
 ![update different dom tree branches](./images/update_different_dom_tree_branches.PNG)
 
-### 5.1. Using callback functions
+### Using callback functions
 
 In this approach, we are using callback functions in the child component to update state of the parent component, we also pass the state value from the parent to another child component to update its UI.
 
@@ -208,7 +208,7 @@ Cons
 - It will cause a lot of rerenders each time because the `Root` component is being rerendered, and so do its children.
 - Ugly code when we have many duplicates and we also need to pass the props in the intermediate components in the way from `Root` component to our target components.
 
-### 5.2. Using React context
+### Using React context
 
 By using this approach, we can get rid of the ugly code problem in the first approach.
 
@@ -232,7 +232,7 @@ We define the `CountContext` context and provide it to our application part, we 
 
 Even we don't have the smelly code anymore, this approach still cannot solve the performance problem when all components of the tree are still being rerendered.
 
-### 5.3. Using Redux
+### Using Redux
 
 Redux is a powerful state management library that will help us avoid rerendering too many components.
 
@@ -262,7 +262,7 @@ In this example, we define `store` as our single source of truth, with a reducer
 
 In this way, the only component that gets rerendered is `RootRightRight`, when its props changed over time.
 
-## 6. Performance considerations when interacting with state
+## Performance considerations when interacting with state
 
 There are some useful hooks/functions used to cache/memorize things related to state to avoid components from rerendering, which are
 
@@ -296,7 +296,7 @@ Now, when we hit the increment/decrement buttons, we can see that event `Root` c
 
 This is pretty much about state management in React. Hope you enjoy reading it. See you in the next blogs.
 
-## 7. References
+## References
 
 [Reconciliation](https://legacy.reactjs.org/docs/reconciliation.html)
 
