@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunklamtran_blog=self.webpackChunklamtran_blog||[]).push([[4482],{2375:a=>{a.exports=JSON.parse('{"label":"Data Platform","permalink":"/blog/tags/data-platform","allTagsPath":"/blog/tags","count":1}')}}]);

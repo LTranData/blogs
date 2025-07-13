@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklamtran_blog=self.webpackChunklamtran_blog||[]).push([[2423],{9665:a=>{a.exports=JSON.parse('{"label":"Database Change Management","permalink":"/blog/tags/database-change-management","allTagsPath":"/blog/tags","count":1}')}}]);

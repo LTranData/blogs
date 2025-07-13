@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklamtran_blog=self.webpackChunklamtran_blog||[]).push([[3716],{3898:a=>{a.exports=JSON.parse('{"label":"Computer Vision","permalink":"/blog/tags/computer-vision","allTagsPath":"/blog/tags","count":1}')}}]);

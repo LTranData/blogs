@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklamtran_blog=self.webpackChunklamtran_blog||[]).push([[8717],{8436:l=>{l.exports=JSON.parse('{"label":"Artificial Intelligence","permalink":"/blog/tags/artificial-intelligence","allTagsPath":"/blog/tags","count":2}')}}]);

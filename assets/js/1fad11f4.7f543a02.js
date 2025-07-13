@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklamtran_blog=self.webpackChunklamtran_blog||[]).push([[9636],{3962:e=>{e.exports=JSON.parse('{"label":"Receptive Field","permalink":"/blog/tags/receptive-field","allTagsPath":"/blog/tags","count":1}')}}]);
