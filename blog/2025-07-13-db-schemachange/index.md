@@ -221,8 +221,7 @@ A new row will be added to this table every time a change script has been applie
 this table to identify which changes have been applied to the database and will not apply the same version more than
 once.
 
-Here is the current schema DDL for the change history table (found in the [schemachange/cli.py](schemachange/cli.py)
-script), in case you choose to create it manually and not use the `--create-change-history-table` parameter:
+Here is the current schema DDL for the change history table (found in the `schemachange/cli.py` script), in case you choose to create it manually and not use the `--create-change-history-table` parameter:
 
 ```sql
 CREATE TABLE IF NOT EXISTS METADATA.[SCHEMACHANGE].CHANGE_HISTORY
@@ -505,7 +504,7 @@ In order to run schemachange you must have the following:
 
 ### Running the Script
 
-schemachange is a single python script located at [schemachange/cli.py](schemachange/cli.py). It can be executed as
+schemachange is a single python script located at `schemachange/cli.py`. It can be executed as
 follows:
 
 ```bash
