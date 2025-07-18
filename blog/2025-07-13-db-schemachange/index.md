@@ -91,7 +91,7 @@ accidentally (re-)use the same version number.
 Repeatable change scripts follow a similar naming convention to that used
 by [Flyway Versioned Migrations](https://flywaydb.org/documentation/concepts/migrations.html#repeatable-migrations). The
 script name must follow this pattern (image taken
-from [Flyway docs](https://flywaydb.org/documentation/concepts/migrations.html#repeatable-migrations):
+from [Flyway docs](https://flywaydb.org/documentation/concepts/migrations.html#repeatable-migrations)):
 
 ![Flyway naming conventions repeatable](./images/flyway-repeatable-naming-convention.png)
 
@@ -123,6 +123,16 @@ e.g.
 
 This type of change script is useful for an environment set up after cloning. Always scripts are applied always last.
 
+### Rollback Script Naming
+
+Rollback script supports reverting database changes after a failed deployment. The script name must follow this pattern: `RB_[V<version>|R|A]__Some_description.sql`. In other words, the Rollback filename should be `RB_<scrip_name>` where `<scrip_name>` is one of the three above script types.
+
+e.g.
+
+- RB_V0.0.1\_\_CREATE_TABLE.SQL
+- RB_R\_\_CREATE_VIEW.SQL
+- RB_A\_\_ASSIGN_ROLES.SQL
+
 ### Script Requirements
 
 `db-schemachange` is designed to be very lightweight and not impose too many limitations. Each change script can have any
@@ -149,17 +159,22 @@ finds any variable placeholders that haven't been replaced.
 
 While many CI/CD tools already have the capability to filter secrets, it is best that any tool also does not output
 secrets to the console or logs. Schemachange implements secrets filtering in a number of areas to ensure secrets are not
-writen to the console or logs. The only exception is the `render` command which will display secrets.
+writen to the console or logs.
 
-A secret is just a standard variable that has been tagged as a secret. This is determined using a naming convention and
-either of the following will tag a variable as a secret:
+A secret is either a standard variable that has been tagged as a secret or a parameter of connection config input that considered as a secret. This is determined using a naming convention and either of the following will tag a variable/conection parameter as a secret:
 
-1. The variable name has the word `secret` in it.
+1. The name has the word `secret`, `pwd`, `passwd`, `password`, or `token` in it.
    ```yaml
    config-version: 1
    vars:
      bucket_name: S3://...... # not a secret
      secret_key: 567576D8E # a secret
+   ```
+   ```yaml
+   password: asDqTT@!#12 # a secret
+   credentials_provider:
+     client_id: wq5e121f-k952-4002-942e-tt24c1tww452 # not a secret
+     client_secret: prtpw9c03tw2lwe3c89c2054lw2025tw9842 # a secret
    ```
 2. The variable is a child of a key named `secrets`.
    ```yaml
@@ -213,13 +228,23 @@ The structure of the `CHANGE_HISTORY` table is as follows:
 | SCRIPT_TYPE    | VARCHAR(1000) | V                          |
 | CHECKSUM       | VARCHAR(1000) | 38e5ba03b1a6d2...          |
 | EXECUTION_TIME | BIGINT        | 4                          |
-| STATUS         | VARCHAR(1000) | Success                    |
+| STATUS         | VARCHAR(1000) | SUCCESS                    |
+| BATCH_ID       | VARCHAR(1000) | 38e5ba03b1a6d2...          |
+| BATCH_STATUS   | VARCHAR(1000) | SUCCESS                    |
 | INSTALLED_BY   | VARCHAR(1000) | DATABASE_USER              |
 | INSTALLED_ON   | TIMESTAMP     | 2020-03-17 12:54:33.123    |
 
+There is a specific BATCH_ID associated with each deployment.
+
 A new row will be added to this table every time a change script has been applied to the database. `db-schemachange` will use
 this table to identify which changes have been applied to the database and will not apply the same version more than
-once.
+once, with BATCH_STATUS = IN_PROGRESS.
+
+After all scripts are applied, the BATCH_STATUS will be updated to SUCCESS. If any of the scripts failed, the deployment stopped and
+BATCH_STATUS will be set to FAILED.
+
+If you are running a `rollback` command, each script was rolled back will be updated with STATUS = ROLLED_BACK.
+After all scripts are reverted, the BATCH_STATUS is set to ROLLED_BACK. If any of the rollback scripts failed, the BATCH_STATUS will be set to ROLLED_BACK_FAILED.
 
 Here is the current schema DDL for the change history table (found in the `schemachange/cli.py` script), in case you choose to create it manually and not use the `--create-change-history-table` parameter:
 
@@ -233,6 +258,8 @@ CREATE TABLE IF NOT EXISTS METADATA.[SCHEMACHANGE].CHANGE_HISTORY
     CHECKSUM VARCHAR(1000),
     EXECUTION_TIME BIGINT,
     STATUS VARCHAR(1000),
+    BATCH_ID VARCHAR(1000),
+    BATCH_STATUS VARCHAR(1000),
     INSTALLED_BY VARCHAR(1000),
     INSTALLED_ON TIMESTAMP
 )
@@ -310,6 +337,28 @@ usage: schemachange render [-h] \
 | -m MODULES_FOLDER, --modules-folder MODULES_FOLDER | The modules folder for jinja macros and templates to be used across multiple scripts                                                      |
 | --vars VARS                                        | Define values for the variables to replaced in change scripts, given in JSON format (e.g. {"variable1": "value1", "variable2": "value2"}) |
 | -v, --verbose                                      | Display verbose debugging details during execution (the default is False)                                                                 |
+
+##### rollback
+
+The command is the same as the `deploy` command, plus an additional required parameter `--batch-id` for the ID of the batch that we need to revert the changes. The batch ID information is only available through CLI, not the YAML config file, since the config file is more suitable for static configurations.
+
+```bash
+usage: schemachange rollback [-h] \
+  [--config-folder CONFIG_FOLDER] \
+  [--config-file-name CONFIG_FILE_NAME] \
+  [-f ROOT_FOLDER] \
+  [-m MODULES_FOLDER] \
+  [--vars VARS] \
+  [--db-type DB_TYPE] \
+  [--connections-file-path CONNECTIONS_FILE_PATH] \
+  [-c CHANGE_HISTORY_TABLE] \
+  [--create-change-history-table] \
+  [--query-tag QUERY_TAG] \
+  [-v] \
+  [-ac] \
+  [--dry-run] \
+  [--batch-id BATCH_ID]
+```
 
 #### YAML config file
 
@@ -587,6 +636,8 @@ schemachange deploy \
   --create-change-history-table
 ```
 
-## GitHub
+## Links
 
 **[https://github.com/LTranData/db-schemachange](https://github.com/LTranData/db-schemachange)**
+
+**[https://pypi.org/project/db-schemachange](https://pypi.org/project/db-schemachange)**
