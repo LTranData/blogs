@@ -143,3 +143,107 @@ input:focus,
   padding: 10px 5px;
   vertical-align: top;
 }
+
+.resume-container {
+  background-color: #ffffff;
+  max-width: 64rem;
+  margin: 1.25rem auto;
+  padding: 1.25rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  color: #18181b;
+  font-family: sans-serif;
+  line-height: 1.5;
+}
+
+.resume-header {
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #002244;
+  margin-bottom: 0.5rem;
+}
+
+.resume-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #002244;
+  margin-bottom: 0.5rem;
+}
+
+.contact-info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+}
+
+.contact-icon {
+  color: #002244;
+  margin-right: 0.25rem;
+}
+
+.contact-link {
+  color: #002244;
+  text-decoration: underline;
+}
+
+.contact-link:hover {
+  text-decoration: underline;
+}
+
+.resume-section {
+  margin-bottom: 0.5rem;
+}
+
+.resume-section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #002244;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid #002244;
+  margin-bottom: 0.5rem;
+}
+
+.experience-item {
+  margin-bottom: 1rem;
+}
+
+.experience-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.job-title {
+  font-weight: 700;
+  font-size: 1.125rem;
+}
+
+.job-subtitle {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.job-date {
+  font-style: italic;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.job-details {
+  padding-left: 1rem;
+  margin-top: 0.5rem;
+}
+
+.list-inside {
+  list-style-position: inside;
+}
+
+.pl-4 {
+  padding-left: 1rem;
+}

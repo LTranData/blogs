@@ -109,6 +109,7 @@ const config = {
         items: [
           { to: "/", label: "About", position: "right" },
           { to: "/blog", label: "Blog", position: "right" },
+          { to: "/resume", label: "Resume", position: "right" },
         ],
       },
       footer: {
