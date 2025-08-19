@@ -65,7 +65,7 @@ export default function LamTranResume() {
             <div className="contact-item">
               <Github size={16} className="contact-icon" />
               <span>
-                <strong>Github:&nbsp;</strong>
+                <strong>GitHub:&nbsp;</strong>
               </span>
               <a
                 href="https://github.com/LTranData"

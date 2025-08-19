@@ -132,7 +132,7 @@ const config = {
             title: "Contact",
             items: [
               {
-                label: "Mail",
+                label: "Email",
                 href: `mailto:${process.env.INFO_GMAIL}`,
               },
               {
@@ -144,7 +144,7 @@ const config = {
                 href: `tel:+${process.env.INFO_TEL}`,
               },
               {
-                label: "Github",
+                label: "GitHub",
                 href: `${process.env.INFO_GITHUB}`,
               },
             ],
