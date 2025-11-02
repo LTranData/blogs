@@ -248,8 +248,7 @@ input:focus,
   padding-left: 1rem;
 }
 
-#__docusaurus
-  > div.announcementBar_node_modules-\@docusaurus-theme-classic-lib-theme-AnnouncementBar-styles-module {
+#__docusaurus > div[class^="announcementBar"] {
   background-image: repeating-linear-gradient(
     35deg,
     rgb(232, 215, 255),
