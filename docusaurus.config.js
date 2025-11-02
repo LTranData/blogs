@@ -23,7 +23,7 @@ const config = {
     {
       src: process.env.GOOGLE_ADS_SCRIPT,
       async: true,
-      crossorigin: "anonymous"
+      crossorigin: "anonymous",
     },
   ],
 
@@ -88,9 +88,16 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       metadata: [
-        {name: 'keywords', content: 'Data Engineering, Web Development, Blog'},
-        {name: 'description', content: 'This is a data engineering, web development blog by Lam Tran'},
-        {name: 'title', content: 'Lam Tran'},
+        {
+          name: "keywords",
+          content: "Data Engineering, Web Development, Blog",
+        },
+        {
+          name: "description",
+          content:
+            "This is a data engineering, web development blog by Lam Tran",
+        },
+        { name: "title", content: "Lam Tran" },
       ],
       tableOfContents: {
         minHeadingLevel: 2,
@@ -165,6 +172,16 @@ const config = {
         apiKey: process.env.ALGOLIA_API_KEY,
         indexName: process.env.ALGOLIA_INDEX_NAME,
         placeholder: "Search...",
+      },
+      announcementBar: {
+        id: "hire_me",
+        content: `
+          <b>
+            Open for freelance Data Engineering contracts.
+            Let's <a href="mailto:lamtran.data@gmail.com" className="contact-link" target="_blank">Connect</a> to discuss your project needs!
+          </b>
+        `,
+        isCloseable: false,
       },
     }),
 };
