@@ -84,12 +84,12 @@ export default function LamTranResume() {
           <ul className="list-disc list-inside pl-4">
             <li>
               <strong>Confident:</strong> Python, SQL, Spark, Polars, Snowflake,
-              AWS, Kafka, MySQL
+              AWS, Databricks, Kafka
             </li>
             <li>
-              <strong>Familiar:</strong> Java, Scala, GCP, Hadoop, Airflow,
-              Postgres, MongoDB, Dbt, Docker, Impala, StreamSets, GitLab CI, Web
-              Development (ReactJS, Spring Boot), Kubernetes, Helm
+              <strong>Familiar:</strong> Java, Scala, Dbt, Hadoop, Airflow,
+              MySQL, Postgres, MongoDB, Docker, Impala, StreamSets, GitLab CI,
+              Web Development (ReactJS, Spring Boot), Kubernetes, Helm
             </li>
           </ul>
         </section>
