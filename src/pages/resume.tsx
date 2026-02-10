@@ -148,32 +148,29 @@ export default function LamTranResume() {
                 </div>
                 <ul className="list-disc list-inside pl-4">
                   <li>
-                    Own Salesforce to Snowflake sync pipeline for hundreds of
-                    tables, ensuring data latency SLA of ~100%. Reduce 30% cost
-                    with S3 mid-layer and increase speed multiple times with
-                    parallel asynchronous Salesforce API calls.
+                    Owned and re-engineered the Salesforce to Snowflake
+                    ingestion pipeline. Cut processing cost by 30% compare to
+                    legacy ones while improving the pipeline’s robustness and
+                    reducing processing time by multiple times.
                   </li>
                   <li>
-                    Develop a data validation script. Introduce multithread
-                    processing with Polars and asynchronous HTTP calls for
-                    Salesforce data retrieval, which reduces the time taken for
-                    data quality checks by 84% compared to the legacy tool.
+                    Developed a custom data validation framework using
+                    asynchronous HTTP calls for Salesforce data retrieval and
+                    Polars for data quality checks, resulting in 2 times faster
+                    than the existing framework.
                   </li>
                   <li>
-                    Shared ownership of Standard Data Pipeline for Unified Data
-                    Platform on Snowflake cloud that serves as a centralized hub
-                    that brings together information from various sources,
-                    support business entities such as Claims, Members,
-                    Providers, MMR, MOR,… for Medicare, Medicaid membership and
-                    risk calculation. Ingest and transform files from external
-                    clients into the data platform, and provide data for various
-                    value streams within the enterprise. Implement the testing
-                    framework to ensure functional testing and data quality
-                    end-to-end.
+                    Drove the delivery of Standard Data Pipeline on
+                    enterprise-grade Snowflake data platform, designed data
+                    models for business entities such as Claims, Members,
+                    Providers, MMR, MOR,… for risk calculation, directly
+                    enabling high-stakes Medicaid and Medicare analytics across
+                    the organization.
                   </li>
                   <li>
-                    Lead Enterprise Pipeline teams and guide the teams toward
-                    goals and objectives.
+                    Led high-impact engineering teams in the design and
+                    deployment of enterprise-grade pipelines toward strategic
+                    objectives.
                   </li>
                 </ul>
               </div>
@@ -190,21 +187,20 @@ export default function LamTranResume() {
                 </div>
                 <ul className="list-disc list-inside pl-4">
                   <li>
-                    Redesign Analyzer Statistics and Rule Validation micro-batch
-                    jobs workflow from using Glue (Spark) to Lambda (Polars) and
-                    reduce processing time for each job from 8-10 minutes to
-                    seconds, reducing cost at least 10 times.
+                    Re-architected a high-performance migration of micro-batch
+                    workflows from AWS Glue (Spark) to Lambda (Polars), slashing
+                    job latency from 10 minutes to sub-second and reducing cloud
+                    costs by 90%.
                   </li>
                   <li>
-                    Restructure the source code of Lambda micro-batch jobs and
-                    daily Glue jobs so that code is well organized and modular
-                    aligned with Sonar rules, resulting in better code quality
-                    and easier for writing UTs, achieving ~90% UT coverage in
-                    both projects.
+                    Systematized a modular, high quality codebase for Lambda and
+                    Glue pipelines, aligning with Sonar standards to achieve
+                    ~95% unit test coverage and significantly improving
+                    maintainability.
                   </li>
                   <li>
-                    Lead the development of the data project and data
-                    engineering teams.
+                    Steered the technical roadmap and execution for data
+                    engineering teams, ensuring high-velocity delivery.
                   </li>
                 </ul>
               </div>
@@ -212,18 +208,19 @@ export default function LamTranResume() {
                 <div className="job-subtitle">Data Core Team contribution</div>
                 <ul className="list-disc list-inside pl-4">
                   <li>
-                    Main technical content creator of 5 data workshops at BU
-                    level.
+                    Exposed technical competency by delivering 5 data workshops
+                    at Business Unit level.
+                  </li>
+                  <li>Conducted 30+ technical interviews.</li>
+                  <li>
+                    Formalized the technical onboarding and training roadmap for
+                    associate engineers, accelerating time-to-productivity for
+                    new hires.
                   </li>
                   <li>
-                    Main interviewer of several technical interviews for
-                    headcount preparation OKR.
+                    Architected technical solutions for high-stakes client
+                    proposals.
                   </li>
-                  <li>
-                    Contribute to team international certifications and build
-                    training roadmap for mentees.
-                  </li>
-                  <li>Architecture design for bidding on customer projects.</li>
                 </ul>
               </div>
             </div>
@@ -246,31 +243,32 @@ export default function LamTranResume() {
             </div>
             <ul className="list-disc list-inside pl-4">
               <li>
-                Develop an ingestion pipeline to stream data from Kafka topics
-                to HDFS using Spark Streaming and Sqoop, sync up around 1000
-                tables with 5TB daily data velocity, ensuring data quality for
-                near real time reports.
+                Owned high-velocity ingestion pipelines streaming 5TB of daily
+                data from Kafka to HDFS via Spark Streaming, ensuring data
+                integrity for critical near-real-time reporting across 1,000+
+                tables.
               </li>
               <li>
-                Install, customize, and maintain a Spark Thrift Server v3.3.0 to
-                work with the Cloudera platform, integrate with other services
-                (Kerberos, Ranger, Kudu), and act as a SQL engine on Hadoop for
-                complex ETL jobs with complex datatypes. Tune the server and
-                make it run 40% faster than the old version (v2.4.3).
+                Engineered a high-performance analytical SQL engine by deploying
+                a customized Spark Thrift Server v3.3.0 on Cloudera data
+                platform, achieving a 40% performance increase over legacy
+                versions while hardening security through Kerberos and Ranger
+                integrations.
               </li>
               <li>
-                Design data marts for each business major, speed up the whole
-                system hours every day (A pick, deliver, return packages mart
-                which is used in 20+ reports). Use Dbt (Data build tool) as a
-                data transformation tool in our data warehouse and Airflow as a
-                scheduling tool integrating with Dbt.
+                Designed data marts for each business major, speeding up the
+                whole system by hours every day (A pick, deliver, return
+                packages mart which is used in 20+ reports). Use Dbt (Data build
+                tool) as a data transformation tool in our data warehouse and
+                Airflow as a scheduling tool integrating with Dbt.
               </li>
               <li>
-                Customize Dbt to work with Impala through a kerberized JDBC
-                connection since it is not officially adopted at that time.
-                Create data tools for work such as a web application to show all
-                Impala queries for easier monitoring, RESTful client using
-                SPNEGO protocol for making requests to kerberized Ranger,…
+                Bridged open source gaps, including a customized dbt-impala
+                adapter through a Kerberized JDBC connection, since it was not
+                officially adopted at that time. Engineered tools such as a web
+                application to show all Impala queries for easier monitoring, a
+                RESTful client using SPNEGO protocol for making requests to
+                Kerberized Ranger,…
               </li>
             </ul>
           </div>
@@ -292,16 +290,14 @@ export default function LamTranResume() {
             </div>
             <ul className="list-disc list-inside pl-4">
               <li>
-                Create several ETL jobs using SparkSQL, Spark, Pentaho, and Nifi
-                to provide, ingest and aggregate data for each request from
-                other subsidiary companies of Viettel Group, and help other
-                businesses operate smoothly.
+                Owned and maintained prepaid and postpaid data pipelines that
+                process billions of VND per day, trace down bugs if there is
+                abnormal revenue in the daily report.
               </li>
               <li>
-                Maintain and add more formulas to compute telecom subscription
-                charges for prepaid and postpaid pipelines which process
-                billions of VND per day, trace down bugs if there is abnormal
-                revenue in the daily report.
+                Orchestrated several ETL jobs using SparkSQL, Spark, Pentaho,
+                and Nifi to streamline cross-subsidiary data integration,
+                enabling seamless operational continuity across Viettel Group.
               </li>
             </ul>
           </div>
