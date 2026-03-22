@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklamtran_blog=self.webpackChunklamtran_blog||[]).push([[2541],{1571:a=>{a.exports=JSON.parse('{"label":"Stateful","permalink":"/blog/tags/stateful","allTagsPath":"/blog/tags","count":1}')}}]);
