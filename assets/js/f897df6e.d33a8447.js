@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunklamtran_blog=self.webpackChunklamtran_blog||[]).push([[4935],{8813:a=>{a.exports=JSON.parse('{"label":"Structured Streaming","permalink":"/blog/tags/structured-streaming","allTagsPath":"/blog/tags","count":2}')}}]);
