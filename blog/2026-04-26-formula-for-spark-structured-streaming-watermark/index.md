@@ -34,7 +34,7 @@ The key concept is **A row is eviected when the global watermark threshold excee
 
 Spark uses a single global watermark = min(all stream watermarks) by default (or based on how you configured `spark.sql.streaming.multipleWatermarkPolicy`). So to evict state, both streams must advance sufficiently.
 
-Suppose I have below query
+Suppose I have below query:
 
 ```sql
 table_1 (watermark = wm_1) LEFT JOIN
