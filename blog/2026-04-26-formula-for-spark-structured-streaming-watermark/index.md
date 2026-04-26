@@ -30,7 +30,7 @@ Joining two streams could be more complex. You have to specify two things:
 - Watermark delays: how delayed the event time columns of the input can be
 - Event-time range condition: a constraint on event time across two inputs such that engine can figure out when old rows of one input is not going to be required (i.e. will not satisfy the time constraint) for matches with the other input
 
-The key concept is **A row is eviected when the global watermark threshold (=min of all stream watermark thresholds) exceeds that row's timestamp + the time range bound where the opposite stream could still match it**.
+The key concept is **A row is eviected when the global watermark threshold exceeds that row's timestamp + the time range bound where the opposite stream could still match it**.
 
 Spark uses a single global watermark = min(all stream watermarks) by default (or based on how you configured `spark.sql.streaming.multipleWatermarkPolicy`). So to evict state, both streams must advance sufficiently.
 
