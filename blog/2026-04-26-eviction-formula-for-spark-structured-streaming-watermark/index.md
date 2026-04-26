@@ -1,12 +1,12 @@
 ---
-slug: formula-for-spark-structured-streaming-watermark/
-title: Formula for Spark Structured Streaming watermark
-description: Formula for Spark Structured Streaming watermark
+slug: eviction-formula-for-spark-structured-streaming-watermark/
+title: Eviction formula for Spark Structured Streaming watermark
+description: Eviction formula for Spark Structured Streaming watermark
 authors: tranlam
 tags: [Bigdata, Spark, Structured Streaming, Watermark]
 ---
 
-I thought watermark was a trivial concept, until I encounter cross-stream joins and out-of-order data. Handling unexpected event-time skew and late data arrival requires more than just a basic configuration that basic documentation often overlooks. This post is a technical deep dive into the lessons learned while debugging state expiration and late-arrival logic when developing and deploying complex streaming pipelines at my work.
+I thought watermark was a trivial concept, until I encounter cross-stream joins and out-of-order data. Handling unexpected event-time skew and late data arrival across multiple streams requires more than just a basic configuration that documentation often overlooks. This post is a technical deep dive into the lessons learned while debugging state expiration and late-arrival logic when developing and deploying complex streaming pipelines at my work.
 
 <!--truncate-->
 
