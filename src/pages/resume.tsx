@@ -81,15 +81,26 @@ export default function LamTranResume() {
         {/* Skills Section */}
         <section className="resume-section">
           <h2 className="resume-section-title">Skills</h2>
+          <i style={{fontSize: '14px'}}>*Ordered from highest proficiency to general familiarity</i>
           <ul className="list-disc list-inside pl-4">
             <li>
-              <strong>Confident:</strong> Python, SQL, Spark, Polars, Snowflake,
-              AWS, Databricks, Kafka
+              <strong>Platform:</strong> Databricks, Snowflake, Hadoop, AWS{" "}
             </li>
             <li>
-              <strong>Familiar:</strong> Java, Scala, Dbt, Hadoop, Airflow,
-              MySQL, Postgres, MongoDB, Docker, Impala, StreamSets, GitLab CI,
-              Web Development (ReactJS, Spring Boot), Kubernetes, Helm
+              <strong>Language:</strong> Python, Java, Scala{" "}
+            </li>
+            <li>
+              <strong>Framework:</strong> Spark, Kafka, Airflow, Polars, Dbt,
+              Impala, StreamSets{" "}
+            </li>
+            <li>
+              <strong>DevOps:</strong> Docker, Kubernetes, Helm, GitLab CI{" "}
+            </li>
+            <li>
+              <strong>Database:</strong> MySQL, Oracle, Postgres, MongoDB{" "}
+            </li>
+            <li>
+              <strong>Others:</strong> Web Development (ReactJS, Spring Boot){" "}
             </li>
           </ul>
         </section>
