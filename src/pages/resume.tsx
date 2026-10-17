@@ -81,7 +81,9 @@ export default function LamTranResume() {
         {/* Skills Section */}
         <section className="resume-section">
           <h2 className="resume-section-title">Skills</h2>
-          <i style={{fontSize: '14px'}}>*Ordered from highest proficiency to general familiarity</i>
+          <i style={{ fontSize: "14px" }}>
+            *Ordered from highest proficiency to general familiarity
+          </i>
           <ul className="list-disc list-inside pl-4">
             <li>
               <strong>Platform:</strong> Databricks, Snowflake, Hadoop, AWS{" "}
@@ -124,9 +126,67 @@ export default function LamTranResume() {
               </div>
               <div className="job-date">Feb 2025 - Present</div>
             </div>
-            {/* <ul className="list-disc list-inside pl-4">
-              <li>Lead data team of project</li>
-            </ul> */}
+            <ul className="list-disc list-inside pl-4">
+              <li>
+                Led the data delivery and solution design for account statement
+                foundational data at near real-time latency. Served 10+
+                downstream systems, including critical Corporate/Retail
+                customer-facing applications and business intelligence teams
+                across the Data Lake with the most critical data of the bank
+                (account, customer, statements, funds transfer, teller, charge
+                request, forex,…). Enable analytic, notification, operational,
+                and monitoring use cases across systems within the bank.
+              </li>
+              <li>
+                Led end-to-end delivery of the Market Risk and Pre-settlement
+                Risk early warning project under tight deadlines, replacing
+                fully manual end-of-day reporting with automated daily pipeline
+                and additional 3 intraday monitoring across VaR, PV01,
+                Stop-loss,… metrics - achieving SBV Basel II compliance,
+                eliminating full-time effort resources for operational risk, and
+                enabling same-day breach detection that previously went
+                unnoticed until the next morning.
+              </li>
+              <li>
+                Drove the successful delivery of a regulatory-critical Liquidity
+                Risk and Interest Rate in Banking Book management project,
+                enabling intraday liquidity monitoring (from business manual
+                process to automated daily report and additional 4 intraday
+                monitoring), reducing reporting errors and cutting report
+                delivery from afternoon to morning SLA - ensuring Basel
+                III/ILAAP compliance ahead of SBV mandates.
+              </li>
+              <li>
+                Built and contributed division-wide foundations - Kafka-to-Kafka
+                near real-time streaming, Databricks orchestration framework,
+                optimized streaming processing/serving foundations, etc.
+              </li>
+              <li>
+                Contributed to solution and design for multiple AI initiatives:
+                Data Lake Atlas (BIAN model, curated zone), LLM Wiki (enterprise
+                knowledge base), and SDLC tooling - improving developer
+                productivity and formalizing enterprise knowledge.
+              </li>
+              <li>
+                Managed a cross-functional team of engineers, business analysts,
+                and testers to deliver complex workstreams, consistently hitting
+                business timelines while keeping strong alignment with
+                stakeholders on scope, resourcing, and cloud cost within budget.
+              </li>
+              <li>
+                Ran deep debugging/optimization sessions on team-owned Spark
+                jobs, cutting compute cost by 30% (thousands of USD/month) while
+                mentoring and building platform expertise - upskilling the team
+                on advanced Spark Structured Streaming (watermarking, streaming
+                joins, state eviction, etc.).
+              </li>
+              <li>
+                Built a database connection and templating tool that automated
+                ingestion job generation across diverse sources, reducing
+                pipeline development effort by 95%, plus additional automation
+                tools adopted across teams.
+              </li>
+            </ul>
           </div>
 
           {/* Data Architect - FPT Software (Parent Title) */}
