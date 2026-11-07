@@ -111,11 +111,11 @@ export default function LamTranResume() {
         <section className="resume-section">
           <h2 className="resume-section-title">Experience</h2>
 
-          {/* Lead Data Engineer - Techcombank */}
+          {/* Expert, Data Engineering - Techcombank */}
           <div className="experience-item">
             <div className="experience-header">
               <div className="job-title">
-                Lead Data Engineer -{" "}
+                Expert, Data Engineering -{" "}
                 <a
                   href="https://techcombank.com/"
                   className="contact-link"
